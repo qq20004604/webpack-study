@@ -199,3 +199,15 @@ output: {
 
 fork[本项目](https://github.com/qq20004604/webpack-study)，并且在本文件夹下执行``npm run test``来打包，然后打开``first.html``和``second.html``来查看效果（见控制台console）
 
+<h3>4、出口</h3>
+
+标准的出口写法是：
+
+```
+// 出口文件
+output: {
+    filename: './dist/dist.js'
+}
+```
+
+意思是，
