@@ -4,11 +4,13 @@
 
 每个DEMO以文件夹为单位，从入门到进阶，根据文件夹编号为准，逐步递进。
 
+成文时，webpack版本是【3.8.1】
+
 <h3>1、安装webpack</h3>
 
 >npm install webpack -g
 
-这个命令将安装最新版本的webpack（全局，学习教程中推荐，避免多次安装）
+这个命令将安装最新版本的webpack（全局，学习教程中推荐，避免多次安装。但实践中还是有必要一个项目一个webpack，避免版本冲突带来的bug）
 
 目前版本是3.8.1（2017/11/27）
 
@@ -78,7 +80,7 @@ Time: 58ms
 
 打完后的``bundle.js``文件内容略。这个时候打开html文件，查看控制台，会发现正常输出了``bar``。
 
-<h3>2、简单指令</h3>
+<h3>2、简单指令（npm脚本）</h3>
 
 [示例目录](https://github.com/qq20004604/webpack-study/tree/master/2%E3%80%81%E7%AE%80%E5%8D%95%E6%8C%87%E4%BB%A4)
 
@@ -89,6 +91,7 @@ Time: 58ms
 其他文件如【1】中的四个文件，新增一个``package.json``，内容如下：
 
 ```
+// package.json  注：name只能是以下这种格式，不能有空格或者中文
 {
     "name": "simple-command",
     "version": "0.0.1",
@@ -99,3 +102,13 @@ Time: 58ms
 ```
 
 然后控制台执行命令``npm run test``即可。
+
+注：
+
+这个是npm的特性，而不是webpack的，但是webpack基于nodejs所以可用。
+
+<h3>3、入口</h3>
+
+[示例目录]()
+
+在上面的
