@@ -26,6 +26,8 @@
 
 <h3>1、webpack基本的框架</h3>
 
+[示例目录](https://github.com/qq20004604/webpack-study/tree/master/1%E3%80%81%E6%9C%80%E7%AE%80%E5%8D%95%E7%9A%84webpack%E5%AE%9E%E4%BE%8B)
+
 文件目录见``1、最简单的webpack实例``这个目录。
 
 ```
@@ -77,6 +79,8 @@ Time: 58ms
 打完后的``bundle.js``文件内容略。这个时候打开html文件，查看控制台，会发现正常输出了``bar``。
 
 <h3>2、简单指令</h3>
+
+[示例目录](https://github.com/qq20004604/webpack-study/tree/master/2%E3%80%81%E7%AE%80%E5%8D%95%E6%8C%87%E4%BB%A4)
 
 我们实际开发中，一般都是使用``npm run build``或者``npm run dev``之类的指令，这是怎么实现的呢？
 
