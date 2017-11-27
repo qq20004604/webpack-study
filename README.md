@@ -1,4 +1,4 @@
-﻿<h3>0、前注</h3>
+<h3>0、前注</h3>
 
 本文内容源于[webpack中文文档](https://doc.webpack-china.org/concepts/)，以及我自己实践中写的若干DEMO。
 
@@ -7,6 +7,8 @@
 成文时，webpack版本是【3.8.1】
 
 <h3>1、安装webpack</h3>
+
+首先你需要安装Node.js，[点击打开Node.js下载页面](https://nodejs.org/zh-cn/download/)。安装完Node.js后，会自带npm包管理器。
 
 >npm install webpack -g
 
@@ -103,9 +105,19 @@ Time: 58ms
 
 然后控制台执行命令``npm run test``即可。
 
-注：
+<b>注：</b>
 
-这个是npm的特性，而不是webpack的，但是webpack基于nodejs所以可用。
+之所以我们能通过``npm run test``来执行``"webpack --config webpack.config.js"``这样一段命令。
+
+原因是这段命令的开头，以``npm``为开头，所以执行的是全局变量（通常是全局变量，因为npm一般是全局安装）配置的npm包管理器。
+
+然后后面的``run test``是npm负责去执行的，所以``npm run test``这段命令，是npm的特性，而不是webpack的，称作npm脚本。
+
+而之后webpack的命令，是webpack做的事情。但webpack的执行，显然是通过Node.js执行的，所以可以用JavaScript语法。
+
+[npm小结（程序猿小卡）](http://www.cnblogs.com/chyingp/p/npm.html)
+
+[npm的工作原理](http://blog.csdn.net/gentlycare/article/details/51332882)
 
 <h3>3、入口</h3>
 
@@ -127,3 +139,4 @@ entry: {
 ```
 
 这个是作用是什么呢？用于提供<b>【多入口】</b>的解决方案。
+
