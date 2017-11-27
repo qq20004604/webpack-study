@@ -3,6 +3,8 @@
  * QQ: 20004604
  * weChat: qq20004604
  */
-export default function bar () {
-    console.log('bar')
-}
+
+
+import {bar} from './common'
+
+bar()
