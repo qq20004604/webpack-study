@@ -109,6 +109,21 @@ Time: 58ms
 
 <h3>3、入口</h3>
 
-[示例目录]()
+[示例目录](https://github.com/qq20004604/webpack-study/tree/master/3%E3%80%81%E5%85%A5%E5%8F%A3)
 
-在上面的
+在上面的``webpack.config.js``中，有如下代码：
+
+```
+// 入口文件，指向app.js
+entry: './app.js',
+```
+
+以上代码相当于：
+
+```
+entry: {
+    main: './app.js'
+}
+```
+
+这个是作用是什么呢？用于提供<b>【多入口】</b>的解决方案。
