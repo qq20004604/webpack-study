@@ -1,0 +1,7 @@
+{
+    "name": "demo-output",
+    "version": "0.0.1",
+    "scripts": {
+        "test": "webpack --config webpack.config.js"
+    }
+}
