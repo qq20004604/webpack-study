@@ -404,3 +404,96 @@ plugins: [
 最后一如既往的运行``npm run test``即可，查看 ``dist`` 文件夹下的 ``index.html`` 文件。
 
 
+<h3>5、Loader</h3>
+
+我们在用别人的脚手架的时候，基本总是会见到loader。
+
+比如：
+
+1. 用vue的时候，我们可能用``vue-loader``；
+2. 引入css的时候，我们可能用``css-loader``；
+3. 处理一些小图片，我们为了减少请求数，所以需要将图片转为base64字符串，这个时候要用``url-loader``；
+4. 处理使用es6等高版本js代码的，我们需要使用``babel-loader``；
+
+还有很多其他的，略略略。
+
+<b>loader的使用方法：</b>
+
+1、先通过npm安装loader，引入package.json中；
+
+2、更改``webpack.config.js``文件，文件内容示例如以下代码，loader放在rules这个数组里面：
+
+```
+// webpack.config.js
+
+module.exports = {
+    // 入口文件，指向app.js
+    entry: './app.js',
+    // 出口文件
+    output: {
+        path: __dirname + '/dist',
+        // 文件名，将打包好的导出为bundle.js
+        filename: './dist.js'
+    },
+    module: {
+        rules: [
+        // loader放在rules这个数组里面
+        ]
+    }
+}
+```
+
+3、将loader添加到上面那个数组里，并进行配置，然后就可以使用了。
+
+<h4>5.1、babel-loader</h4>
+
+这个用于将使用ES6规范的js代码，转为ES5。
+
+
+首先安装一大堆东西，参照下面的命令，一共是4个（包括webpack）
+
+```
+npm install --save babel-loader babel-core babel-preset-env webpack
+```
+
+创建babel规则文件``.babelrc``，内容设置为：
+
+```
+{
+    "presets": [
+        [
+            "env",
+            {
+                "modules": false,
+                "targets": {
+                    "browsers": [
+                        "> 1%",
+                        "last 2 versions",
+                        "not ie <= 8"
+                    ]
+                }
+            }
+        ]
+    ]
+}
+```
+
+然后``app.js``里添加文件内容（这显然是es6语法）：
+
+```
+let foo = () => {
+    console.log('1')
+}
+foo()
+```
+
+运行 ``npm run test`` 执行脚本，等脚本执行完毕后，查看dist文件夹下的 ``dist.js`` 文件。
+
+会发现代码已经被成功转为非es6语法了（截取如下）：
+
+```
+var foo = function foo() {
+  console.log('1');
+};
+foo();
+```

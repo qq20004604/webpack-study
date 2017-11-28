@@ -1,0 +1,14 @@
+{
+  "name": "demo-loader",
+  "version": "0.0.1",
+  "scripts": {
+    "test": "webpack --config webpack.config.js"
+  },
+  "devDependencies": {},
+  "dependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.1",
+    "webpack": "^3.8.1"
+  }
+}
