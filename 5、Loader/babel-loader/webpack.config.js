@@ -12,10 +12,9 @@
         rules: [
             {
                 test: /\.js$/,
+                // 这里表示忽略的文件夹，正则语法
                 exclude: /node_modules/,
-                use: {
-                    loader: 'babel-loader'
-                }
+                loader: 'babel-loader'
             }
         ]
     }
