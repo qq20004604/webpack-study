@@ -216,6 +216,8 @@ output: {
 
 大家一般将打包好的文件会放在dist文件夹下，方便管理。
 
+---
+
 <h4>4.2、出口文件名根据入口文件名所决定：</h4>
 
 上面讲了多入口，以及对应的多出口的配置写法，可以参考上面【3】中的内容。
@@ -223,6 +225,8 @@ output: {
 那么假如单入口``entry: './app.js',``，然后output直接写``filename: './dist/[name].js'``会发生什么事情呢？
 
 因为入口相当于``main: './app.js'``，所以打包好的文件名是：``main.js``。
+
+---
 
 <h4>4.3、设置出口目录</h4>
 
@@ -242,6 +246,8 @@ output: {
 注意，这个情况下，path不能用相对路径（如``./dist``来写），必须写成绝对路径。
 
 而``filename``就是指输出到该绝对路径下，打包好的文件的名字（参考之前的，是一样的）。
+
+---
 
 <h4>4.4、占位符</h4>
 
@@ -315,3 +321,86 @@ filename: 'dist.chunkhash=[chunkhash:10].name=[name].id=[id].js'
 最后查看dist文件夹里生成的js文件。对比``webpack.config.js``文件中的``output``属性，对比之。
 
 至于加了哈希值后的文件，如何让html自动引入，下来进行说明。
+
+---
+
+<h4>4.5、引入启用了占位符的打好包文件</h4>
+
+在【4.4】中，我们启用了 ``[hash]`` 和 ``[chunkhash]`` 占位符。
+
+这个占位符，会根据哈希值，在打包好的js文件的文件名中，添加一段hash值。
+
+而这个hash值显然是不可预期的，如果我们每次都在html里手动去写这些js文件名，不仅傻，还容易漏和犯错。
+
+因此我们需要设法解决这个问题。
+
+<b>解决步骤：</b>
+
+1. webpack不能全局安装（虽然也可以，但是会造成污染），因此我们先在当前文件夹下安装一次webpack：``npm install --save webpack``；
+2. 我们还需要安装一个webpack插件：``npm install --save-dev html-webpack-plugin``；
+3. 除此之外，我们需要配置一下webpack文件。做两件事：1、引入插件；2、配置插件；
+
+```
+// webpack.config.js
+// 引入插件
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
+module.exports = {
+    // 入口文件，指向app.js
+    entry: './app.js',
+    // 出口文件
+    output: {
+        path: __dirname + '/dist',
+        filename: 'dist.chunkhash=[chunkhash:10].name=[name].id=[id].js'
+    },
+    // 将插件添加到webpack中
+    plugins: [
+        // 这里是添加的插件
+        new HtmlWebpackPlugin({
+            title: 'My HTML'
+        })
+    ]
+}
+```
+
+最后，如之前一样，运行``npm run test``，会发现在``dist``文件夹下，除了之前的js文件，还出现了一个html文件，而这个html文件引入了我们打包好的js文件。
+
+<b>注：</b>
+
+项目里的是已经将依赖加入了``package.json``，直接运行``npm install``即可自动安装webpack和该插件。
+
+---
+
+<h3>4.6、同时引入固定资源，以及打包好的文件</h3>
+
+在【4.5】中，我们启用了插件，让插件可以自动创建html模板，并让该html文件引入打包好的js文件。
+
+在本章，我们不会深入讲解这个插件，但是需要解决一个常见需求：
+
+1. 我通过CDN引入jQuery（或其他类似资源）；
+2. 并且该资源可能是一个，或者多个；
+3. 或者是其他已经写在html里的文件内容；
+4. 我不想在自动打包好html后，再去手动插入``script``标签或者其他类似标签；
+5. 因此我希望以某个html文件为模板，额外加入打包好的js文件；
+
+<br>
+因此我们需要对这个插件进行配置：[HtmlWebpackPlugin的文档（英文）](https://github.com/jantimon/html-webpack-plugin#configuration)
+
+对于这个需求，我们只需要配置一些简单的东西：
+
+···
+plugins: [
+    // 这里是添加的插件
+    new HtmlWebpackPlugin({
+        title: 'title', // html的title（就是title标签里的东西）
+        filename: 'index.html', // 重写后的html文件名，默认是index.html
+        template: './demo.html',    // 这个就是那个模板文件，不会改动原有的内容，而是在原来html文件的末尾，将打包编译好的文件添加进去
+    })
+]
+···
+
+然后在模板文件里添加一些内容（具体查看文件夹内的 ``demo.html`` 文件。
+
+最后一如既往的运行``npm run test``即可，查看 ``dist`` 文件夹下的 ``index.html`` 文件。
+
+

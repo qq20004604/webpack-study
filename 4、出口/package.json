@@ -1,7 +1,13 @@
 {
-    "name": "demo-output",
-    "version": "0.0.1",
-    "scripts": {
-        "test": "webpack --config webpack.config.js"
-    }
+  "name": "demo-output",
+  "version": "0.0.1",
+  "scripts": {
+    "test": "webpack --config webpack.config.js"
+  },
+  "dependencies": {
+    "webpack": "^3.8.1"
+  },
+  "devDependencies": {
+    "html-webpack-plugin": "^2.30.1"
+  }
 }
