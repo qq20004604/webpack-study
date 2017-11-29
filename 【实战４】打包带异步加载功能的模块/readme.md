@@ -6,7 +6,7 @@
 
 有疑义请[点击这里](https://github.com/qq20004604/webpack-study/issues)，发【Issues】。
 
-[实战项目示例目录](https://github.com/qq20004604/webpack-study/tree/master/%E3%80%90%E5%AE%9E%E6%88%98%EF%BC%94%E3%80%91webpack%E6%89%93%E5%8C%85%E5%B8%A6%E5%BC%82%E6%AD%A5%E5%8A%A0%E8%BD%BD%E5%8A%9F%E8%83%BD%E7%9A%84%E6%A8%A1%E5%9D%97)
+[实战项目示例目录](https://github.com/qq20004604/webpack-study/tree/master/%E3%80%90%E5%AE%9E%E6%88%98%EF%BC%94%E3%80%91%E6%89%93%E5%8C%85%E5%B8%A6%E5%BC%82%E6%AD%A5%E5%8A%A0%E8%BD%BD%E5%8A%9F%E8%83%BD%E7%9A%84%E6%A8%A1%E5%9D%97)
 
 
 <h3>1、需求列表</h3>
@@ -39,7 +39,7 @@ dist/index.html
 
 <h3>3、说明</h3>
 
-首先，第一个简单问题可能会被忽略，那就是打包时需要顺便打包index.html文件，因为B模块打包后的文件的路径``dist/b.js``，是写的相对于A模块的``dist/a.js``。
+首先，第一个简单问题可能会被忽略，那就是打包时需要顺便打包index.html文件，因为B模块打包后的文件的路径``dist/b.js``，是写的相对于A模块的``dist/a.js``，同时会认为html文件和``a.js``、``b.js``两个文件在同一个目录下（除非你特殊设置）
 
 所以html文件必须和打包后的文件处于一个文件夹下，即``dist``文件夹。
 
