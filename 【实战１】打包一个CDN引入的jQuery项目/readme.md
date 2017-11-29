@@ -6,7 +6,7 @@
 
 有疑义请[点击这里](https://github.com/qq20004604/webpack-study/issues)，发【Issues】。
 
-[示例目录](https://github.com/qq20004604/webpack-study/tree/master/%E3%80%90%E5%AE%9E%E6%88%98%EF%BC%91%E3%80%91webpack%E6%89%93%E5%8C%85%E4%B8%80%E4%B8%AAjQuery%E9%A1%B9%E7%9B%AE)
+[实战项目示例目录](https://github.com/qq20004604/webpack-study/tree/master/%E3%80%90%E5%AE%9E%E6%88%98%EF%BC%91%E3%80%91%E6%89%93%E5%8C%85%E4%B8%80%E4%B8%AACDN%E5%BC%95%E5%85%A5%E7%9A%84jQuery%E9%A1%B9%E7%9B%AE)
 
 <h3>1、需求列表</h3>
 

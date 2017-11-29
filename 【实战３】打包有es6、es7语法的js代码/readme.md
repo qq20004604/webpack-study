@@ -6,13 +6,15 @@
 
 有疑义请[点击这里](https://github.com/qq20004604/webpack-study/issues)，发【Issues】。
 
+[实战项目示例目录](https://github.com/qq20004604/webpack-study/tree/master/%E3%80%90%E5%AE%9E%E6%88%98%EF%BC%93%E3%80%91%E8%A7%A3%E5%86%B3%E6%9C%89es6%E3%80%81es7%E8%AF%AD%E6%B3%95%E7%9A%84js%E4%BB%A3%E7%A0%81)
+
 <h3>1、需求列表</h3>
 
 1、html文件引入的js文件，需要使用es6、es7的语法；
 
 2、使用的语法里，除了常规的es6语法外，还包括例如Promise、async等特殊特性，要求可以转换。
 
-注：babel默认只转js语法，而不转换新的API，例如Iterator、Generator、Set、Maps、Proxy、Reflect、Symbol、Promise等全局对象，以及一些定义在全局对象上的方法（比如Object.assig）
+注：babel默认只转js语法，而不转换新的API，例如Iterator、Generator、Set、Maps、Proxy、Reflect、Symbol、Promise等全局对象，以及一些定义在全局对象上的方法（比如Object.assign）。所以我们必须引入额外的babel插件来解决这个问题
 
 <h3>2、步骤</h3>
 
