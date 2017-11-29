@@ -1,3 +1,5 @@
+@import './bar.css';
+
 * {
     margin: 0;
     border: 0;
@@ -20,6 +22,18 @@
     height: 300px;
     border: 1px solid greenyellow;
     animation: rotate 2s linear infinite;
+    /*-- css-loader的配置里，url设置为false的时候，以下注释掉的代码可以解除注释（会生效） --*/
+    /*background: url(../static/logo.png) no-repeat;*/
+}
+
+#app .bottom {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    height: 50px;
+    width: 50px;
+    background: url(~@/logo.png) no-repeat;
+    background-size: cover;
 }
 
 @keyframes rotate {

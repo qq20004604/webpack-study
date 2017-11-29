@@ -9,6 +9,7 @@
 <body>
 <div id="app">
     <div class="box"></div>
+    <div class="bottom"></div>
 </div>
 <table>
     <thead>
@@ -54,7 +55,55 @@
             启用/禁用 url() 处理
         </td>
         <td>
-            待填充
+            css正常会解析例如background: url('/logo.png')里面的值。
+            例如某图片不在你的工程里，而是在服务器上。
+            而你是可以预知打包后的html文件和这个图片的相对路径关系，你就可以直接写那个时候的路径，并将url设置为false。
+            如果设置为false，那么所有url都不会进行转义了（也不会触发file-loader），自然也不会报错（即使图片不存在）。
+        </td>
+    </tr>
+    <tr>
+        <td>
+            alias
+        </td>
+        <td>
+            {Object}
+        </td>
+        <td>
+            {}
+        </td>
+        <td>
+            创建别名更容易导入一些模块
+        </td>
+        <td>
+            说实话我自己捣鼓了半天也没彻底搞明白其原理，但是琢磨出來一些用法：<br>
+            1、假如图片放在/static目录下，alias: {'@': __dirname + '/static/'}这样写，然后图片可以这样写background:
+            url(~@/logo.png)。注意@前要加~让webpack识别（~是webpack负责，@是css-loader负责）；<br>
+            2、但是，如果通过@import '~@/another.css'来导入，那么即使another.css放在src/style目录下，然后alias: {'@': __dirname +
+            '/src/style/'}也是没有用的；<br>
+            3、也就是说，这个对url生效，但是对@import导入css无效；<br>
+            4、解决场景可以分类摆放图片（例如@开头的是风景类图片，peopel开头的是人物图片），可以做到图片和css文件分离。
+            5、记得在别名之前加一个波浪线~让webpack识别，否则无法正常工作；
+        </td>
+    </tr>
+    <tr>
+        <td>
+            import
+        </td>
+        <td>
+            {Boolean}
+        </td>
+        <td>
+            true
+        </td>
+        <td>
+            启用/禁用 @import 处理
+        </td>
+        <td>
+            1、假如你通过@import导入的是某个打包后工程所在位置的css文件；
+            2、即该文件不在打包前的工程里（例如CDN）；
+            3、那么这个就有用；
+            4、表现效果@import导进来的css没有被打包，只是单纯的引入了（该@import代码被直接放在style标签里）；
+            5、你可以查看dist/index.html的style标签来深刻了解；
         </td>
     </tr>
     <tr>

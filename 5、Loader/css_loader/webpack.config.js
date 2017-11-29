@@ -22,7 +22,12 @@ module.exports = {
                     {
                         loader: 'css-loader',
                         options: {
-                            root: __dirname + '/static/'
+                            root: __dirname + '/static/',
+                            url: true,
+                            alias: {
+                                '@': __dirname + '/static/'
+                            },
+                            import: false
                         }
                     }
                 ]
