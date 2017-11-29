@@ -8,6 +8,8 @@
 
 <h3>4、出口</h3>
 
+[示例目录](https://github.com/qq20004604/webpack-study/tree/master/4%E3%80%81%E5%87%BA%E5%8F%A3)
+
 <h4>4.1、标准的出口写法</h4>
 
 ```

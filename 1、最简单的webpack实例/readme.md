@@ -7,7 +7,7 @@
 有疑义请[点击这里](https://github.com/qq20004604/webpack-study/issues)，发【Issues】。
 
 
-<h3>1、webpack基本的框架</h3>
+<h3>1、webpack基本结构</h3>
 
 [示例目录](https://github.com/qq20004604/webpack-study/tree/master/1%E3%80%81%E6%9C%80%E7%AE%80%E5%8D%95%E7%9A%84webpack%E5%AE%9E%E4%BE%8B)
 
@@ -15,6 +15,8 @@
 
 ```
 // webpack.config.js 这个是webpack的管理配置文件
+
+// 以CMD的格式导出模块
 module.exports = {
     // 入口文件，指向app.js
     entry: './app.js',

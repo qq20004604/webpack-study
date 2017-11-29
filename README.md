@@ -28,7 +28,7 @@
 
 在对应目录下，按住 ``shift``，然后点击鼠标右键，在弹窗里选择``在此处打开命令窗口``即可启用
 
-<h3>1、webpack基本的框架</h3>
+<h3>1、webpack基本结构</h3>
 
 [示例目录](https://github.com/qq20004604/webpack-study/tree/master/1%E3%80%81%E6%9C%80%E7%AE%80%E5%8D%95%E7%9A%84webpack%E5%AE%9E%E4%BE%8B)
 
@@ -36,6 +36,8 @@
 
 ```
 // webpack.config.js 这个是webpack的管理配置文件
+
+// 以CMD的格式导出模块
 module.exports = {
     // 入口文件，指向app.js
     entry: './app.js',
@@ -84,7 +86,7 @@ Time: 58ms
 
 <h3>2、简单指令（npm脚本）</h3>
 
-[示例目录](https://github.com/qq20004604/webpack-study/tree/master/2%E3%80%81%E7%AE%80%E5%8D%95%E6%8C%87%E4%BB%A4)
+[示例目录](https://github.com/qq20004604/webpack-study/tree/master/2%E3%80%81%E7%AE%80%E5%8D%95%E6%8C%87%E4%BB%A4%EF%BC%88npm%E8%84%9A%E6%9C%AC%EF%BC%89)
 
 我们实际开发中，一般都是使用``npm run build``或者``npm run dev``之类的指令，这是怎么实现的呢？
 
@@ -119,9 +121,9 @@ Time: 58ms
 
 [npm的工作原理](http://blog.csdn.net/gentlycare/article/details/51332882)
 
-<h3>3、入口</h3>
+<h3>3、入口（多入口）</h3>
 
-[示例目录](https://github.com/qq20004604/webpack-study/tree/master/3%E3%80%81%E5%85%A5%E5%8F%A3)
+[示例目录](https://github.com/qq20004604/webpack-study/tree/master/3%E3%80%81%E5%85%A5%E5%8F%A3%EF%BC%88%E5%A4%9A%E5%85%A5%E5%8F%A3%EF%BC%89)
 
 在上面的``webpack.config.js``中，有如下代码：
 
@@ -200,6 +202,8 @@ output: {
 fork[本项目](https://github.com/qq20004604/webpack-study)，并且在本文件夹下执行``npm run test``来打包，然后打开``first.html``和``second.html``来查看效果（见控制台console）
 
 <h3>4、出口</h3>
+
+[示例目录](https://github.com/qq20004604/webpack-study/tree/master/4%E3%80%81%E5%87%BA%E5%8F%A3)
 
 <h4>4.1、标准的出口写法</h4>
 
