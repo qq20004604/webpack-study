@@ -392,7 +392,7 @@ module.exports = {
 
 对于这个需求，我们只需要配置一些简单的东西：
 
-···
+```
 plugins: [
     // 这里是添加的插件
     new HtmlWebpackPlugin({
@@ -401,7 +401,7 @@ plugins: [
         template: './demo.html',    // 这个就是那个模板文件，不会改动原有的内容，而是在原来html文件的末尾，将打包编译好的文件添加进去
     })
 ]
-···
+```
 
 然后在模板文件里添加一些内容（具体查看文件夹内的 ``demo.html`` 文件。
 
@@ -586,3 +586,93 @@ another()
 
 更多请参照[【实战３】解决有es6、es7语法的js代码](https://github.com/qq20004604/webpack-study/tree/master/%E3%80%90%E5%AE%9E%E6%88%98%EF%BC%93%E3%80%91%E8%A7%A3%E5%86%B3%E6%9C%89es6%E3%80%81es7%E8%AF%AD%E6%B3%95%E7%9A%84js%E4%BB%A3%E7%A0%81)
 
+<h4>5.2、css-loader</h4>
+
+对于一般的css文件，我们需要动用三个loader（是不是觉得好麻烦）；
+
+1、``css-loader``：
+
+[css-loader文档](https://doc.webpack-china.org/loaders/css-loader/)
+
+用于处理图片路径，并且会将css样式打包进js文件中，但问题在于，他不会将这些代码插入html中；
+
+配置详解（在官网文档基础上补充）：
+
+<table>
+    <thead>
+    <tr>
+        <td>名称</td>
+        <td>类型</td>
+        <td>默认值</td>
+        <td>描述</td>
+        <td>备注</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>
+            root
+        </td>
+        <td>
+            {String}
+        </td>
+        <td>
+            /
+        </td>
+        <td>
+            解析 URL 的路径，以 / 开头的 URL 不会被转译
+        </td>
+        <td>
+            这个是设置/开头的文件，去找哪个文件夹进行静态解析的。<br>
+            例如我app.js文件放在src目录下，静态图片放在static文件夹下，那么root就可以设置为：【__dirname + '/static/'】（不含括号）<br>
+            另外不要写成相对路径（如【'../static/'】），因为他是相对于css文件的路径去找图片的。<br>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            url
+        </td>
+        <td>
+            {Boolean}
+        </td>
+        <td>
+            true
+        </td>
+        <td>
+            启用/禁用 url() 处理
+        </td>
+        <td>
+            待填充
+        </td>
+    </tr>
+    <tr>
+        <td>
+
+        </td>
+        <td>
+
+        </td>
+        <td>
+
+        </td>
+        <td>
+
+        </td>
+        <td>
+
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+2、``style-loader``：
+
+[style-loader文档](https://doc.webpack-china.org/loaders/style-loader/)
+
+用于将 ``css-loader`` 打包好的文件，插入到html文件中，变成一个 ``<style>``标签；
+
+3、``file-loader``：
+
+[file-loader文档](https://doc.webpack-china.org/loaders/file-loader/)
+
+用于处理各种资源文件，一般是图片；

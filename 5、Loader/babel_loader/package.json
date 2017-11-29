@@ -1,5 +1,5 @@
 {
-  "name": "demo-loader",
+  "name": "babel_loader",
   "version": "0.0.1",
   "scripts": {
     "test": "webpack --config webpack.config.js"

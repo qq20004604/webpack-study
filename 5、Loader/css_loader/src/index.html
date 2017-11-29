@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+</head>
+<body>
+<div id="app">
+    <div class="box"></div>
+</div>
+<table>
+    <thead>
+    <tr>
+        <td>名称</td>
+        <td>类型</td>
+        <td>默认值</td>
+        <td>描述</td>
+        <td>备注</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>
+            root
+        </td>
+        <td>
+            {String}
+        </td>
+        <td>
+            /
+        </td>
+        <td>
+            解析 URL 的路径，以 / 开头的 URL 不会被转译
+        </td>
+        <td>
+            这个是设置/开头的文件，去找哪个文件夹进行静态解析的。
+            例如我app.js文件放在src目录下，静态图片放在static文件夹下，那么root就可以设置为：【__dirname + '/static/'】（不含括号）
+            另外不要写成相对路径（如【'../static/'】），因为他是相对于css文件的路径去找图片的。
+        </td>
+    </tr>
+    <tr>
+        <td>
+            url
+        </td>
+        <td>
+            {Boolean}
+        </td>
+        <td>
+            true
+        </td>
+        <td>
+            启用/禁用 url() 处理
+        </td>
+        <td>
+            待填充
+        </td>
+    </tr>
+    <tr>
+        <td>
+
+        </td>
+        <td>
+
+        </td>
+        <td>
+
+        </td>
+        <td>
+
+        </td>
+        <td>
+
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
