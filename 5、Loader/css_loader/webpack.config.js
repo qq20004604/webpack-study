@@ -27,7 +27,11 @@ module.exports = {
                             alias: {
                                 '@': __dirname + '/static/'
                             },
-                            import: false
+                            import: false,
+                            modules: false,
+                            minimize: false,
+                            sourceMap: true,
+                            camelCase: true
                         }
                     }
                 ]
