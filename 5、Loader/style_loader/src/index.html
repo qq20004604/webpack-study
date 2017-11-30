@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+</head>
+<body>
+<div id="app">
+    <div class="box"></div>
+    <div class="bottom"></div>
+</div>
+<table>
+    <thead>
+    <tr>
+        <td>名称</td>
+        <td>类型</td>
+        <td>默认值</td>
+        <td>描述</td>
+        <td>备注</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>
+            root
+        </td>
+        <td>
+            {String}
+        </td>
+        <td>
+            /
+        </td>
+        <td>
+            解析 URL 的路径，以 / 开头的 URL 不会被转译
+        </td>
+        <td>
+            这个是设置/开头的文件，去找哪个文件夹进行静态解析的。
+            例如我app.js文件放在src目录下，静态图片放在static文件夹下，那么root就可以设置为：【__dirname + '/static/'】（不含括号）
+            另外不要写成相对路径（如【'../static/'】），因为他是相对于css文件的路径去找图片的。
+        </td>
+    </tr>
+    <tr>
+        <td>
+            url
+        </td>
+        <td>
+            {Boolean}
+        </td>
+        <td>
+            true
+        </td>
+        <td>
+            启用/禁用 url() 处理
+        </td>
+        <td>
+            css正常会解析例如background: url('/logo.png')里面的值。
+            例如某图片不在你的工程里，而是在服务器上。
+            而你是可以预知打包后的html文件和这个图片的相对路径关系，你就可以直接写那个时候的路径，并将url设置为false。
+            如果设置为false，那么所有url都不会进行转义了（也不会触发file-loader），自然也不会报错（即使图片不存在）。
+        </td>
+    </tr>
+    <tr>
+        <td>
+            alias
+        </td>
+        <td>
+            {Object}
+        </td>
+        <td>
+            {}
+        </td>
+        <td>
+            创建别名更容易导入一些模块
+        </td>
+        <td>
+            说实话我自己捣鼓了半天也没彻底搞明白其原理，但是琢磨出來一些用法：<br>
+            1、假如图片放在/static目录下，alias: {'@': __dirname + '/static/'}这样写，然后图片可以这样写background:
+            url(~@/logo.png)。注意@前要加~让webpack识别（~是webpack负责，@是css-loader负责）；<br>
+            2、但是，如果通过@import '~@/another.css'来导入，那么即使another.css放在src/style目录下，然后alias: {'@': __dirname +
+            '/src/style/'}也是没有用的；<br>
+            3、也就是说，这个对url生效，但是对@import导入css无效；<br>
+            4、解决场景可以分类摆放图片（例如@开头的是风景类图片，peopel开头的是人物图片），可以做到图片和css文件分离。
+            5、记得在别名之前加一个波浪线~让webpack识别，否则无法正常工作；
+        </td>
+    </tr>
+    <tr>
+        <td>
+            import
+        </td>
+        <td>
+            {Boolean}
+        </td>
+        <td>
+            true
+        </td>
+        <td>
+            启用/禁用 @import 处理
+        </td>
+        <td>
+            1、假如你通过@import导入的是某个打包后工程所在位置的css文件；
+            2、即该文件不在打包前的工程里（例如CDN）；
+            3、那么这个就有用；
+            4、表现效果@import导进来的css没有被打包，只是单纯的引入了（该@import代码被直接放在style标签里）；
+            5、你可以查看dist/index.html的style标签来深刻了解；
+        </td>
+    </tr>
+    <tr>
+        <td>minimize</td>
+        <td>{Boolean|Object}</td>
+        <td>false</td>
+        <td>启用/禁用 压缩</td>
+        <td>
+            1、这个很好理解，原本写css文件的时候，我们各种换行空格，这个改为true之后，换行和空格就去掉了；<br>
+            2、一般开发的时候，取环境变量，当环境变量为生产环境的时候，设置为true；开发环境的时候，设置为false；
+            3、<a href="https://github.com/qq20004604/vue-scaffold/blob/master/build/utils.js">参考示例</a>，搜索minimize即可；
+        </td>
+    </tr>
+    <tr>
+        <td>sourceMap</td>
+        <td>{Boolean}</td>
+        <td>false</td>
+        <td>启用/禁用 Sourcemap</td>
+        <td>
+            1、在minimize设置为true后，css代码被压缩了，那么如果我们要调试的话就很麻烦；<br>
+            2、当这个设置为true后，通过Chrome控制台的Sources标签，在左边栏上面选Sources，可以在树结构的(no domain)里，查看到压缩后和压缩前的CSS代码；<br>
+            3、即使minimize没有设置为true（不压缩），由于css代码被扔到了js里，因此也是无法直接查看我们写的css代码的；<br>
+            4、但是这个设置为true后，就可以通过【2】中描述的途径来查看我们写的css代码；
+        </td>
+    </tr>
+    <tr>
+        <td>importLoaders</td>
+        <td>{Number}</td>
+        <td>{Number}</td>
+        <td>在 css-loader 前应用的 loader 的数量</td>
+        <td>说实话，加不加这个，感觉没啥区别（我还专门研究了一波postcss和autoprefixer让他生效。见注释，如果有见解，欢迎指正</td>
+    </tr>
+    <tr>
+        <td>
+            modules
+        </td>
+        <td>
+            {Boolean}
+        </td>
+        <td>
+            false
+        </td>
+        <td>
+            启用/禁用 CSS 模块
+        </td>
+        <td>
+            1、初步理解：这个相当于把css视为模块。例如我有一个css文件 foo.css ，然后里面有一个类 .bar，我可以在js文件里通过 import foo from './foo.css'
+            导入这个css文件；<br>
+            2、在打包后，foo.css里的类 .bar 会变成具有唯一性的一个字符串（举个例子假设他变成了abcdefg）；<br>
+            3、假如我在html里使用的是class='bar'，那么显然是无法正常生效的（bar被转为了abcdefg）；<br>
+            4、那么我可以使用变量foo.bar（在js这里，这是一个变量），赋给原本使用class='bar'的这个DOM节点；<br>
+            5、由于是变量，所以他的值事实上已经被css-loader转为了abcdefg，可以正常运行了；<br>
+            6、推荐阮一峰的博客<a href="http://www.ruanyifeng.com/blog/2016/06/css_modules.html">CSS Modules 用法教程</a>
+        </td>
+    </tr>
+    <tr>
+        <td>camelCase</td>
+        <td>{Boolean|String}</td>
+        <td>false</td>
+        <td>以驼峰化式命名导出类名</td>
+        <td>
+            1、这个需要结合modules来看，在modules设置为true时，我们可以通过变量名来获取更名后的css类名；<br>
+            2、但我们写css类名的时候，一般是例如foo-bar这种写法，在js里显然不合适；<br>
+            3、因此把这个启用为true，我们就可以使用fooBar这种驼峰式写法了，方便js引用；<br>
+        </td>
+    </tr>
+    <tr>
+        <td>localIdentName</td>
+        <td>{String}</td>
+        <td>[hash:base64]</td>
+        <td>配置生成的标识符(ident)</td>
+        <td>
+            1、这个也是跟modules相关的，用于对原本混算复杂不具有可读性的类名，进行重命名；<br>
+            2、我觉得这个文章讲这个比较好，<a href="https://juejin.im/entry/5826e755c4c9710054313d6e">你真的知道 css-loader 怎么用吗？</a>，搜索关键词：localIdentName
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
