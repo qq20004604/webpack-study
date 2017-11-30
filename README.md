@@ -601,10 +601,10 @@ another()
 <table>
     <thead>
     <tr>
-        <td width='10%'>名称</td>
-        <td width='10%'>类型</td>
-        <td width='10%'>默认值</td>
-        <td width='10%'>描述</td>
+        <td>名称</td>
+        <td>类型</td>
+        <td>默认值</td>
+        <td>描述</td>
         <td>备注</td>
     </tr>
     </thead>
