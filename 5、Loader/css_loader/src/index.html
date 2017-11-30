@@ -107,29 +107,6 @@
         </td>
     </tr>
     <tr>
-        <td>
-            modules
-        </td>
-        <td>
-            {Boolean}
-        </td>
-        <td>
-            false
-        </td>
-        <td>
-            启用/禁用 CSS 模块
-        </td>
-        <td>
-            1、初步理解：这个相当于把css视为模块。例如我有一个css文件 foo.css ，然后里面有一个类 .bar，我可以在js文件里通过 import foo from './foo.css'
-            导入这个css文件；<br>
-            2、在打包后，foo.css里的类 .bar 会变成具有唯一性的一个字符串（举个例子假设他变成了abcdefg）；<br>
-            3、假如我在html里使用的是class='bar'，那么显然是无法正常生效的（bar被转为了abcdefg）；<br>
-            4、那么我可以使用变量foo.bar（在js这里，这是一个变量），赋给原本使用class='bar'的这个DOM节点；<br>
-            5、由于是变量，所以他的值事实上已经被css-loader转为了abcdefg，可以正常运行了；<br>
-            6、推荐阮一峰的博客<a href="http://www.ruanyifeng.com/blog/2016/06/css_modules.html">CSS Modules 用法教程</a>
-        </td>
-    </tr>
-    <tr>
         <td>minimize</td>
         <td>{Boolean|Object}</td>
         <td>false</td>
@@ -153,6 +130,36 @@
         </td>
     </tr>
     <tr>
+        <td>importLoaders</td>
+        <td>{Number}</td>
+        <td>{Number}</td>
+        <td>在 css-loader 前应用的 loader 的数量</td>
+        <td>说实话，加不加这个，感觉没啥区别（我还专门研究了一波postcss和autoprefixer让他生效。见注释，如果有见解，欢迎指正</td>
+    </tr>
+    <tr>
+        <td>
+            modules
+        </td>
+        <td>
+            {Boolean}
+        </td>
+        <td>
+            false
+        </td>
+        <td>
+            启用/禁用 CSS 模块
+        </td>
+        <td>
+            1、初步理解：这个相当于把css视为模块。例如我有一个css文件 foo.css ，然后里面有一个类 .bar，我可以在js文件里通过 import foo from './foo.css'
+            导入这个css文件；<br>
+            2、在打包后，foo.css里的类 .bar 会变成具有唯一性的一个字符串（举个例子假设他变成了abcdefg）；<br>
+            3、假如我在html里使用的是class='bar'，那么显然是无法正常生效的（bar被转为了abcdefg）；<br>
+            4、那么我可以使用变量foo.bar（在js这里，这是一个变量），赋给原本使用class='bar'的这个DOM节点；<br>
+            5、由于是变量，所以他的值事实上已经被css-loader转为了abcdefg，可以正常运行了；<br>
+            6、推荐阮一峰的博客<a href="http://www.ruanyifeng.com/blog/2016/06/css_modules.html">CSS Modules 用法教程</a>
+        </td>
+    </tr>
+    <tr>
         <td>camelCase</td>
         <td>{Boolean|String}</td>
         <td>false</td>
@@ -164,18 +171,14 @@
         </td>
     </tr>
     <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
+        <td>localIdentName</td>
+        <td>{String}</td>
+        <td>[hash:base64]</td>
+        <td>配置生成的标识符(ident)</td>
+        <td>
+            1、这个也是跟modules相关的，用于对原本混算复杂不具有可读性的类名，进行重命名；<br>
+            2、我觉得这个文章讲这个比较好，<a href="https://juejin.im/entry/5826e755c4c9710054313d6e">你真的知道 css-loader 怎么用吗？</a>，搜索关键词：localIdentName
+        </td>
     </tr>
     </tbody>
 </table>

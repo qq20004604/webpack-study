@@ -4,9 +4,9 @@
  * weChat: qq20004604
  */
 // 纯占位作为入口使用
-// import './style/style.css'
+import './style/style.css'
 
-import baz from './style/baz.css'
+// import baz from './style/baz.css'
 
-console.log(baz)
-document.querySelector('.bottom').innerHTML = baz.abcDef
+// console.log(baz)
+// document.querySelector('.bottom').innerHTML = baz.abcDef

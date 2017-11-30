@@ -31,9 +31,11 @@ module.exports = {
                             modules: false,
                             minimize: false,
                             sourceMap: true,
-                            camelCase: true
+                            camelCase: false,
+                            // importLoaders: 0 // 感觉没什么用
                         }
-                    }
+                    },
+                    'postcss-loader'
                 ]
             },
             {
