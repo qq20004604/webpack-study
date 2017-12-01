@@ -598,6 +598,8 @@ another()
 
 配置详解（在官网文档基础上补充）：
 
+非表格版 [点击查看文档](https://github.com/qq20004604/webpack-study/blob/master/5%E3%80%81Loader/css_loader/readme.md)
+
 <table>
     <thead>
     <tr>

@@ -235,7 +235,7 @@ dist
 2. 也可以分类摆放图片（例如@开头的是风景类图片，peopel开头的是人物图片）；
 3. 记得在别名之前加一个波浪线~让webpack识别，否则无法正常工作；
 
-<h4>2.4、</h4>
+<h4>2.4、import</h4>
 
 <table>
     <thead>
@@ -247,12 +247,50 @@ dist
     </tr>
     </thead>
     <tbody>
-    
+    <tr>
+        <td>
+            import
+        </td>
+        <td>
+            {Boolean}
+        </td>
+        <td>
+            true
+        </td>
+        <td>
+            启用/禁用 @import 处理
+        </td>
+    </tr>
     </tbody>
 </table>
 
 
-<h4>2.5、</h4>
+1. 假如你通过@import导入的是某个打包后工程所在位置的css文件；
+2. 即该文件不在打包前的工程里（例如CDN）；
+3. 那么这个就有用；
+4. 表现效果@import导进来的css没有被打包，只是单纯的引入了（该@import代码被直接放在style标签里）；
+5. 你可以查看dist/index.html的style标签来深刻了解；
+
+这里给一个简单的示例：
+
+webpack打包前：
+
+```
+// foo.css
+@import 'http://abc.com/m.css'
+```
+
+webpack打包后：
+
+```
+// html文件（假设使用了style-loader把css通过style标签插入）
+<style>
+@import 'http://abc.com/m.css'
+</style>
+```
+
+
+<h4>2.5、minimize</h4>
 
 <table>
     <thead>
@@ -264,12 +302,41 @@ dist
     </tr>
     </thead>
     <tbody>
-    
+    <tr>
+        <td>minimize</td>
+        <td>{Boolean|Object}</td>
+        <td>false</td>
+        <td>启用/禁用 压缩</td>
+    </tr>
     </tbody>
 </table>
 
+1. 这个很好理解，原本写css文件的时候，我们各种换行空格，这个改为true之后，换行和空格就去掉了；<br><br>
+2. 一般开发的时候，取环境变量，当环境变量为生产环境的时候，设置为true；开发环境的时候，设置为false；<br><br>
+3. 关于生产环境的配置，可以查看<a href="https://github.com/qq20004604/vue-scaffold/blob/master/build/utils.js">参考示例</a>，搜索 ``minimize`` 即可；
 
-<h4>2.6、</h4>
+压缩前代码：
+
+```
+* {
+    margin: 0;
+    border: 0;
+    padding: 0;
+}
+
+.box {
+    border-radius: 150px;
+}
+```
+
+压缩后代码：
+
+```
+*{margin:0;border:0;padding:0}.box{border-radius:150px}
+```
+
+
+<h4>2.6、sourceMap</h4>
 
 <table>
     <thead>
@@ -281,9 +348,118 @@ dist
     </tr>
     </thead>
     <tbody>
-    
+    <tr>
+        <td>sourceMap</td>
+        <td>{Boolean}</td>
+        <td>false</td>
+        <td>启用/禁用 Sourcemap</td>
+    </tr>
     </tbody>
 </table>
+
+<br>
+
+1. 在 ``minimize`` 设置为 ``true`` 后，css代码被压缩了，那么如果我们要调试的话就很麻烦；
+2. 当 ``sourceMap`` 设置为 ``true`` 后，通过Chrome控制台的 ``Sources`` 标签，在左边栏上面选 ``Sources`` ，可以在树结构的 ``(no domain)`` 里，查看到压缩后和压缩前的CSS代码；
+3. 即使 ``minimize`` 没有设置为 ``true`` （不压缩），由于css代码被扔到了js里，因此也是无法直接查看我们写的css代码的；
+4. 但是 ``sourceMap`` 设置为true后，就可以通过【2】中描述的途径来查看我们写的css代码；
+
+启用 ``sourceMap`` 压缩前的代码：
+
+<img src='./01.png' width='100%'>
+
+启用 ``sourceMap`` 压缩后的代码：
+
+<img src='./02.png' width='100%'>
+
+
+<h4>2.7、importLoaders</h4>
+
+<table>
+    <thead>
+    <tr>
+        <td>名称</td>
+        <td>类型</td>
+        <td>默认值</td>
+        <td>描述</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>importLoaders</td>
+        <td>{Number}</td>
+        <td>{Number}</td>
+        <td>在 css-loader 前应用的 loader 的数量</td>
+    </tr>
+    </tbody>
+</table>
+
+说实话，加不加这个，感觉没啥区别（我还专门研究了一波postcss和autoprefixer让他生效。
+
+见我关于postcss的配置，为了正常运行，我在项目里webpack把这个注释掉了，可以取消掉注释 `` // importLoaders: 0 // 感觉没什么用``
+
+如果有见解，欢迎指正
+
+<h4>2.8、modules等</h4>
+
+<table>
+    <thead>
+    <tr>
+        <td>名称</td>
+        <td>类型</td>
+        <td>默认值</td>
+        <td>描述</td>
+        <td>说明</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>
+            modules
+        </td>
+        <td>
+            {Boolean}
+        </td>
+        <td>
+            false
+        </td>
+        <td>
+            启用/禁用 CSS 模块
+        </td>
+        <td>
+            1、初步理解：这个相当于把css视为模块。例如我有一个css文件 foo.css ，然后里面有一个类 .bar，我可以在js文件里通过 import foo from './foo.css'导入这个css文件；<br><br>
+            2、在打包后，foo.css里的类 .bar 会变成具有唯一性的一个字符串（举个例子假设他变成了abcdefg）；<br><br>
+            3、假如我在html里使用的是class='bar'，那么显然是无法正常生效的（bar被转为了abcdefg）；<br><br>
+            4、那么我可以使用变量foo.bar（在js这里，这是一个变量），赋给原本使用class='bar'的这个DOM节点；<br><br>
+            5、由于是变量，所以他的值事实上已经被css-loader转为了abcdefg，可以正常运行了；<br><br>
+            6、推荐阮一峰的博客<a href="http://www.ruanyifeng.com/blog/2016/06/css_modules.html">CSS Modules 用法教程</a>
+        </td>
+    </tr>
+    <tr>
+        <td>camelCase</td>
+        <td>{Boolean|String}</td>
+        <td>false</td>
+        <td>以驼峰化式命名导出类名</td>
+        <td>
+            1、这个需要结合modules来看，在modules设置为true时，我们可以通过变量名来获取更名后的css类名；<br><br>
+            2、但我们写css类名的时候，一般是例如foo-bar这种写法，在js里显然不合适；<br><br>
+            3、因此把这个启用为true，我们就可以使用fooBar这种驼峰式写法了，方便js引用；<br>
+        </td>
+    </tr>
+    <tr>
+        <td>localIdentName</td>
+        <td>{String}</td>
+        <td>[hash:base64]</td>
+        <td>配置生成的标识符(ident)</td>
+        <td>
+            1、这个也是跟modules相关的，用于对原本混算复杂不具有可读性的类名，进行重命名；<br><br>
+            2、我觉得这个文章讲这个比较好，<a href="https://juejin.im/entry/5826e755c4c9710054313d6e">你真的知道 css-loader 怎么用吗？</a>，搜索关键词：localIdentName
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+这三个是一起使用的的，见表格内容吧。
 
 <h3>3、项目地址</h3>
 
