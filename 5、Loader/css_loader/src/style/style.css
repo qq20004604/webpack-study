@@ -1,9 +1,15 @@
 @import './bar.css';
+/* root的设置不影响css文件的import */
+@import "/demo.css";
 
 * {
     margin: 0;
     border: 0;
     padding: 0;
+}
+
+.box {
+    border-radius: 150px;
 }
 
 #app {
@@ -20,7 +26,7 @@
     left: 100px;
     width: 300px;
     height: 300px;
-    border: 1px solid greenyellow;
+    border: 10px solid greenyellow;
     animation: rotate 2s linear infinite;
     /*-- css-loader的配置里，url设置为false的时候，以下注释掉的代码可以解除注释（会生效） --*/
     /*background: url(../static/logo.png) no-repeat;*/
