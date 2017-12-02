@@ -18,21 +18,23 @@ module.exports = {
             {
                 test: /\.css$/,
                 use: [
-                    'style-loader',
+                    {
+                        loader: 'style-loader',
+                        options: {
+                            base: 1000,
+                            attrs: {
+                                id: 'foo'
+                            },
+                            transform: 'transform.js'
+                        }
+                    },
                     {
                         loader: 'css-loader',
                         options: {
                             root: __dirname + '/static/',
-                            url: true,
                             alias: {
                                 '@': __dirname + '/static/'
-                            },
-                            import: false,
-                            modules: false,
-                            minimize: false,
-                            sourceMap: true,
-                            camelCase: false,
-                            // importLoaders: 0 // 感觉没什么用
+                            }
                         }
                     },
                     'postcss-loader'
