@@ -29,6 +29,22 @@
 
 所以先介绍功能明确的几个，再简述很难直接应用的几个。
 
+<h4>2.0、普通</h4>
+
+导入方式有两种
+
+1. 直接``import 'foo.css'``；
+2. es6语法 ``import foo from 'foo.css'``;
+
+前者没啥好说的。
+
+当使用后者导入时，有一些特殊特性：
+
+1. 在使用局部作用域时（``css-loader``的``modules``属性的应用），会有``生成的（局部）标识符(identifier)。``，可以通过``foo.className``来获取
+2. 当使用``useable``特性时，可以通过``foo.use()``以及``foo.unuse()``来让css生效/失效；
+3. ``url`` 特性尝试失败。
+
+
 <h4>2.1、attrs</h4>
 
 
@@ -169,7 +185,7 @@ box-sizing: border-box;
 
 当检查到用户使用亮色风格时（读取cookies或者localStorage），通过颜色映射表，利用 ``replace`` 函数，将颜色值替换为亮色的。
 
-<h4>2.3、insertAt</h4>
+<h4>2.3、insertAt和insertInto</h4>
 
 <table>
     <thead>
@@ -185,17 +201,23 @@ box-sizing: border-box;
     	<td>insertAt</td>
     	<td>{String|Object}</td>
     	<td>bottom</td>
-    	<td>在给定位置处插入 <style></style></td>
+    	<td>在给定位置处插入style标签</td>
+	</tr>
+    <tr>
+    	<td>insertInto</td>
+    	<td>{String}</td>
+    	<td><head></td>
+    	<td>给定位置中插入style标签 </td>
 	</tr>
 	</tbody>
 </table>
 
-简单来说，这个决定style标签插入哪里。
+简单来说，``insertAt`` 和 ``insertInto`` 共通决定style标签插入哪里。
 
 两种情况：
 
-1. 值为 ``string`` 类型。可以是 ``top`` 或者 ``bottom``，表示插入某个标签 <b>内</b> 的顶部或者结尾，和该标签是父子关系；
-2. 值为 ``object`` 类型。key只能是 ``before``（见 ``node_modules/style-loader/lib/addStyles.js`` 第173行），表示插入到某个标签之前（和该标签是兄弟关系），例如以下：
+1. ``insertAt`` 值为 ``string`` 类型。可以是 ``top`` 或者 ``bottom``，表示插入某个标签 <b>内</b> 的顶部或者结尾，和该标签是父子关系；
+2. ``insertAt`` 值为 ``object`` 类型。key只能是 ``before``（见 ``node_modules/style-loader/lib/addStyles.js`` 第173行），表示插入到某个标签之前（和该标签是兄弟关系），例如以下：
 
 ```
 insertAt: {
@@ -204,17 +226,113 @@ insertAt: {
 insertInto: 'body'
 ```
 
-表示插入到 ``id='app'`` 之前，但是前提是在 ``<head>`` 标签内要能找到这个标签；
+以上代码表示，先在``<body>`` 标签能找到``<div id='app'></div>``这个标签，然后插入到这个标签之前；
 
-因为 ``id='app'`` 这个标签不在head中，而是在body中，因此第二个设置的是在哪个标签内（这里是 ``<body>`` 标签内）来找。
+假如找不到符合要求的标签，则默认插入到 ``<head></head>`` 标签的末尾。
 
-注意，实现是通过 ``document.querySelector`` 实现的，所以存在两个问题：
 
-1. 需要符合 ``document.querySelector`` 的语法；
+整个插入逻辑如下：
+
+1. 假如 ``insertAt`` 是值是 ``top`` 或者 ``bottom`` ，那么 ``style`` 标签将插入到 ``insertInto`` 所指向的DOM（通过``document.querySelector(target)``获取）的开头或末尾（ ``style`` 标签为指向DOM的子元素）；
+2. 假如 ``insertAt`` 的值是对象，那么则插入 ``insertInto`` 的子元素的 ``insertAt.before`` 所指向的DOM之前（即 ``document.querySelector("insertInto insertAt.before")`` 指向的DOM）。
+
+注意，两个属性的标签选择器，都是通过 ``document.querySelector`` 实现的，所以存在两个问题：
+
+1. 属性的值，需要符合 ``document.querySelector`` 的语法；
 2. 低版本浏览器（比如IE）可能不支持这个选择器API；
 
-<h4>2.1、hmr</h4>
-<h4>2.1、hmr</h4>
+
+<h4>2.4、sourceMap和convertToAbsoluteUrls</h4>
+
+<table>
+    <thead>
+    <tr>
+        <td>名称</td>
+        <td>类型</td>
+        <td>默认值</td>
+        <td>描述</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+    	<td> sourceMap </td>
+    	<td>{Boolean}</td>
+    	<td> false </td>
+    	<td>启用/禁用 Sourcemap</td>
+	</tr>
+    <tr>
+    	<td> convertToAbsoluteUrls </td>
+    	<td>{Boolean}</td>
+    	<td> false </td>
+    	<td>启用 source map 后，将相对 URL 转换为绝对 URL</td>
+	</tr>
+	</tbody>
+</table>	
+
+首先，``sourceMap`` 实测和翻源代码后，感觉没有生效。
+
+在跟了一遍代码后，推测原因在于，sourceMap的取值，取的是 ``css-laoder`` 的sourceMap的值。
+
+准确的说，在webpack里，css文件被视为一个模块，因此``import``引入的css文件，也是一个模块对象。而在判断的时候，取的是这个模块（是一个object）的属性sourceMap的值，而不是 ``options.sourceMap`` 的值。
+
+我已经提了[issues](https://github.com/webpack-contrib/style-loader/issues/280)给官方了。
+
+而这个模块的值，推测是被``css-loader``的``sourceMap``属性赋值的（我没有去跟源代码，但测试后推断就是这样的）。
+
+其次，从相对路径转为绝对路径，是在前端通过js代码转换的。
+
+第三，``convertToAbsoluteUrls`` 的效果如官方描述一样，具体下面举例。
+
+<b>几种情况如下（截止``style-loader``版本``0.19.0``）：</b>
+
+1. 当``convertToAbsoluteUrls`` 值为false时，依然使用相对路径，即例如``./foo.png``；
+2. 当 ``css-loader`` 的 ``sourceMap`` 的值为true，且``convertToAbsoluteUrls`` 值为true时，更改为绝对路径，即例如``http://127.0.0.1:8080/foo.png``；
+3. 可能是bug，所以目前不受``style-loader``的``sourceMap``属性的影响；
+
+
+bug的demo如[链接](https://github.com/qq20004604/webpack-study/tree/master/5%E3%80%81Loader/style_loader_demo)
+
+<h4>2.5、useable</h4>
+
+>作用
+
+让所有引入的css文件，变为手动加载；
+
+>使用方法
+
+```loader: 'style-loader/useable'```
+
+>说明：
+
+1. 当使用这个特性时，``transform``属性失效（打包正常，但挂载的时候表示会报错）
+2. 示例代码如下，效果解释：
+3. 用一个变量标记当前是否挂载，点击后进行判断；
+4. 如果挂载了，通过``style.unref()``从DOM树中移出（这些样式会失效）；
+5. 如果没有挂载，那么通过``style.ref()``插入到DOM树中进行挂载（样式生效）
+
+代码：
+
+```
+// app.js
+
+import style from './style/style.css'
+
+/* useable（开始） */
+let isUse = false
+
+// 这是一个按钮的点击事件
+document.querySelector('#test').onclick = function () {
+    if (isUse) {
+        style.unref()
+    } else {
+        style.ref()
+    }
+    isUse = !isUse
+}
+/* useable（结束） */
+```
+
+
 <h4>2.1、hmr</h4>
 
 

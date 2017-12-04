@@ -20,22 +20,28 @@ module.exports = {
                 use: [
                     {
                         loader: 'style-loader',
+                        // 测试useable时，使用下面这行
+                        // loader: 'style-loader/useable',
                         options: {
                             base: 1000,
                             attrs: {
                                 id: 'foo'
                             },
+                            // 测试useable时，****注释**** 下面这行
                             transform: 'transform.js',
                             insertAt: {
                                 before: '.abc',
                             },
-                            insertInto: 'body'
+                            insertInto: 'body',
+                            sourceMap: true,    // 无效 by version 0.19.0
+                            convertToAbsoluteUrls: true
                         }
                     },
                     {
                         loader: 'css-loader',
                         options: {
                             root: __dirname + '/static/',
+                            sourceMap: false,
                             alias: {
                                 '@': __dirname + '/static/'
                             }
