@@ -169,7 +169,50 @@ box-sizing: border-box;
 
 当检查到用户使用亮色风格时（读取cookies或者localStorage），通过颜色映射表，利用 ``replace`` 函数，将颜色值替换为亮色的。
 
-<h4>2.1、hmr</h4>
+<h4>2.3、insertAt</h4>
+
+<table>
+    <thead>
+    <tr>
+        <td>名称</td>
+        <td>类型</td>
+        <td>默认值</td>
+        <td>描述</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+    	<td>insertAt</td>
+    	<td>{String|Object}</td>
+    	<td>bottom</td>
+    	<td>在给定位置处插入 <style></style></td>
+	</tr>
+	</tbody>
+</table>
+
+简单来说，这个决定style标签插入哪里。
+
+两种情况：
+
+1. 值为 ``string`` 类型。可以是 ``top`` 或者 ``bottom``，表示插入某个标签 <b>内</b> 的顶部或者结尾，和该标签是父子关系；
+2. 值为 ``object`` 类型。key只能是 ``before``（见 ``node_modules/style-loader/lib/addStyles.js`` 第173行），表示插入到某个标签之前（和该标签是兄弟关系），例如以下：
+
+```
+insertAt: {
+    before: '#app'
+},
+insertInto: 'body'
+```
+
+表示插入到 ``id='app'`` 之前，但是前提是在 ``<head>`` 标签内要能找到这个标签；
+
+因为 ``id='app'`` 这个标签不在head中，而是在body中，因此第二个设置的是在哪个标签内（这里是 ``<body>`` 标签内）来找。
+
+注意，实现是通过 ``document.querySelector`` 实现的，所以存在两个问题：
+
+1. 需要符合 ``document.querySelector`` 的语法；
+2. 低版本浏览器（比如IE）可能不支持这个选择器API；
+
 <h4>2.1、hmr</h4>
 <h4>2.1、hmr</h4>
 <h4>2.1、hmr</h4>

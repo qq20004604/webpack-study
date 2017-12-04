@@ -25,7 +25,11 @@ module.exports = {
                             attrs: {
                                 id: 'foo'
                             },
-                            transform: 'transform.js'
+                            transform: 'transform.js',
+                            insertAt: {
+                                before: '.abc',
+                            },
+                            insertInto: 'body'
                         }
                     },
                     {
