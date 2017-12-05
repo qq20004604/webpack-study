@@ -1,5 +1,10 @@
 @import './bar.css';
 
+/* css4语法，变量声明 */
+:root {
+    --a: 500px;
+}
+
 * {
     margin: 0;
     border: 0;
@@ -8,10 +13,10 @@
 
 #app {
     position: relative;
-    width: 500px;
-    height: 500px;
+    /* css4语法，变量使用 */
+    width: var(--a);
+    height: var(--a);
     border: 1px solid red;
-    background: url('/logo.png') no-repeat;
     box-sizing: border-box;
 }
 
@@ -23,18 +28,6 @@
     height: 300px;
     border: 1px solid greenyellow;
     animation: rotate 2s linear infinite;
-    /*-- css-loader的配置里，url设置为false的时候，以下注释掉的代码可以解除注释（会生效） --*/
-    /*background: url(../static/logo.png) no-repeat;*/
-}
-
-#app .bottom {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    height: 50px;
-    width: 50px;
-    background: url(~@/logo.png) no-repeat;
-    background-size: cover;
 }
 
 @keyframes rotate {
