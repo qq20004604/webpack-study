@@ -16,10 +16,13 @@
 
 对于简单项目，打包然后插入也就足够了，但是遇见复杂情况，例如：
 
-1. 需要使用webpack的服务器热加载服务；
-2. 对css文件二次处理（更改类名之类）；
-3. 启用sourceMap等；
-4. 路径转换（相对路径转为绝对路径）等；
+1. 需要使用webpack的服务器热加载服务进行特殊配置；
+2. 对css文件二次处理（更改类名，添加额外css属性之类）；
+3. 合并 ``<style>`` 标签（默认是不合并的）；
+4. 启用sourceMap等（虽然实际根本无效嘛）；
+5. 路径转换（相对路径转为绝对路径）；
+6. 给 ``<style>`` 标签添加自定义属性；
+7. 手动挂载、移除 ``<style>`` 标签等；
 
 显然就不行了。
 
@@ -294,7 +297,7 @@ insertInto: 'body'
 
 bug的demo如[链接](https://github.com/qq20004604/webpack-study/tree/master/5%E3%80%81Loader/style_loader_demo)
 
-<h4>2.6、useable</h4>
+<h4>2.5、useable</h4>
 
 >作用
 
@@ -334,7 +337,7 @@ document.querySelector('#test').onclick = function () {
 /* useable（结束） */
 ```
 
-<h4>2.5、singleton</h4>
+<h4>2.6、singleton</h4>
 
 >作用
 
