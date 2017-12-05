@@ -1,21 +1,17 @@
-@import './bar.css';
-
-/* css4语法，变量声明 */
-:root {
-    --a: 500px;
-}
+/* 这种方式引入的css文件，会被autoprefixer忽视 */
+@import './foo.css';
 
 * {
     margin: 0;
     border: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
 #app {
     position: relative;
-    /* css4语法，变量使用 */
-    width: var(--a);
-    height: var(--a);
+    width: 500px;
+    height: 500px;
     border: 1px solid red;
     box-sizing: border-box;
 }
@@ -27,7 +23,7 @@
     width: 300px;
     height: 300px;
     border: 1px solid greenyellow;
-    animation: rotate 2s linear infinite;
+    animation: rotate 10s linear infinite;
 }
 
 @keyframes rotate {

@@ -1,4 +1,5 @@
-#app .bottom {
+#app .box {
     outline: 2px solid red;
     outline-offset: 10px;
+    box-sizing: border-box;
 }

@@ -5,3 +5,4 @@
  */
 // 引入css文件
 import './style/style.css'
+import './style2/bar.css'
