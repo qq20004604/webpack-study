@@ -34,7 +34,8 @@ module.exports = {
                             },
                             insertInto: 'body',
                             sourceMap: true,    // 无效 by version 0.19.0
-                            convertToAbsoluteUrls: true
+                            convertToAbsoluteUrls: true,
+                            singleton: true // 合并style标签，默认false
                         }
                     },
                     {

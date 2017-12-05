@@ -8,6 +8,8 @@
 
 有疑义请[点击这里](https://github.com/qq20004604/webpack-study/issues)，发【Issues】。
 
+[DEMO](https://github.com/qq20004604/webpack-study/tree/master/5%E3%80%81Loader/style_loader)地址
+
 <h3>1、概述</h3>
 
 简单来说，``style-loader``是将``css-loader``打包好的css代码以``<style>``标签的形式插入到html文件中。
@@ -292,7 +294,7 @@ insertInto: 'body'
 
 bug的demo如[链接](https://github.com/qq20004604/webpack-study/tree/master/5%E3%80%81Loader/style_loader_demo)
 
-<h4>2.5、useable</h4>
+<h4>2.6、useable</h4>
 
 >作用
 
@@ -332,9 +334,36 @@ document.querySelector('#test').onclick = function () {
 /* useable（结束） */
 ```
 
+<h4>2.5、singleton</h4>
 
-<h4>2.1、hmr</h4>
+>作用
 
+使用一个的 ``<style>`` 标签加载所有css属性，或者是每个css模块一个 ``<style>`` 标签。
+
+默认值是false（每个css模块一个 ``<style>`` 标签）；
+
+>使用方法
+
+```
+{
+    loader: 'style-loader',
+    options: {
+        singleton: true
+    }
+}
+```
+
+>说明：
+
+1. 默认情况下，我们会发现，每一个css文件会变为一个``<style>``标签，因此实际加载中，可能有多个``<style>``标签；
+2. 默认值为 ``false`` （而不是原文中说的``默认情况下启用此选项``）
+2. 当该值设置为 ``true`` 时，那么，原本多个``<style>``标签会被合并成一个``<style>``标签。
+
+<b>注：</b>
+
+官方文档上写的是默认开启，实际上是不开启的（v0.19.0）。我已经提了[issues](https://github.com/webpack-contrib/style-loader/issues/283)
+
+<h4>2.7、hmr</h4>
 
 <table>
     <thead>
@@ -347,10 +376,41 @@ document.querySelector('#test').onclick = function () {
     </thead>
     <tbody>
     <tr>
-    	<td></td>
-    	<td></td>
-    	<td></td>
-    	<td></td>
+    	<td>hmr</td>
+    	<td>{Boolean}</td>
+    	<td>true</td>
+    	<td>Enable/disable Hot Module Replacement (HMR), if disabled no HMR Code will be added (good for non local development/production)</td>
 	</tr>
 	</tbody>
 </table>	
+
+谷歌翻译为中文：
+
+启用/禁用热模块更换（HMR），如果禁用，则不会添加HMR代码。 这可以用于非本地开发和生产。
+
+大概就是指默认为true时，允许热加载（就是你改了代码后，不需要刷新页面，立刻更新数据），我没实际测试过，不过应该没人会把这个设置为false吧？
+
+<h4>2.8、base</h4>
+
+<table>
+    <thead>
+    <tr>
+        <td>名称</td>
+        <td>类型</td>
+        <td>默认值</td>
+        <td>描述</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+    	<td>base</td>
+    	<td>{Number}</td>
+    	<td>true</td>
+    	<td>设置模块 ID 基础 (DLLPlugin)</td>
+	</tr>
+	</tbody>
+</table>
+
+>当使用一个或多个 DllPlugin 时，此设置主要用作 css 冲突 的修补方案。base 可以防止 app 的 css（或 DllPlugin2 的 css）覆盖 DllPlugin1 的 css，方法是指定一个 css 模块的 id 大于 DllPlugin1 的范围，例如：
+
+等我搞清楚 DllPlugin 是什么再说吧，略略略。
