@@ -22,6 +22,7 @@ module.exports = {
                         loader: 'style-loader',
                         options: {
                             sourceMap: true,
+                            // singleton: true,
                             convertToAbsoluteUrls: true
                         }
                     },
