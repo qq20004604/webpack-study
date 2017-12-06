@@ -125,7 +125,7 @@ box-sizing: border-box;
 
 假如css文件找不到同目录下的``postcss.config.js``文件，那么会依次往上级目录寻找，直到找到，或者抵达项目根目录为止（以上面这个目录结构为例，即``webpack.config.js``所在目录是根目录）
 
-<h3>2.2、自定义配置文件路径</h3>
+<h4>2.2、自定义配置文件路径</h4>
 
 <table>
     <thead>
@@ -167,8 +167,70 @@ box-sizing: border-box;
 
 假如这么写，会导致【放在对应的css文件，的同级目录或者上级目录，的``postcss-loader``的配置文件<b>失效</b>】。原因是优先级问题。
 
+除此之外，还有一个``context``设置，略略略。
 
-<h3>2.3、</h3>
+
+<h4>2.3、sourceMap</h4>
+
+测试后，无效（开启与否文件大小不变）
+
+
+<h3>3、插件</h3>
+
+同样，只放一些常用插件的使用方法，不会详解
+
+<h4>3.1、autoprefixer</h4>
+
+这个是最应该添加的插件了。
+
+效果是对css文件添加兼容性前缀。
+
+>安装：
+
+```
+npm install autoprefixer --save
+```
+
+>官方github地址：
+
+https://github.com/postcss/autoprefixer
+
+>使用方式：
+
+```
+// postcss.config.js
+let autoprefixer = require('autoprefixer');
+
+module.exports = {
+    plugins: [
+        autoprefixer({
+            browsers: [
+                // 加这个后可以出现额外的兼容性前缀
+                "> 0.01%"
+            ]
+        })
+    ]
+}
+```
+
+>效果：
+
+应该是兼容性最强的配置方法了，例如``box-sizing``可以添加两个前缀，有些特性可以添加三个前缀，如下：
+
+转换前
+
+```
+transform: rotate(0deg);
+```
+
+转换后：
+
+```
+-webkit-transform: rotate(0deg);
+   -moz-transform: rotate(0deg);
+     -o-transform: rotate(0deg);
+        transform: rotate(0deg);
+```
 
 <table>
     <thead>
@@ -189,9 +251,19 @@ box-sizing: border-box;
 	</tbody>
 </table>	
 
+>其他特性：
+
+不仅可以添加前缀，也可以删除旧前缀（过时前缀）等。详细查看官方文档。
+
+<h4>3.2、stylelint</h4>
+
+>安装：
+
+npm install stylelint --save
 
 
-<h3>2.4、</h3>
+
+<h4>3.1、</h4>
 
 <table>
     <thead>

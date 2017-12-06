@@ -27,7 +27,8 @@ module.exports = {
                         options: {
                             config: {
                                 path: './config'    // 写到目录即可，文件名强制要求是postcss.config.js
-                            }
+                            },
+                            sourceMap: true
                         }
                     }
 
