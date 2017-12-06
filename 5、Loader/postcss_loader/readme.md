@@ -177,7 +177,7 @@ box-sizing: border-box;
 
 <h3>3、插件</h3>
 
-同样，只放一些常用插件的使用方法，不会详解
+除了 ``autoprefixer`` 用于加兼容性前缀，其他基本都有更好的，比如``stylelint``不如用``eslint``系列替代。
 
 <h4>3.1、autoprefixer</h4>
 
@@ -255,36 +255,16 @@ transform: rotate(0deg);
 
 不仅可以添加前缀，也可以删除旧前缀（过时前缀）等。详细查看官方文档。
 
-<h4>3.2、stylelint</h4>
+非特殊要求，直接使用上面这个配置就行了（如果不需要最多的前缀，可以把上面的改为
 
->安装：
-
-npm install stylelint --save
-
-
-
-<h4>3.1、</h4>
-
-<table>
-    <thead>
-    <tr>
-        <td>名称</td>
-        <td>类型</td>
-        <td>默认值</td>
-        <td>描述</td>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-    	<td></td>
-    	<td></td>
-    	<td></td>
-    	<td></td>
-	</tr>
-	</tbody>
-</table>	
-
-
+```
+autoprefixer({
+            browsers: [
+                // 加这个后可以出现额外的兼容性前缀
+                "> 1%"
+            ]
+        })
+```
 
 <h3>3、参考文章</h3>
 
