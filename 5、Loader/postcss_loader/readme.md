@@ -15,7 +15,11 @@
 ``postcss-loader`` 用于处理css代码，具有下列特点：
 
 1. 通常由 ``options`` 和 ``plugins`` 两部分组成，``plugins`` 虽然嵌套在 ``options`` 里，但实际上是通过其他插件生效的；
-2. 配置是可以独立的。详细介绍阅读【2.1】；
+2. 配置是可以独立的（每个配置的插件也是独立的）。详细介绍阅读【2.1】；
+
+还有一些自定义配置，但由于篇幅所限，这里就不像之前那样详解每个配置了（主要是很多都依赖于其他东西）。
+
+只写一些常用功能。
 
 <h3>2、配置</h3>
 
@@ -120,6 +124,94 @@ box-sizing: border-box;
 另外，由于2#和3#设置文件的存在，因此无论1#如何设置，都不会影响其效果。
 
 假如css文件找不到同目录下的``postcss.config.js``文件，那么会依次往上级目录寻找，直到找到，或者抵达项目根目录为止（以上面这个目录结构为例，即``webpack.config.js``所在目录是根目录）
+
+<h3>2.2、自定义配置文件路径</h3>
+
+<table>
+    <thead>
+    <tr>
+        <td>名称</td>
+        <td>类型</td>
+        <td>默认值</td>
+        <td>描述</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+    	<td>config</td>
+    	<td>{Object}</td>
+    	<td>undefined</td>
+    	<td>Set postcss.config.js config path && ctx</td>
+	</tr>
+	</tbody>
+</table>
+
+在上面，我们写了``postcss-loader``的配置文件的使用方式，分别是：【写在``webpack.config.js``中】，【配置文件放在对应的css文件的同级目录或者上级目录】。
+
+但是假如我们需要统一管理 ``postcss-loader`` 的配置文件，那么就需要通过 ``config`` 来处理。
+
+示例代码如下：
+
+```
+{
+    loader: 'postcss-loader',
+    options: {
+        config: {
+            path: './config'    // 写到目录即可，文件名强制要求是postcss.config.js
+        }
+    }
+}
+```
+
+表示会去 ``webpack.config.js`` 的同目录下去找文件夹 ``config``，然后在该文件夹下找到 ``postcss.config.js`` 文件（文件名不能改变），从而读取配置。
+
+假如这么写，会导致【放在对应的css文件，的同级目录或者上级目录，的``postcss-loader``的配置文件<b>失效</b>】。原因是优先级问题。
+
+
+<h3>2.3、</h3>
+
+<table>
+    <thead>
+    <tr>
+        <td>名称</td>
+        <td>类型</td>
+        <td>默认值</td>
+        <td>描述</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+    	<td></td>
+    	<td></td>
+    	<td></td>
+    	<td></td>
+	</tr>
+	</tbody>
+</table>	
+
+
+
+<h3>2.4、</h3>
+
+<table>
+    <thead>
+    <tr>
+        <td>名称</td>
+        <td>类型</td>
+        <td>默认值</td>
+        <td>描述</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+    	<td></td>
+    	<td></td>
+    	<td></td>
+    	<td></td>
+	</tr>
+	</tbody>
+</table>	
+
 
 
 <h3>3、参考文章</h3>

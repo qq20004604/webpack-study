@@ -20,21 +20,16 @@ module.exports = {
                 use: [
                     'style-loader',
                     'css-loader',
-                    'postcss-loader'
+                    // 'postcss-loader'
                     // 使用独立配置
-                    // {
-                    //     loader: 'postcss-loader',
-                    //     options: {
-                    //         plugins: [
-                    //             require('autoprefixer')({
-                    //                 browsers: [
-                    //                     // 加这个后可以出现额外的3前缀
-                    //                     "> 0.01%"
-                    //                 ]
-                    //             })
-                    //         ]
-                    //     }
-                    // }
+                    {
+                        loader: 'postcss-loader',
+                        options: {
+                            config: {
+                                path: './config'    // 写到目录即可，文件名强制要求是postcss.config.js
+                            }
+                        }
+                    }
 
                 ]
             },
