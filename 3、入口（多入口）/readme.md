@@ -85,3 +85,28 @@ output: {
 3. ``[name]``表示文件名自动匹配入口文件的key（即``first: './first_entry.js'``里面的``first``）；
 
 fork[本项目](https://github.com/qq20004604/webpack-study)，并且在本文件夹下执行``npm run test``来打包，然后打开``first.html``和``second.html``来查看效果（见控制台console）
+
+<b>注：</b>
+
+1、 ``entry`` 的值，是相对于执行 shell 命令所在的文件夹的路径的。
+
+2.、假如文件树如下：
+
+```
+.
+|____执行shell命令所在的文件夹（比如是package.json里的``scripts``）
+|____build
+|  |____webpack.config.js
+|____src
+|  |____app.js
+```
+
+那么，entry里路径的值，应该为 ``__dirname + '/../src/app.js'``，或者是 ``'./src/app.js'``。
+
+前者是绝对路径，``__dirname``表示 ``webpack.config.js`` 的路径；
+
+后者是相对路径，相对于执行 shell 命令所在的文件路径。
+
+3、 入口文件可以写相对路径，所以需要特别注意这一点；
+
+但出口文件因为必须写绝对路径（不允许相对路径），所以需要使用前者的写法，例如：``__dirname + '/../dist'``，即是打包到 ``dist`` 文件夹内。
