@@ -12,7 +12,7 @@
 
 <h3>1、概述</h3>
 
-简单来说，``file-loader`` 就是将文件（一般是图片文件为主），在进行一些处理后（主要是处理文件名和路径），移动打包后的目录中。
+简单来说，``file-loader`` 就是将文件（由于一般是图片文件为主，所以下面通常使用图片两字作为替代，方便理解。其他的包括字体文件等），在进行一些处理后（主要是处理文件名和路径），移动打包后的目录中。
 
 处理的内容包括：
 
@@ -183,9 +183,8 @@ outputPath: function (fileName) {
 }
 ```
 
-2、假如使用函数的话，每次打包需要先清空打包后的目录才行，不然会报错；
 
-<h4>2.5、</h4>
+<h4>2.5、useRelativePath</h4>
 
 <table>
     <thead>
@@ -198,11 +197,51 @@ outputPath: function (fileName) {
     </thead>
     <tbody>
     <tr>
-    	<td></td>
-    	<td></td>
-    	<td></td>
-    	<td></td>
+    	<td>useRelativePath</td>
+    	<td>{Boolean}</td>
+    	<td>false</td>
+    	<td>如果你希望为每个文件生成一个相对 url 的 context 时，应该将其设置为 true</td>
 	</tr>
 	</tbody>
 </table>
 
+一般不启用这个。
+
+至于效果，简单来说，当这个开关打开时：
+
+1. 首先会获取源代码中，图片文件，相对于css文件的路径关系；
+2. 然后打包后，css 代码通常会被打包到 js 文件中，于是根据之前所获取的【路径关系】，来保存打包好的图片文件；
+
+举例来说：
+
+1. 图片路径：``src/img/logo.png``；
+2. css 路径：``src/style/style.css``；
+3. useRelativePath 设为 true；
+4. css被打包到js后，js的文件路径：``dist/dist.js``；
+5. 打包后的图片路径：``img/logo.png``；
+6. 原因是图片相对于css的路径关系是：css文件的上级目录的img文件夹中命名为logo.png；
+
+
+
+<h4>2.6、emitFile</h4>
+
+<table>
+    <thead>
+    <tr>
+        <td>名称</td>
+        <td>类型</td>
+        <td>默认值</td>
+        <td>描述</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+    	<td>emitFile</td>
+    	<td>{Boolean}</td>
+    	<td>true</td>
+    	<td>默认情况下会生成文件，可以通过将此项设置为 false 来禁止（例如，使用了服务端的 packages）</td>
+	</tr>
+	</tbody>
+</table>
+
+简单粗暴的说，这个设置为 false 后，除了图片不会被打包出来，其他都按正常的来。

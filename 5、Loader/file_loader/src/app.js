@@ -4,4 +4,4 @@
  * weChat: qq20004604
  */
 // 引入css文件
-import './style.css'
+import './style/style.css'
