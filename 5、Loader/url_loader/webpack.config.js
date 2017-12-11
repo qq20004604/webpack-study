@@ -41,7 +41,6 @@ module.exports = {
     plugins: [
         // 这里是添加的插件
         new HtmlWebpackPlugin({
-            title: 'css-loader',
             template: './src/index.html'
         })
     ]
