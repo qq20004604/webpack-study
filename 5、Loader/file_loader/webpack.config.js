@@ -32,9 +32,11 @@ module.exports = {
                             // name: '[path][name].[hash:10].[ext]',   // 文件名，这个是将图片放在打包后的img文件夹中
                             // context: __dirname + '/../',
                             // 这个是对publicPath使用的
-                            name: 'myImage/[name].[ext]',   // 文件名，这个是将图片放在打包后的img文件夹中
+                            name: '[name].[ext]',   // 文件名，这个是将图片放在打包后的img文件夹中
                             publicPath: 'https://www.abc.cn/img/',
-                            // outputPath: 'myImage/'
+                            outputPath: function (fileName) {
+                                return 'myImage/' + fileName
+                            }
                         }
                     }
                 ]

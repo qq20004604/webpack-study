@@ -173,6 +173,18 @@ publicPath: 'https://www.abc.cn/img/',
 
 当然，``name`` 也可以实现（写成一个函数的返回值，例如 ``name: getName()``），但毕竟不好看，对吧；
 
+<b>注：</b>
+
+1、如果要写成函数，应该写成如下形式：
+
+```
+outputPath: function (fileName) {
+    return 'myImage/' + fileName    // 后面要拼上这个 fileName 才行
+}
+```
+
+2、假如使用函数的话，每次打包需要先清空打包后的目录才行，不然会报错；
+
 <h4>2.5、</h4>
 
 <table>
