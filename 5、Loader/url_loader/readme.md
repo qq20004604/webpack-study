@@ -14,15 +14,22 @@
 
 简单来说，``url-loader``的效果类似``file-loader``。
 
+>安装
+
+```
+npm install --save url-loader
+npm install --save file-loader
+```
+
 >优点：
 
-可以将css文件中的图片链接，转为base64字符串，或移动到打包后文件夹；
+1. 可以将css文件中的图片链接，转为base64字符串，或移动到打包后文件夹；
+2. 即使图片大小超出限制，也可以通过 ``fallback`` 调用 ``file-loader`` 来处理；
 
 >缺点：
 
-1. 可配置性比``file-loader``弱一些，但其实``file-loader``的那些配置，一般也用不到；
-2. 必须配置limit属的值，不然会默认将所有图片（无论大小）转为base64字符串；
-3. 由于可配置性比较差，因此如果需要额外的配置（比如设置图片打包好后放到某个指定的文件夹内），应与 ``url-loader`` 联用（详情请阅读``file-loader``的说明）。
+1. 必须配置limit属的值，不然会默认将所有图片（无论大小）转为base64字符串；
+2. 通常情况下，还需要安装 ``file-loader``，因为当图片超出 ``limit`` 大小的时候，就会去调用 ``file-loader`` 来处理；
 
 
 <h3>2、配置</h3>
@@ -146,3 +153,55 @@ url('./logo.png')
 4. 如果配置这么写：``mimetype: 'image/png'``；
 5. 那么开头部分将统一变为：``data:image/png;base64,``；
 6. 另外，这个改变只是修改开头部分，但是实际大小是不影响的（当然，``jpeg``要比``png``多一个字符，实际测试结果，表示差别只有这一个字符而已）；
+
+<h3>2.3、fallback</h3>
+
+<table>
+    <thead>
+    <tr>
+        <td>名称</td>
+        <td>类型</td>
+        <td>默认值</td>
+        <td>描述</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+    	<td>fallback</td>
+    	<td>{String}</td>
+    	<td>file-loader</td>
+    	<td>Specify loader for the file when file is greater than the limit (in bytes)</td>
+	</tr>
+	</tbody>
+</table>
+
+简单来说，就是指，当文件的大小超出 ``url-loader`` 的处理之后，该怎么进行处理。
+
+默认情况下，是通过 ``file-loader`` 进行处理的。如果有特殊需要，也可以通过其他来处理。
+
+至于 ``file-loader`` 的 ``options``，取的是 ``url-loader`` 的 ``options`` 的值，因为二者的 ``options`` 没有冲突，所以可以正常使用。
+
+注意，这个属性的 type 是 ``String``，所以如果使用其他 ``loader`` ，也只能和 ``url-loader`` 的 ``options`` 写一起。
+
+示例代码：
+
+```
+{
+    test: /\.(png|jpg|jpeg|gif)$/,
+    use: [
+        {
+            loader: 'url-loader',
+            options: {
+                limit: 8192,
+                name: 'img/[hash].[ext]'
+            }
+        }
+    ]
+}
+```
+
+效果描述：
+
+1. 图片小于 8KB （8192字节），转为base64字符串；
+2. 如果大于等于 8KB，那么被 ``file-loader`` 所处理；
+3. ``file-loader`` 将图片文件放在打包后的 ``img``文件夹下，命名规则是：``[hash].[ext]``（即哈希值 + 后缀名用原后缀名）；

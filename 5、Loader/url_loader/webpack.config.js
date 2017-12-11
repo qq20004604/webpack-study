@@ -26,40 +26,15 @@ module.exports = {
                 test: /\.(png|jpg|jpeg|gif)$/,
                 use: [
                     {
-                        loader: 'file-loader',
-                        options: {
-                            name: 'img/[hash].[ext]'
-                        }
-                    },
-                    {
                         loader: 'url-loader',
                         options: {
                             limit: 8192,
-                            mimetype: 'image/png'
+                            mimetype: 'image/png',
+                            name: 'img/[hash].[ext]'
                         }
                     }
                 ]
             }
-            // {
-            //     test: /\.jpg$/,
-            //     use: [
-            //         {
-            //             loader: 'file-loader'
-            //         }
-            //     ]
-            // },
-            // {
-            //     test: /\.png$/,
-            //     use: [
-            //         {
-            //             loader: 'url-loader',
-            //             options: {
-            //                 limit: 8192,
-            //                 // mimetype: 'image/png'
-            //             }
-            //         }
-            //     ]
-            // }
         ]
     },
     // 将插件添加到webpack中
