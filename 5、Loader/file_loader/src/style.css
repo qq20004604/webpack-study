@@ -1,0 +1,8 @@
+#app {
+    position: relative;
+    width: 500px;
+    height: 500px;
+    border: 1px solid red;
+    background: url('./logo.png') no-repeat;
+    box-sizing: border-box;
+}
