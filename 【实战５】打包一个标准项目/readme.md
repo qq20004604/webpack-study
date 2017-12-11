@@ -6,8 +6,27 @@
 
 有疑义请[点击这里](https://github.com/qq20004604/webpack-study/issues)，发【Issues】。
 
-[实战项目示例目录](https://github.com/qq20004604/webpack-study/tree/master/%E3%80%90%E5%AE%9E%E6%88%98%EF%BC%94%E3%80%91%E6%89%93%E5%8C%85%E5%B8%A6%E5%BC%82%E6%AD%A5%E5%8A%A0%E8%BD%BD%E5%8A%9F%E8%83%BD%E7%9A%84%E6%A8%A1%E5%9D%97)
+[实战项目示例目录](https://github.com/qq20004604/webpack-study/tree/master/%E3%80%90%E5%AE%9E%E6%88%98%EF%BC%95%E3%80%91%E6%89%93%E5%8C%85%E4%B8%80%E4%B8%AA%E6%A0%87%E5%87%86%E9%A1%B9%E7%9B%AE)
 
 
 <h3>1、需求列表</h3>
 
+1. 引入jQuery（或其他类似库，之所以用 ``jQuery`` 是每个前端开发者都理应会 jQuery）；
+2. 使用 ``less`` 作为 ``css`` 预处理器；
+3. 标准模块化开发；
+4. 有异步加载的模块；
+5. 启用 hash 命名，以应对缓存问题；
+6. 使用 es6、es7 语法；
+7. css 自动添加兼容性前缀；
+
+<h3>2、涉及到的知识</h3>
+
+1. [入口](https://github.com/qq20004604/webpack-study/tree/master/3%E3%80%81%E5%85%A5%E5%8F%A3%EF%BC%88%E5%A4%9A%E5%85%A5%E5%8F%A3%EF%BC%89)；
+2. [出口](https://github.com/qq20004604/webpack-study/tree/master/4%E3%80%81%E5%87%BA%E5%8F%A3)；
+3. [babel-loader](https://github.com/qq20004604/webpack-study/tree/master/5%E3%80%81Loader/babel_loader)；
+4. [css-loader](https://github.com/qq20004604/webpack-study/tree/master/5%E3%80%81Loader/css_loader)；
+5. [style-loader](https://github.com/qq20004604/webpack-study/tree/master/5%E3%80%81Loader/style_loader)；
+6. [postcss-loader](https://github.com/qq20004604/webpack-study/tree/master/5%E3%80%81Loader/postcss_loader)；
+7. [less-loader](https://github.com/qq20004604/webpack-study/tree/master/5%E3%80%81Loader/less_loader)；
+8. [url-loader](https://github.com/qq20004604/webpack-study/tree/master/5%E3%80%81Loader/url_loader)；
+9. []()；
