@@ -11,7 +11,7 @@ module.exports = {
     // 出口文件
     output: {
         // 这个路径，是相对于webpack.config.js文件的目录
-        path: __dirname + '/dist',
+        path: __dirname + '/../dist',
         // 文件名，将打包好的导出为bundle.js
         filename: '[name].js'
     },
@@ -59,7 +59,6 @@ module.exports = {
     plugins: [
         // 这里是添加的插件
         new HtmlWebpackPlugin({
-            title: 'css-loader',
             template: './src/index.html'
         })
     ]
