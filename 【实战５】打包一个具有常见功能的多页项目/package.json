@@ -2,7 +2,7 @@
   "name": "demo-loader",
   "version": "0.0.1",
   "scripts": {
-    "test": "webpack --config webpack.config.js"
+    "build": "webpack --config build/webpack.config.js"
   },
   "devDependencies": {
     "babel-plugin-transform-runtime": "^6.23.0"

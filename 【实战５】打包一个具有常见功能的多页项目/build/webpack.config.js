@@ -1,22 +1,28 @@
 ﻿// 引入插件
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const entryJSON = require('./config/entry.json');
+// 多入口管理文件
+const entryJSON = require('../config/entry.json');
+// less的全局变量
+const globalLessVars = require('../src/common/global_less_vars')
+const path = require('path')
 
+// 因为多入口，所以要多个HtmlWebpackPlugin，每个只能管一个入口
 let plugins = entryJSON.map(page => {
-    console.log(page.title)
     return new HtmlWebpackPlugin({
         title: page.title,
-        filename: `${__dirname}/dist/${page.url}.html`,
-        template: `${__dirname}/src/page/${page.url}.html`,
-        chunks: [page.url],
+        filename: path.resolve(__dirname, `../dist/${page.url}.html`),
+        template: path.resolve(__dirname, `../src/page/${page.url}.html`),
+        chunks: [page.url], // 实现多入口的核心
         hash: true, // 为静态资源生成hash值
-        minify: false,
-        xhtml: true,
+        minify: false,   // 压缩，如果启用这个的话，需要使用html-minifier，不然会直接报错
+        xhtml: true,    // 自闭标签
     })
 })
+
+// 入口管理
 let entry = {}
 entryJSON.map(page => {
-    entry[page.url] = `./src/entry/${page.url}`
+    entry[page.url] = path.resolve(__dirname, `../src/entry/${page.url}.js`)
 })
 
 
@@ -25,7 +31,7 @@ module.exports = {
     entry: entry,
     // 出口文件
     output: {
-        path: __dirname + '/dist',
+        path: __dirname + '/../dist',
         // 文件名，将打包好的导出为bundle.js
         filename: '[name].[hash:8].js'
     },
@@ -43,7 +49,7 @@ module.exports = {
                 }
             },
             {
-                test: /\.css$/,
+                test: /\.less$/,
                 use: [
                     'style-loader',
                     'css-loader',
@@ -55,11 +61,17 @@ module.exports = {
                             },
                             sourceMap: true
                         }
+                    },
+                    {
+                        loader: 'less-loader',   // compiles Less to CSS
+                        options: {
+                            globalVars: globalLessVars
+                        }
                     }
                 ]
             },
             {
-                test: /\.(png|jpg|jpe?g|gif)$/,
+                test: /\.(png|jpg|jpe?g|gif|svg)$/,
                 use: [
                     {
                         loader: 'url-loader',
