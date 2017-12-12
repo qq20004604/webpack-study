@@ -1,4 +1,4 @@
-﻿<h2>URL-LOADER配置简述</h2>
+﻿<h2>LESS-LOADER配置简述</h2>
 
 <h3>前注：</h3>
 
