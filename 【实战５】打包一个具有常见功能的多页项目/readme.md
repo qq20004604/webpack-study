@@ -8,6 +8,19 @@
 
 [实战项目示例目录](https://github.com/qq20004604/webpack-study/tree/master/%E3%80%90%E5%AE%9E%E6%88%98%EF%BC%95%E3%80%91%E6%89%93%E5%8C%85%E4%B8%80%E4%B8%AA%E6%A0%87%E5%87%86%E9%A1%B9%E7%9B%AE)
 
+<h3>0、使用说明</h3>
+
+安装：
+
+```
+npm install
+```
+
+运行（注，这里不像之前用的 test ，而是改用了 build）：
+
+```
+npm run build
+```
 
 <h3>1、需求列表</h3>
 
@@ -64,6 +77,10 @@
 <b>第二：chunks特性实现按需加载</b>
 
 通过配置 ``html-webpack-plugin`` 的 ``options.chunks`` ，可以让我们实现让 login.html 只加载 login.js，而 userInfo.html 只加载 userInfo.js（注：hash 文件名不影响匹配）；
+
+注意，这个实现的机制，是通过 ``options.chunk`` 的值，去匹配 ``webpack.config.js``的 ``entry`` 对象的 ``key``。
+
+因为一个入口文件对应一个出口文件，所以这里会去拿入口文件对应的出口文件，将其加到 html 文件里。
 
 <b>第三：template自定义作为模板的 html 文件</b>
 
@@ -138,7 +155,7 @@ let plugins = entryJSON.map(page => {
     return new HtmlWebpackPlugin({
         filename: path.resolve(__dirname, `../dist/${page.url}.html`),    // 输出文件名
         template: path.resolve(__dirname, `../src/page/${page.url}.html`),    // 输入模板html
-        chunks: [page.url], // 实现多入口的核心，决定自己加载哪个js文件
+        chunks: [page.url], // 实现多入口的核心，决定自己加载哪个js文件，这里的 page.url 指的是 entry 对象的 key 所对应的入口打包出来的js文件
         hash: true, // 为静态资源生成hash值
         minify: false,   // 压缩，如果启用这个的话，需要使用html-minifier，不然会直接报错
         xhtml: true,    // 自闭标签
@@ -180,3 +197,65 @@ module.exports = {
     │  └─login.html
     └─static
 ```
+
+<h4>3.2、文件分类管理</h4>
+
+如何将页面整齐的分类，也是很重要的。不合理的规划，会增加项目的维护难度。
+
+项目目录如下分类：
+
+```
+├─build     webpack 的配置文件，例如 webpack.config.js
+├─config    跟 webpack 有关的配置文件，例如 postcss-loader 的配置文件，以及多入口管理文件
+├─dist      打包的目标文件夹，存放 html 文件
+│  └─img    打包后的图片文件夹
+└─src       资源文件夹
+    ├─common    全局配置，或者公共方法，放在此文件夹，例如 less-loader 的全局变量
+    ├─entry     入口文件夹
+    ├─img       图片资源文件夹
+    ├─less      less 文件夹
+    ├─page      html 文件夹（多入口的模板 html文件）
+    └─static    静态资源文件夹，这里放使用静态路径的资源
+```
+
+虽然还不够精细，但应对小型项目是足够了的。
+
+<h3>3.3、别名</h3>
+
+别名的优势很多，比如：
+
+<b>1、css/less 代码，可以和图片分离：</b>
+
+只要 webpack 配置和图片的位置不变。
+
+那么使用别名，就可以随意移动 less 文件。
+
+不必担心因为移动 less 文件，而造成的 less 文件与 图片 文件的相对路径改变，导致找不到图片而出错。
+
+<b>2、方便整体移动图片</b>
+
+假如原本图片放在``src/img``文件夹下，现在你突然想把图片放在``src/image``文件夹下。
+
+如果不使用别名，你需要一个一个去修改图片的路径；
+
+而使用别名，只需要改一下别名的路径就行了。
+
+``css-loader`` 支持独立于 webpack 的别名的设置，教程参照：[css-loader](https://github.com/qq20004604/webpack-study/tree/master/5%E3%80%81Loader/css_loader)
+
+这里基于【3.2】的文件分类管理，附上关于别名的控制代码：
+
+```
+{
+    loader: 'css-loader',
+    options: {
+        root: path.resolve(__dirname, '/../static/'),   // url里，以 / 开头的路径，去找src/static文件夹
+        minimize: true, // 压缩css代码
+        // sourceMap: true,    // sourceMap，默认关闭
+        alias: {
+            '@': path.resolve(__dirname, '../src/img') // '~@/logo.png' 这种写法，会去找src/img/logo.png这个文件
+        }
+    }
+},
+```
+
+其余代码已省略，如果有需要，请查看 [DEMO](https://github.com/qq20004604/webpack-study/tree/master/%E3%80%90%E5%AE%9E%E6%88%98%EF%BC%95%E3%80%91%E6%89%93%E5%8C%85%E4%B8%80%E4%B8%AA%E5%85%B7%E6%9C%89%E5%B8%B8%E8%A7%81%E5%8A%9F%E8%83%BD%E7%9A%84%E5%A4%9A%E9%A1%B5%E9%A1%B9%E7%9B%AE) 中的 ``build/webpack.config.js`` 文件。

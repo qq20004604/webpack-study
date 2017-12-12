@@ -11,7 +11,7 @@ let plugins = entryJSON.map(page => {
     return new HtmlWebpackPlugin({
         filename: path.resolve(__dirname, `../dist/${page.url}.html`),
         template: path.resolve(__dirname, `../src/page/${page.url}.html`),
-        chunks: [page.url], // 实现多入口的核心
+        chunks: [page.url], // 实现多入口的核心，决定自己加载哪个js文件，这里的 page.url 指的是 entry 对象的 key 所对应的入口打包出来的js文件
         hash: true, // 为静态资源生成hash值
         minify: false,   // 压缩，如果启用这个的话，需要使用html-minifier，不然会直接报错
         xhtml: true,    // 自闭标签
@@ -24,7 +24,6 @@ entryJSON.map(page => {
     entry[page.url] = path.resolve(__dirname, `../src/entry/${page.url}.js`)
 })
 
-
 module.exports = {
     // 入口文件
     entry: entry,
@@ -32,7 +31,7 @@ module.exports = {
     output: {
         path: __dirname + '/../dist',
         // 文件名，将打包好的导出为bundle.js
-        filename: '[name].[hash:8].js'
+        filename: '[name].[chunkhash].js'
     },
     module: {
         // loader放在rules这个数组里面
@@ -41,17 +40,23 @@ module.exports = {
                 test: /\.js$/,
                 exclude: /node_modules/,
                 // 写法一
-                loader: 'babel-loader',
-                options: {
-                    presets: ['babel-preset-env'],
-                    plugins: ['transform-runtime']
-                }
+                loader: 'babel-loader'
             },
             {
                 test: /\.less$/,
                 use: [
                     'style-loader',
-                    'css-loader',
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            root: path.resolve(__dirname, '/../static/'),   // url里，以 / 开头的路径，去找src/static文件夹
+                            minimize: true, // 压缩css代码
+                            // sourceMap: true,    // sourceMap，默认关闭
+                            alias: {
+                                '@': path.resolve(__dirname, '../src/img') // '~@/logo.png' 这种写法，会去找src/img/logo.png这个文件
+                            }
+                        }
+                    },
                     {
                         loader: 'postcss-loader',
                         options: {
@@ -87,5 +92,6 @@ module.exports = {
         ]
     },
     // 将插件添加到webpack中
+    // 如果还有其他插件，将两个数组合到一起就行了
     plugins: plugins
 }
