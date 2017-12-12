@@ -3,3 +3,4 @@
  * QQ: 20004604
  * weChat: qq20004604
  */
+import '../less/login.less'

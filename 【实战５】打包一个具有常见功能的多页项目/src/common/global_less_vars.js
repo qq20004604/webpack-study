@@ -3,6 +3,7 @@
  * QQ: 20004604
  * weChat: qq20004604
  */
-export default {
+const globalVars = {
     blue: '#00AAFF'
 }
+module.exports = globalVars
