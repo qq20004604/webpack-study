@@ -43,8 +43,140 @@
 
 <h3>3、技术难点</h3>
 
-<h4>3.1、多页</h4>
+<h4>3.1、多页面</h4>
 
 多页模式是一个难点。
 
-且不考虑共同模块（不考虑使用第三方框架，比如Vue.js之类），光是单独每个
+且不考虑共同模块（这里主要指的是html模板，而不是js的模块），光是单独每个入口 js 文件需要搭配一个相对应的 html 文件，就已经是一件很麻烦的事情了。
+
+对于这个问题，需要借助使用 ``html-webpack-plugin`` 来实现。
+
+由于之前木有 ``html-webpack-plugin`` 的相关内容，这里只讲思路和代码。
+
+<b>第一：多入口则多个html文件</b>
+
+也是核心内容，``html-webpack-plugin`` 只负责生成一个 html 文件。
+
+而多入口显然需要生成多个 html 文件，因此 有多少个入口，就需要在 webpack 的 plugins 里添加多少个 ``html-webpack-plugin`` 的实例。
+
+同时，我们还要更改 webpack 的 entry 入口，entry 的值应该是根据入口数量自动生成的对象。
+
+<b>第二：chunks特性实现按需加载</b>
+
+通过配置 ``html-webpack-plugin`` 的 ``options.chunks`` ，可以让我们实现让 login.html 只加载 login.js，而 userInfo.html 只加载 userInfo.js（注：hash 文件名不影响匹配）；
+
+<b>第三：template自定义作为模板的 html 文件</b>
+
+``options.template`` 可以自定义该实例以哪个 html 文件作为模板。
+
+<b>第四：filename</b>
+
+``options.filename`` 可以自定义生成的 html 文件输出为什么样的文件名。
+
+<b>第五：管理多入口</b>
+
+已知：
+
+一个 ``html-webpack-plugin`` 实例具有以下功能：
+
+1. 生成一个 html 文件（一）；
+2. 决定自己引入哪个 js 文件（二）（记得，webpack只负责打包js文件，不负责生成 html 文件。生成实例是依靠这个 plugins）；
+3. 决定自己以哪个 html 文件作为模板（三）；
+4. 决定自己打包后的目录和文件名（四）；
+
+我们通过webpack打包后，一个入口 js 文件会对应一个出口 js 文件；
+
+而每个入口 js 文件，都对应一个 html 模板文件；
+
+因此每个 html 模板文件，都知道自己对应哪个出口 js 文件；
+
+所以以上是实现多入口的原理。
+
+<b>代码：</b>
+
+多入口管理文件：
+
+>config/entry.json
+
+```
+[
+    {
+        "url": "login",
+        "title": "登录"
+    },
+    {
+        "url": "userInfo",
+        "title": "用户详细信息"
+    }
+]
+```
+
+webpack配置文件：
+
+> webpack.config.js：
+
+首先，配置 ``entry``：
+
+```
+const entryJSON = require('../config/entry.json');
+
+// 入口管理
+let entry = {}
+entryJSON.map(page => {
+    entry[page.url] = path.resolve(__dirname, `../src/entry/${page.url}.js`)
+})
+```
+
+其次，配置 ``plugins``：
+
+```
+// 在上面已经引用了 entryJSON
+const path = require('path')
+
+// 因为多入口，所以要多个HtmlWebpackPlugin，每个只能管一个入口
+let plugins = entryJSON.map(page => {
+    return new HtmlWebpackPlugin({
+        filename: path.resolve(__dirname, `../dist/${page.url}.html`),    // 输出文件名
+        template: path.resolve(__dirname, `../src/page/${page.url}.html`),    // 输入模板html
+        chunks: [page.url], // 实现多入口的核心，决定自己加载哪个js文件
+        hash: true, // 为静态资源生成hash值
+        minify: false,   // 压缩，如果启用这个的话，需要使用html-minifier，不然会直接报错
+        xhtml: true,    // 自闭标签
+    })
+})
+```
+
+最后，webpack 本身的配置：
+
+```
+module.exports = {
+    // 入口文件
+    entry: entry,
+        // 出口文件
+    output: {
+        path: __dirname + '/../dist',
+        // 文件名，将打包好的导出为bundle.js
+        filename: '[name].[hash:8].js'
+    },
+    // 省略中间的配置
+    // 将插件添加到webpack中
+    plugins: plugins
+}
+```
+
+文件目录（已省略无关文件）：
+
+```
+├─build
+│  └─webpack.config.js
+├─dist
+└─src
+    ├─common
+    ├─entry
+    │  ├─userInfo.js
+    │  └─login.js
+    ├─page
+    │  ├─userInfo.html
+    │  └─login.html
+    └─static
+```

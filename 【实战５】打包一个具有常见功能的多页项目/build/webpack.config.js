@@ -9,7 +9,6 @@ const path = require('path')
 // 因为多入口，所以要多个HtmlWebpackPlugin，每个只能管一个入口
 let plugins = entryJSON.map(page => {
     return new HtmlWebpackPlugin({
-        title: page.title,
         filename: path.resolve(__dirname, `../dist/${page.url}.html`),
         template: path.resolve(__dirname, `../src/page/${page.url}.html`),
         chunks: [page.url], // 实现多入口的核心
@@ -27,7 +26,7 @@ entryJSON.map(page => {
 
 
 module.exports = {
-    // 入口文件，指向app.js
+    // 入口文件
     entry: entry,
     // 出口文件
     output: {
