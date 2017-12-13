@@ -88,6 +88,14 @@ module.exports = {
                         }
                     }
                 ]
+            },
+            {
+                test: /\.html$/,
+                use: [
+                    {
+                        loader: 'html-withimg-loader',
+                    }
+                ]
             }
         ]
     },

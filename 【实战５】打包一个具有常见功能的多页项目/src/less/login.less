@@ -19,7 +19,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   width: 270px;
-  height: 250px;
+  height: 280px;
   .label {
     position: absolute;
     width: 100%;
@@ -45,15 +45,23 @@
       color: @greyFont;
     }
   }
-  .account {
+  .title {
+    position: absolute;
     top: 0;
+    left: 50%;
+    height: 40px;
+    width: 100px;
+    transform: translateX(-50%);
+  }
+  .account {
+    top: 50px;
   }
   .password {
-    top: 80px;
+    top: 130px;
   }
   #login-btn {
     position: absolute;
-    top: 160px;
+    top: 210px;
     width: 100%;
     height: 40px;
     line-height: 37px;
@@ -62,5 +70,14 @@
     border-radius: 7px;
     background-color: @blue;
     color: #fff;
+  }
+  #error-msg {
+    position: absolute;
+    top: 260px;
+    height: 20px;
+    line-height: 20px;
+    width: 100%;
+    font-size: 20px;
+    color: red;
   }
 }

@@ -33,6 +33,7 @@ npm run build
 5. 使用 es6、es7 语法；
 6. 写一个登录页面作为DEMO，再写一个登录后的示例页面作为跳转后页面；
 7. 可适用于多页项目；
+8. css 文件与 图片 文件脱离（即更改 css 文件路径不影响其对图片的引用）
 
 打包要求：
 
@@ -51,6 +52,7 @@ npm run build
 7. [less-loader](https://github.com/qq20004604/webpack-study/tree/master/5%E3%80%81Loader/less_loader)：以 less 语法来写 css ；
 8. [url-loader](https://github.com/qq20004604/webpack-study/tree/master/5%E3%80%81Loader/url_loader)：用于将图片小于一定大小的文件，转为 base64 字符串；
 9. [file-loader](https://github.com/qq20004604/webpack-study/tree/master/5%E3%80%81Loader/file_loader)：``url-loader`` 不能转换 base64字符串 的文件，被这个处理（主要用于设置打包后图片路径，以及CDN等）；
+10. [html-withimg-loader](https://github.com/qq20004604/webpack-study/tree/master/5%E3%80%81Loader/html_withimg_loader)：用于加载html模板；
 10. ``html-webpack-plugin`` ：用于将已有 html 文件作为模板，生成打包后的 html 文件；
 
 
@@ -259,3 +261,11 @@ module.exports = {
 ```
 
 其余代码已省略，如果有需要，请查看 [DEMO](https://github.com/qq20004604/webpack-study/tree/master/%E3%80%90%E5%AE%9E%E6%88%98%EF%BC%95%E3%80%91%E6%89%93%E5%8C%85%E4%B8%80%E4%B8%AA%E5%85%B7%E6%9C%89%E5%B8%B8%E8%A7%81%E5%8A%9F%E8%83%BD%E7%9A%84%E5%A4%9A%E9%A1%B5%E9%A1%B9%E7%9B%AE) 中的 ``build/webpack.config.js`` 文件。
+
+<h4>3.4、安装jQuery</h4>
+
+由于npm上并没有最新的 jQuery，目前来说， ``1.7.4`` 是最新的版本。
+
+所以可以从下面这个CDN直接下载 jQuery 来使用，版本是 1.12.4
+
+https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js

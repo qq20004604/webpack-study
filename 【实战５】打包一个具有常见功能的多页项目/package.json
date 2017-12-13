@@ -13,15 +13,16 @@
     "babel-loader": "^7.1.2",
     "babel-preset-env": "^1.6.1",
     "babel-runtime": "^6.26.0",
-    "html-webpack-plugin": "^2.30.1",
     "css-loader": "^0.28.7",
     "file-loader": "^1.1.5",
     "html-webpack-plugin": "^2.30.1",
+    "html-withimg-loader": "^0.1.16",
+    "jQuery": "^1.7.4",
     "less": "^2.7.3",
     "less-loader": "^4.0.5",
+    "postcss-loader": "^2.0.9",
     "style-loader": "^0.19.0",
     "url-loader": "^0.6.2",
-    "postcss-loader": "^2.0.9",
     "webpack": "^3.8.1"
   }
 }
