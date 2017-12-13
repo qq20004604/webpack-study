@@ -12,14 +12,14 @@
 
 在上面的``webpack.config.js``中，有如下代码：
 
-```
+```javascript
 // 入口文件，指向app.js
 entry: './app.js',
 ```
 
 以上代码相当于：
 
-```
+```javascript
 entry: {
     main: './app.js'
 }
@@ -51,7 +51,7 @@ entry: {
 
 核心代码如下：
 
-```
+```javascript
 // webpack.config.js
 ...
 entry: {
@@ -71,7 +71,7 @@ Multiple assets emit to the same filename
 
 因此我们应当这样配置：
 
-```
+```javascript
 output: {
     // 文件名，将打包好的导出为bundle.js
     filename: './dist/[name].js'

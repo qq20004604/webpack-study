@@ -12,7 +12,7 @@
 
 <h4>4.1、标准的出口写法</h4>
 
-```
+```javascript
 // 出口文件
 output: {
     filename: './dist/dist.js'
@@ -43,7 +43,7 @@ output: {
 
 因此设置方法如下：
 
-```
+```javascript
 output: {
     path: __dirname + '/dist',
     filename: 'dist.js'
@@ -66,10 +66,8 @@ output: {
 
 增加方法如下：
 
-```
-...
+```javascript
 filename: 'dist.[hash].js'
-...
 ```
 
 原本打包后的文件名为：``dist.js``，现如今打包后的文件名为（示例）：``dist.5099da45ae9fc763852d.js``。
@@ -119,7 +117,7 @@ chunk表示模块，chunkhash就是指根据模块内容计算出来的哈希值
 
 因此一个示例是：
 
-```
+```javascript
 filename: 'dist.chunkhash=[chunkhash:10].name=[name].id=[id].js'
 ```
 
@@ -149,7 +147,7 @@ filename: 'dist.chunkhash=[chunkhash:10].name=[name].id=[id].js'
 2. 我们还需要安装一个webpack插件：``npm install --save-dev html-webpack-plugin``；
 3. 除此之外，我们需要配置一下webpack文件。做两件事：1、引入插件；2、配置插件；
 
-```
+```javascript
 // webpack.config.js
 // 引入插件
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -197,7 +195,7 @@ module.exports = {
 
 对于这个需求，我们只需要配置一些简单的东西：
 
-···
+```javascript
 plugins: [
     // 这里是添加的插件
     new HtmlWebpackPlugin({
@@ -206,7 +204,7 @@ plugins: [
         template: './demo.html',    // 这个就是那个模板文件，不会改动原有的内容，而是在原来html文件的末尾，将打包编译好的文件添加进去
     })
 ]
-···
+```
 
 然后在模板文件里添加一些内容（具体查看文件夹内的 ``demo.html`` 文件。
 

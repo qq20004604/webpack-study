@@ -30,7 +30,7 @@ npm install --save less-loader less
 
 示例配置（其他略，参照github上的示例DEMO）：
 
-```
+```javascript
  {
     test: /\.less$/,
     use: [
@@ -43,7 +43,7 @@ npm install --save less-loader less
 
 less文件：
 
-```
+```css
 @hundred: 100px;
 
 #app {
@@ -74,7 +74,7 @@ less文件：
 
 编译后结果：
 
-```
+```css
 #app {
   position: relative;
   width: 500px;
@@ -116,7 +116,7 @@ less文件：
 
 那么必须在解析 ``.css`` 文件的时候，配置``less-loader``，配置如下：
 
-```
+```javascript
 {
     test: /\.css$/,
     use: [
@@ -159,7 +159,7 @@ less文件：
 
 示例代码：
 
-```
+```javascript
 //webpack.config.js
 ...
 test: /\.less$/,
@@ -180,7 +180,7 @@ use: [
 ...
 ```
 
-```
+```css
 // style.less
 ...
 height: @hundred;
@@ -191,7 +191,7 @@ border: @ten dotted green;
 
 编译后变为：
 
-```
+```css
 ...
 height: 100px;
 ...
@@ -237,7 +237,7 @@ border: 10px dotted green;
 
 1、假如配置如下：
 
-```
+```javascript
 paths: [
     path.resolve(__dirname, "test")
 ]
@@ -245,7 +245,7 @@ paths: [
 
 2、less文件里，这么引用其他 ``.less`` 文件：
 
-```
+```css
 @import 'foo.less';
 ```
 

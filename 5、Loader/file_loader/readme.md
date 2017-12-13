@@ -154,7 +154,7 @@
 
 示例代码：
 
-```
+```javascript
 name: '[name].[ext]',   // 文件名，这个是将图片放在打包后的img文件夹中
 publicPath: 'https://www.abc.cn/img/',
 outputPath: 'myImage/'    // 这里记得后面要加一个斜杠
@@ -164,7 +164,7 @@ outputPath: 'myImage/'    // 这里记得后面要加一个斜杠
 
 效果和以下配置是一样的：
 
-```
+```javascript
 name: 'myImage/[name].[ext]',   // 文件名，这个是将图片放在打包后的img文件夹中
 publicPath: 'https://www.abc.cn/img/',
 ```
@@ -177,7 +177,7 @@ publicPath: 'https://www.abc.cn/img/',
 
 1、如果要写成函数，应该写成如下形式：
 
-```
+```javascript
 outputPath: function (fileName) {
     return 'myImage/' + fileName    // 后面要拼上这个 fileName 才行
 }

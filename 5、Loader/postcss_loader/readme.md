@@ -86,7 +86,7 @@
 
 然后 ``style/postcss.config.js`` （2#)的设置如下（兼容性配置）：
 
-```
+```javascript
 module.exports = {
     plugins: [
         require('autoprefixer')({
@@ -101,13 +101,13 @@ module.exports = {
 
 ``style2/postcss.config.js`` (3#)的设置如下（默认配置）：
 
-```
+```javascript
 module.exports = {}
 ```
 
 经过``postcss-loader``的处理之后，有兼容性配置的css文件，其插入html文件后，css属性变为如下：
 
-```
+```css
 -webkit-box-sizing: border-box;
    -moz-box-sizing: border-box;
         box-sizing: border-box;
@@ -152,7 +152,7 @@ box-sizing: border-box;
 
 示例代码如下：
 
-```
+```javascript
 {
     loader: 'postcss-loader',
     options: {
@@ -197,7 +197,7 @@ https://github.com/postcss/autoprefixer
 
 >使用方式：
 
-```
+```javascript
 // postcss.config.js
 let autoprefixer = require('autoprefixer');
 
@@ -219,13 +219,13 @@ module.exports = {
 
 转换前
 
-```
+```css
 transform: rotate(0deg);
 ```
 
 转换后：
 
-```
+```css
 -webkit-transform: rotate(0deg);
    -moz-transform: rotate(0deg);
      -o-transform: rotate(0deg);
@@ -257,7 +257,7 @@ transform: rotate(0deg);
 
 非特殊要求，直接使用上面这个配置就行了（如果不需要最多的前缀，可以把上面的改为
 
-```
+```javascript
 autoprefixer({
             browsers: [
                 // 加这个后可以出现额外的兼容性前缀

@@ -13,7 +13,7 @@
 
 文件目录见``1、最简单的webpack实例``这个目录。
 
-```
+```javascript
 // webpack.config.js 这个是webpack的管理配置文件
 
 // 以CMD的格式导出模块
@@ -26,17 +26,20 @@ module.exports = {
         filename: './bundle.js'
     }
 }
-
+```
+```javascript
 // app.js  这个是入口文件
 import bar from './bar'
 
 bar()
-
+```
+```javascript
 // bar.js 这个是入口文件引入的模块
 export default function bar () {
     console.log('bar')
 }
-
+```
+```html
 // page.html 这个是html目录文件，这个文件引入入口文件
 <html>
 <head>

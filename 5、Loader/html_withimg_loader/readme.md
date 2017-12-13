@@ -29,7 +29,7 @@
 
 需要手动将 html 字符串挂载到源 html 文件里。例如：
 
-```
+```javascript
 import html from './template.html'
 // 这个时候引入的是一个html字符串
 
@@ -55,7 +55,7 @@ document.body.append(div)
 
 入口文件：
 
-```
+```javascript
 // src/app.js
 import html from './template.html'
 // 这个时候引入的是一个html字符串
@@ -67,7 +67,7 @@ document.body.append(div)
 
 模板文件：
 
-```
+```html
 // src/template.html
 <img style="width: 200px;height: 200px;" src="./login_background.svg" alt="">
 <img style="width: 200px;height: 200px;" src="./large_image.jpg" alt="">
@@ -75,7 +75,7 @@ document.body.append(div)
 
 webpack配置（部分）：
 
-```
+```javascript
 module: {
     // loader放在rules这个数组里面
     rules: [
@@ -141,7 +141,7 @@ module: {
 
 转换后效果：
 
-```
+```html
 <div>
     <h1>以下有两个图片：</h1>
     <img style="width: 200px;height: 200px;" src="data:image/svg+xml;base64,（太长略略略）" alt="">

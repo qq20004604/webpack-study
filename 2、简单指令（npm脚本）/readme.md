@@ -17,7 +17,7 @@
 
 其他文件如【1】中的四个文件，新增一个``package.json``，内容如下：
 
-```
+```javascript
 // package.json  注：name只能是以下这种格式，不能有空格或者中文
 {
     "name": "simple-command",

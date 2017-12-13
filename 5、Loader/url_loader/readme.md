@@ -63,7 +63,7 @@ npm install --save file-loader
 
 配置：
 
-```
+```javascript
 {
     test: /\.(png|jpg|jpeg|gif)$/,
     use: [
@@ -79,7 +79,7 @@ npm install --save file-loader
 
 css文件：
 
-```
+```css
 #app {
     position: relative;
     width: 500px;
@@ -185,7 +185,7 @@ url('./logo.png')
 
 示例代码：
 
-```
+```javascript
 {
     test: /\.(png|jpg|jpeg|gif)$/,
     use: [

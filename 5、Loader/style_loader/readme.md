@@ -81,7 +81,7 @@
 
 例如：
 
-```
+```javascript
 {
     loader: 'style-loader',
     options: {
@@ -123,7 +123,7 @@
 
 1、配置 ``style-loader`` 的属性如下：
 
-```
+```javascript
 {
     loader: 'style-loader',
     options: {
@@ -136,7 +136,7 @@
 
 3、在``transform.js``文件内，粘贴如下代码(CommonJS模块形式）：
 
-```
+```javascript
 // 这里只有一个参数，即css字符串
 module.exports = function (css) {
     console.log(css)
@@ -149,7 +149,7 @@ module.exports = function (css) {
 
 例如css文件如下：
 
-```
+```css
 // foo.css 转换前
 #app {
     position: relative;
@@ -158,7 +158,7 @@ module.exports = function (css) {
 
 转换完后的结果变为：
 
-```
+```css
 // foo.css 转换后
 #app {
     position: relative;
@@ -224,7 +224,7 @@ box-sizing: border-box;
 1. ``insertAt`` 值为 ``string`` 类型。可以是 ``top`` 或者 ``bottom``，表示插入某个标签 <b>内</b> 的顶部或者结尾，和该标签是父子关系；
 2. ``insertAt`` 值为 ``object`` 类型。key只能是 ``before``（见 ``node_modules/style-loader/lib/addStyles.js`` 第173行），表示插入到某个标签之前（和该标签是兄弟关系），例如以下：
 
-```
+```javascript
 insertAt: {
     before: '#app'
 },
@@ -317,7 +317,7 @@ bug的demo如[链接](https://github.com/qq20004604/webpack-study/tree/master/5%
 
 代码：
 
-```
+```javascript
 // app.js
 
 import style from './style/style.css'
@@ -347,7 +347,7 @@ document.querySelector('#test').onclick = function () {
 
 >使用方法
 
-```
+```javascript
 {
     loader: 'style-loader',
     options: {

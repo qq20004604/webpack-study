@@ -283,14 +283,14 @@ dist
 
 webpack打包前：
 
-```
+```css
 // foo.css
 @import 'http://abc.com/m.css'
 ```
 
 webpack打包后：
 
-```
+```html
 // html文件（假设使用了style-loader把css通过style标签插入）
 <style>
 @import 'http://abc.com/m.css'
@@ -325,7 +325,7 @@ webpack打包后：
 
 压缩前代码：
 
-```
+```css
 * {
     margin: 0;
     border: 0;
@@ -339,7 +339,7 @@ webpack打包后：
 
 压缩后代码：
 
-```
+```css
 *{margin:0;border:0;padding:0}.box{border-radius:150px}
 ```
 

@@ -17,7 +17,7 @@
 
 2、更改``webpack.config.js``文件，文件内容示例如以下代码，loader放在rules这个数组里面：
 
-```
+```javascript
 // webpack.config.js
 
 module.exports = {

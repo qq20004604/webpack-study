@@ -20,7 +20,7 @@ npm install --save babel-loader babel-core babel-preset-env webpack
 
 创建babel规则文件``.babelrc``，内容设置为：
 
-```
+```javascript
 {
   "presets": [
     [
@@ -43,7 +43,7 @@ npm install --save babel-loader babel-core babel-preset-env webpack
 
 然后``app.js``里添加文件内容（这显然是es6语法）：
 
-```
+```javascript
 let foo = () => {
     console.log('1')
 }
@@ -54,7 +54,7 @@ foo()
 
 会发现代码已经被成功转为非es6语法了（截取如下）：
 
-```
+```javascript
 var foo = function foo() {
   console.log('1');
 };
@@ -75,7 +75,7 @@ npm install babel-plugin-transform-runtime --save-dev
 
 然后修改``.babelrc``文件的内容为：
 
-```
+```javascript
 {
   "presets": [
     "babel-preset-env"
@@ -98,7 +98,7 @@ npm install babel-plugin-transform-runtime --save-dev
 
 修改webpack设置文件的loader内容为：
 
-```
+```javascript
 {
     test: /\.js$/,
     exclude: /node_modules/,
@@ -108,7 +108,7 @@ npm install babel-plugin-transform-runtime --save-dev
 
 最后修改``app.js``这个文件的内容，给里面加一些特殊的es6语法：
 
-```
+```javascript
 let foo = () => {
     console.log('1')
 }
