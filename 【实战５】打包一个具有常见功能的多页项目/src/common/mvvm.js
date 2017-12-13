@@ -5,6 +5,7 @@
  */
 
 // 这是一个简陋的双向绑定
+// DOM需要是jQuery的DOM（为了省事）
 const mvvm = function (obj, key, $DOM) {
     if ($DOM.prop('tagName') === "INPUT") {
         $DOM.keyup(function () {

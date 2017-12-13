@@ -5,6 +5,7 @@
  */
 
 // 单向绑定
+// DOM需要是jQuery的DOM（为了省事）
 const sigleBinding = {
     // 绑定文本框
     DOM(obj, key, $DOM) {
