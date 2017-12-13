@@ -21,4 +21,5 @@ const insertTemplate = function (template, insertDOM) {
     insertDOM.append(DOM)
 }
 
+
 export {insertTemplate, $}

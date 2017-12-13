@@ -217,6 +217,7 @@ module.exports = {
     ├─img       图片资源文件夹
     ├─less      less 文件夹
     ├─page      html 文件夹（多入口的模板 html文件）
+    ├─template  html 模板文件夹（通过js引入模板）
     └─static    静态资源文件夹，这里放使用静态路径的资源
 ```
 
@@ -269,3 +270,12 @@ module.exports = {
 所以可以从下面这个CDN直接下载 jQuery 来使用，版本是 1.12.4
 
 https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js
+
+然后在js文件的开始为孩子，通过require引入（注意，不能通过 ``import`` 引入）
+
+```javascript
+const $ = require('../common/jquery.min')
+```
+
+webpack会帮你做剩下的事情，你只需要愉快的使用 jQuery 就好了。
+
