@@ -14,7 +14,7 @@ const $ = function (selector) {
 
 // 将模板插入到某个DOM里
 // 示例：
-// insertTemplate(require('../template/login.html'), document.body)
+// insertTemplate(require('../template/login_box.html'), document.body)
 const insertTemplate = function (template, insertDOM) {
     let DOM = document.createElement('div')
     DOM.innerHTML = template

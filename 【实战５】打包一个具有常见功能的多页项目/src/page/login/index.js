@@ -3,13 +3,13 @@
  * QQ: 20004604
  * weChat: qq20004604
  */
-import '../less/login.less'
-import {insertTemplate} from '../common/public'
-import mvvm from '../common/mvvm'
+import './login.less'
+import {insertTemplate} from '../../common/public'
+import mvvm from '../../common/mvvm'
 
-const $ = require('../common/jquery.min')
+const $ = require('../../common/jquery.min')
 
-insertTemplate(require('../template/login.html'), $('body'))
+insertTemplate(require('./login_box.html'), $('body'))
 
 const $account = $("#account-input")
 const $password = $("#password-input")

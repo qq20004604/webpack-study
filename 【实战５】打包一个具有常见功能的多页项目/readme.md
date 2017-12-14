@@ -54,6 +54,7 @@ npm run build
 9. [file-loader](https://github.com/qq20004604/webpack-study/tree/master/5%E3%80%81Loader/file_loader)：``url-loader`` 不能转换 base64字符串 的文件，被这个处理（主要用于设置打包后图片路径，以及CDN等）；
 10. [html-withimg-loader](https://github.com/qq20004604/webpack-study/tree/master/5%E3%80%81Loader/html_withimg_loader)：用于加载html模板；
 10. ``html-webpack-plugin`` ：用于将已有 html 文件作为模板，生成打包后的 html 文件；
+11. ``clean-webpack-plugin``：用于每次打包前清理dist文件夹
 
 
 <h3>3、技术难点</h3>
@@ -78,7 +79,7 @@ npm run build
 
 <b>第二：chunks特性实现按需加载</b>
 
-通过配置 ``html-webpack-plugin`` 的 ``options.chunks`` ，可以让我们实现让 login.html 只加载 login.js，而 userInfo.html 只加载 userInfo.js（注：hash 文件名不影响匹配）；
+通过配置 ``html-webpack-plugin`` 的 ``options.chunks`` ，可以让我们实现让 ``login.html`` 只加载 ``login/index.js``，而 ``userInfo.html`` 只加载 ``userInfo/index.js``（注：由于以 entry 的 key 作为寻找出口文件的根据，因此打包后带 hash 的文件名不影响匹配）；
 
 注意，这个实现的机制，是通过 ``options.chunk`` 的值，去匹配 ``webpack.config.js``的 ``entry`` 对象的 ``key``。
 
@@ -142,7 +143,7 @@ const entryJSON = require('../config/entry.json');
 // 入口管理
 let entry = {}
 entryJSON.map(page => {
-    entry[page.url] = path.resolve(__dirname, `../src/entry/${page.url}.js`)
+    entry[page.url] = path.resolve(__dirname, `../src/page/${page.url}/index.js`)
 })
 ```
 
@@ -155,8 +156,8 @@ const path = require('path')
 // 因为多入口，所以要多个HtmlWebpackPlugin，每个只能管一个入口
 let plugins = entryJSON.map(page => {
     return new HtmlWebpackPlugin({
-        filename: path.resolve(__dirname, `../dist/${page.url}.html`),    // 输出文件名
-        template: path.resolve(__dirname, `../src/page/${page.url}.html`),    // 输入模板html
+        filename: path.resolve(__dirname, `../dist/${page.url}.html`),
+        template: path.resolve(__dirname, `../src/page/${page.url}/index.html`),
         chunks: [page.url], // 实现多入口的核心，决定自己加载哪个js文件，这里的 page.url 指的是 entry 对象的 key 所对应的入口打包出来的js文件
         hash: true, // 为静态资源生成hash值
         minify: false,   // 压缩，如果启用这个的话，需要使用html-minifier，不然会直接报错
@@ -190,14 +191,14 @@ module.exports = {
 │  └─webpack.config.js
 ├─dist
 └─src
-    ├─common
-    ├─entry
-    │  ├─userInfo.js
-    │  └─login.js
-    ├─page
-    │  ├─userInfo.html
-    │  └─login.html
-    └─static
+    └─page
+       ├─login
+       │  ├─index.js
+       │  ├─index.html
+       │  └─login.less
+       └─userInfo
+          ├─index.js
+          └─index.html
 ```
 
 <h4>3.2、文件分类管理</h4>
@@ -213,11 +214,10 @@ module.exports = {
 │  └─img    打包后的图片文件夹
 └─src       资源文件夹
     ├─common    全局配置，或者公共方法，放在此文件夹，例如 less-loader 的全局变量
-    ├─entry     入口文件夹
-    ├─img       图片资源文件夹
-    ├─less      less 文件夹
-    ├─page      html 文件夹（多入口的模板 html文件）
-    ├─template  html 模板文件夹（通过js引入模板）
+    ├─img       图片资源文件夹，这些是共用的图片
+    ├─less      less 文件夹，共用的less文件
+    ├─page      每个页面，在page里会有一个文件夹，里面放置入口 js 文件，源 html 文件，以及不会被复用的 html template文件。
+    ├─template  html 模板文件夹（通过js引入模板，这里的可能被复用）
     └─static    静态资源文件夹，这里放使用静态路径的资源
 ```
 
@@ -271,11 +271,41 @@ module.exports = {
 
 https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js
 
-然后在js文件的开始为孩子，通过require引入（注意，不能通过 ``import`` 引入）
+然后在js文件的开始位置，通过require引入（注意，不能通过 ``import`` 引入）
 
 ```javascript
-const $ = require('../common/jquery.min')
+const $ = require('../../common/jquery.min')
 ```
 
 webpack会帮你做剩下的事情，你只需要愉快的使用 jQuery 就好了。
 
+<h4>3.5、每次打包前，清理dist文件夹</h4>
+
+需要借助 ``clean-webpack-plugin`` 这个插件。
+
+使用这个插件后，可以在每次打包前清理掉整个文件夹。
+
+<h4>3.6、使用 html 模板</h4>
+
+由于我们很可能在 html 中使用 ``<img>`` 标签，
+
+而 ``html-webpack-plugin`` 这个插件，只能用于将某个 html 文件作为打包后的源 html 文件，
+
+不会将其 ``<img>`` 标签中的 ``src``属性转为打包后的图片路径，同时也不会将引入的图片进行打包。
+
+因此我们需要将 html 内容单独拆出来，``page`` 文件夹里的源文件只负责作为 html 模板而已。
+
+为了使用 html 模板，我们需要专门引入一个插件：
+
+``html-withimg-loader``：用于解析 html 文件。
+
+使用方法很简单：
+
+1. 配置``loader``（参照 ``webpack.config.js``）；
+2. ``import`` 导入 html 模板文件（例如 ``login.html``）；
+
+导入的时候，是一个字符串，并且图片的 url 已经被解析了。然后我们将其引入源 html 文件中（比如``page/login.html``），再写各种逻辑就行了。
+
+<b>注：</b>
+
+务必记得先把 html 模板插入页面中，再写他的相关逻辑。
