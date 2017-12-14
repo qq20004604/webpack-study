@@ -31,7 +31,7 @@ const mvvm = function (obj, key, $DOM) {
                 } else {
                     $DOM.text(newVal)
                 }
-                if (typeof state.get === 'function') {
+                if (state && typeof state.get === 'function') {
                     state.get.call(null, newVal)
                 }
             }
