@@ -44,13 +44,20 @@ module.exports = {
                 loader: 'babel-loader'
             },
             {
+                test: /\.css$/,
+                use: [
+                    'style-loader',
+                    'css-loader'
+                ]
+            },
+            {
                 test: /\.less$/,
                 use: [
                     'style-loader',
                     {
                         loader: 'css-loader',
                         options: {
-                            root: path.resolve(__dirname, '/../static/'),   // url里，以 / 开头的路径，去找src/static文件夹
+                            root: path.resolve(__dirname, '../src/static'),   // url里，以 / 开头的路径，去找src/static文件夹
                             minimize: true, // 压缩css代码
                             // sourceMap: true,    // sourceMap，默认关闭
                             alias: {

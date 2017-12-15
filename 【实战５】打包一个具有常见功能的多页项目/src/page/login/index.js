@@ -4,6 +4,7 @@
  * weChat: qq20004604
  */
 import './login.less'
+import '../../less/reset.css'
 import {insertTemplate} from '../../common/public'
 import mvvm from '../../common/mvvm'
 
@@ -15,6 +16,9 @@ const $account = $("#account-input")
 const $password = $("#password-input")
 const $submit = $("#login-btn")
 const $errorMessage = $("#error-msg")
+
+localStorage.userName = ''
+localStorage.password = ''
 
 // 变量
 // 错误提示信息
@@ -31,11 +35,15 @@ $submit.click(() => {
     if (data.done) {
         return
     }
-    if ($account.val().length === 0) {
+    let sendData = {
+        userName: $account.val(),
+        password: $password.val()
+    }
+    if (sendData.userName.length === 0) {
         data.tips = '请输入账号'
         return
     }
-    if ($password.val().length === 0) {
+    if (sendData.password.length === 0) {
         data.tips = '请输入密码'
         return
     }
@@ -59,6 +67,10 @@ $submit.click(() => {
             data.submitting = '登录成功'
             data.done = true
             data.tips = '页面即将跳转'
+            // 实际开发中不能这么存！（以下）
+            localStorage.userName = sendData.userName
+            localStorage.password = sendData.password
+
             setTimeout(() => {
                 window.location.href = 'userInfo.html'
             }, 1000)
