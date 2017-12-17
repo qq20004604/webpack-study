@@ -110,6 +110,9 @@ module.exports = {
     // 将插件添加到webpack中
     // 如果还有其他插件，将两个数组合到一起就行了
     plugins: ([
-        new CleanWebpackPlugin(['dist'])
+        new CleanWebpackPlugin(path.resolve(__dirname, '../dist'), {
+            root: path.resolve(__dirname, '../'),
+            verbose: true
+        })
     ].concat(plugins))
 }

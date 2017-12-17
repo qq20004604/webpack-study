@@ -285,6 +285,30 @@ webpack会帮你做剩下的事情，你只需要愉快的使用 jQuery 就好�
 
 使用这个插件后，可以在每次打包前清理掉整个文件夹。
 
+基于本项目来说，清除的时候配置的时候需要这样配置：
+
+```javascript
+new CleanWebpackPlugin(path.resolve(__dirname, '../dist'), {
+    root: path.resolve(__dirname, '../'),    // 设置root
+    verbose: true
+})
+```
+
+原因在于，这个插件会认为``webpack.config.js``所在的目录为项目的根目录。
+
+只使用第一个参数的话，会报错移除目标的目录位置不对：
+
+```
+clean-webpack-plugin: （略）【实战５】打包一个具有常见功能的多页项目\dist is outside of the project root. Skipping...
+```
+
+而添加了第二个参数的设置后，就可以正常使用了。
+
+<b>注：</b>
+
+他的效果是直接删除文件夹，因此千万别写错目录了，如果删除了你正常的文件夹，那么……就只能哭啦。
+
+
 <h4>3.6、使用 html 模板</h4>
 
 由于我们很可能在 html 中使用 ``<img>`` 标签，
