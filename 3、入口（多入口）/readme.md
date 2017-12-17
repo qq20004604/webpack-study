@@ -6,6 +6,20 @@
 
 有疑义请[点击这里](https://github.com/qq20004604/webpack-study/issues)，发【Issues】。
 
+<h3>0、使用说明</h3>
+
+安装：
+
+```
+npm install
+```
+
+运行：
+
+```
+npm run test
+```
+
 <h3>3、入口（多入口）</h3>
 
 [示例目录](https://github.com/qq20004604/webpack-study/tree/master/3%E3%80%81%E5%85%A5%E5%8F%A3%EF%BC%88%E5%A4%9A%E5%85%A5%E5%8F%A3%EF%BC%89)

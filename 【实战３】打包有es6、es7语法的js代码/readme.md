@@ -8,6 +8,20 @@
 
 [实战项目示例目录](https://github.com/qq20004604/webpack-study/tree/master/%E3%80%90%E5%AE%9E%E6%88%98%EF%BC%93%E3%80%91%E6%89%93%E5%8C%85%E6%9C%89es6%E3%80%81es7%E8%AF%AD%E6%B3%95%E7%9A%84js%E4%BB%A3%E7%A0%81)
 
+<h3>0、使用说明</h3>
+
+安装：
+
+```
+npm install
+```
+
+运行：
+
+```
+npm run test
+```
+
 <h3>1、需求列表</h3>
 
 1、html文件引入的js文件，需要使用es6、es7的语法；

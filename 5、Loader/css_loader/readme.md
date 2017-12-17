@@ -8,6 +8,20 @@
 
 有疑义请[点击这里](https://github.com/qq20004604/webpack-study/issues)，发【Issues】。
 
+<h3>0、使用说明</h3>
+
+安装：
+
+```
+npm install
+```
+
+运行：
+
+```
+npm run test
+```
+
 <h3>1、概述</h3>
 
 对于一般的css文件，我们需要动用三个loader（是不是觉得好麻烦）；

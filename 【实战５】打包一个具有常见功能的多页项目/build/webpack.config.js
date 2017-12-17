@@ -88,7 +88,7 @@ module.exports = {
                     {
                         loader: 'url-loader',
                         options: {
-                            limit: 8192,
+                            limit: 4096,
                             name: '[hash].[ext]',
                             outputPath: function (fileName) {
                                 return 'img/' + fileName    // 后面要拼上这个 fileName 才行

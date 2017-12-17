@@ -10,6 +10,20 @@
 
 [DEMO](https://github.com/qq20004604/webpack-study/tree/master/5%E3%80%81Loader/style_loader)地址
 
+<h3>0、使用说明</h3>
+
+安装：
+
+```
+npm install
+```
+
+运行：
+
+```
+npm run test
+```
+
 <h3>1、概述</h3>
 
 简单来说，``style-loader``是将``css-loader``打包好的css代码以``<style>``标签的形式插入到html文件中。

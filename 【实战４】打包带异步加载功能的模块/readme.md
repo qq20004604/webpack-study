@@ -8,6 +8,19 @@
 
 [实战项目示例目录](https://github.com/qq20004604/webpack-study/tree/master/%E3%80%90%E5%AE%9E%E6%88%98%EF%BC%94%E3%80%91%E6%89%93%E5%8C%85%E5%B8%A6%E5%BC%82%E6%AD%A5%E5%8A%A0%E8%BD%BD%E5%8A%9F%E8%83%BD%E7%9A%84%E6%A8%A1%E5%9D%97)
 
+<h3>0、使用说明</h3>
+
+安装：
+
+```
+npm install
+```
+
+运行：
+
+```
+npm run test
+```
 
 <h3>1、需求列表</h3>
 

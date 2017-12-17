@@ -8,6 +8,20 @@
 
 [实战项目示例目录](https://github.com/qq20004604/webpack-study/tree/master/%E3%80%90%E5%AE%9E%E6%88%98%EF%BC%92%E3%80%91%E6%89%93%E5%8C%85%E4%B8%80%E4%B8%AAbootstrap%E9%A1%B9%E7%9B%AE%EF%BC%88%E6%89%93%E5%8C%85%E6%96%87%E4%BB%B6%E5%B8%A6hash%EF%BC%89)
 
+<h3>0、使用说明</h3>
+
+安装：
+
+```
+npm install
+```
+
+运行：
+
+```
+npm run test
+```
+
 <h3>1、需求列表</h3>
 
 1、html文件引入了一些外部资源；

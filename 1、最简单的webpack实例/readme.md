@@ -6,6 +6,19 @@
 
 有疑义请[点击这里](https://github.com/qq20004604/webpack-study/issues)，发【Issues】。
 
+<h3>0、使用说明</h3>
+
+安装：
+
+```
+npm install
+```
+
+运行：
+
+```
+webpack
+```
 
 <h3>1、webpack基本结构</h3>
 

@@ -10,6 +10,20 @@
 
 [DEMO](https://github.com/qq20004604/webpack-study/tree/master/5%E3%80%81Loader/html_withimg_loader)地址
 
+<h3>0、使用说明</h3>
+
+安装：
+
+```
+npm install
+```
+
+运行：
+
+```
+npm run test
+```
+
 <h3>1、概述</h3>
 
 简单来说，``html-withimg-loader`` 最主要的作用，是将引用的 html 文件中的 img 文件，或``background-image:url()``，转为可被 ``url-loader`` 等其他loader处理的东西。

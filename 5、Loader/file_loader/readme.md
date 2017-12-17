@@ -10,6 +10,20 @@
 
 [DEMO](https://github.com/qq20004604/webpack-study/tree/master/5%E3%80%81Loader/file_loader)地址
 
+<h3>0、使用说明</h3>
+
+安装：
+
+```
+npm install
+```
+
+运行：
+
+```
+npm run test
+```
+
 <h3>1、概述</h3>
 
 简单来说，``file-loader`` 就是将文件（由于一般是图片文件为主，所以下面通常使用图片两字作为替代，方便理解。其他的包括字体文件等），在进行一些处理后（主要是处理文件名和路径），移动打包后的目录中。

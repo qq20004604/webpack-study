@@ -10,6 +10,20 @@
 
 [DEMO](https://github.com/qq20004604/webpack-study/tree/master/5%E3%80%81Loader/postcss_loader)地址
 
+<h3>0、使用说明</h3>
+
+安装：
+
+```
+npm install
+```
+
+运行：
+
+```
+npm run test
+```
+
 <h3>1、概述</h3>
 
 ``postcss-loader`` 用于处理css代码，具有下列特点：
