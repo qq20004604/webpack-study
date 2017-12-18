@@ -40,6 +40,7 @@ npm run build
 1. 启用 hash 命名，以应对缓存问题；
 2. css 自动添加兼容性前缀；
 3. 将图片统一放到同一个文件夹下，方便管理；
+4. 将共同引入的模块单独打包出来，用于缓存，减少每次重复加载的代码量。
 
 <h3>2、涉及到的知识</h3>
 
@@ -55,6 +56,7 @@ npm run build
 10. [html-withimg-loader](https://github.com/qq20004604/webpack-study/tree/master/5%E3%80%81Loader/html_withimg_loader)：用于加载html模板；
 10. ``html-webpack-plugin`` ：用于将已有 html 文件作为模板，生成打包后的 html 文件；
 11. ``clean-webpack-plugin``：用于每次打包前清理dist文件夹
+12. ``CommonsChunkPlugin``：提取 chunks 之间共享的通用模块
 
 
 <h3>3、技术难点</h3>
@@ -265,7 +267,7 @@ module.exports = {
 
 <h4>3.4、安装jQuery</h4>
 
-<b>方案一：</b>
+<b>方案：</b>
 
 由于npm上并没有最新的 jQuery，目前来说， ``1.7.4`` 是最新的版本。
 
@@ -281,9 +283,9 @@ const $ = require('../../common/jquery.min')
 
 webpack会帮你做剩下的事情，你只需要愉快的使用 jQuery 就好了。
 
-<b>方案二：</b>
+<h4>3.5、提取 chunks 之间共享的通用模块</h4>
 
-以上方法简单易行，但又一个缺点，那就是会导致代码重复打包的问题。
+在 3.4 中，我们引入了 jQeury，方法简单易行，但又一个缺点，那就是会导致代码重复打包的问题。
 
 即 jQuery 会被打包进每一个引入他的入口 js 文件中，每个页面都需要重复下载一份将jQuery代码打包到其中的 js 文件（很可能两个 js 文件只有 20kb 是自己的代码，却有 90kb 是 jQuery 代码）。
 
@@ -293,9 +295,13 @@ webpack会帮你做剩下的事情，你只需要愉快的使用 jQuery 就好�
 2. 访问第二个页面时，预期加载 bar.js 和 jQuery.js；
 3. 当访问第二个页面时，发现已经在第一个页面下载过 jQuery.js 了，因此将不需要再下载 jQuery 代码，只需要下载 bar.js 就可以了；
 
-为了实现这个目标，毫无疑问，我们需要将 jQuery.js 文件单独打包。
+<b>方案改进：</b>
 
-有几种做法，但实测后都不好用，最后我采用了 webpack 自带的插件：``webpack.optimize.CommonsChunkPlugin``来实现。
+为了实现这个目标，毫无疑问，我们需要将 jQuery.js 文件单独打包，或者说，每一个在多个模块中共享的模块，都会被单独打包。
+
+有几种做法，但实测后都不好用，鉴于 jQuery 会在每个页面都适用，因此综合考虑后，我采用以下方案来初步实现我的目标。
+
+最后我采用了 webpack 自带的插件：``webpack.optimize.CommonsChunkPlugin``来实现，他可以将在多个文件中引入的 模块，单独打包。
 
 关于这个插件可以先参考官方文档：[CommonsChunkPlugin: 	
 提取 chunks 之间共享的通用模块](https://doc.webpack-china.org/plugins/commons-chunk-plugin/)。
@@ -313,7 +319,7 @@ new webpack.optimize.CommonsChunkPlugin({
 })
 ```
 
-这个的效果是将至少有 2 个 chunk 引入的公共代码，打包到 foo 这个 chunk中
+这个的效果是将至少有 2 个 chunk 引入的公共代码，打包到 foo 这个 chunk 中。
 
 2、我们需要引入这个打包后的 chunk ，方法是通过 ``html-webpack-plugin`` 这个插件引入。
 
@@ -330,6 +336,7 @@ new HtmlWebpackPlugin({
 foo.d78e8f4193f50cc42a49.js    // 199 KB（这里包含jQuery以及公共代码）
 login.d2819f642c5927565e7b.js  // 15 KB
 userInfo.1610748fb3346bcd0c47.js // 4 KB
+0.fe5c2c427675e10b0d3a.js      // 2 KB
 ```
 
 <b>注：</b>
@@ -338,7 +345,7 @@ userInfo.1610748fb3346bcd0c47.js // 4 KB
 
 因此可能需要特殊配置 ``minChunks`` 这个属性，具体请查看官方文档。
 
-<h4>3.5、每次打包前，清理dist文件夹</h4>
+<h4>3.6、每次打包前，清理dist文件夹</h4>
 
 需要借助 ``clean-webpack-plugin`` 这个插件。
 
@@ -368,7 +375,7 @@ clean-webpack-plugin: （略）【实战５】打包一个具有常见功能的�
 他的效果是直接删除文件夹，因此千万别写错目录了，如果删除了你正常的文件夹，那么……就只能哭啦。
 
 
-<h4>3.6、使用 html 模板</h4>
+<h4>3.7、使用 html 模板</h4>
 
 由于我们很可能在 html 中使用 ``<img>`` 标签，
 
@@ -414,6 +421,81 @@ clean-webpack-plugin: （略）【实战５】打包一个具有常见功能的�
 1. 启用 hash 命名，以应对缓存问题；
 2. css 自动添加兼容性前缀；
 3. 将图片统一放到同一个文件夹下，方便管理；
+4. 将共同引入的模块单独打包出来，用于缓存，减少每次重复加载的代码量。
 
-基本需求：
 
+---
+
+<b>需求的实现：</b>
+
+<b>基本需求：</b>
+
+<table>
+    <tr>
+        <td colspan="2">需求的实现过程</td>
+    </tr>
+    <tr>
+        <td>需求</td>
+        <td>实现方法</td>
+    </tr>
+    <tr>
+        <td>引入jQuery</td>
+        <td>1. 通过 require() 引入，并通过 CommonsChunkPlugin 实现单独打包；</td>
+    </tr>
+    <tr>
+        <td>使用 less 作为 css 预处理器</td>
+        <td>1. 使用 less-loader 来处理 .less 文件；</td>
+    </tr>
+    <tr>
+        <td>标准模块化开发</td>
+        <td>1. 使用 import 和 require 语法来进行模块化开发；</td>
+    </tr>
+    <tr>
+        <td>有异步加载的模块</td>
+        <td>1. 通过 require([], callback) 来实现模块的异步加载</td>
+    </tr>
+    <tr>
+        <td>使用 es6、es7 语法</td>
+        <td>1. 使用 babel 来转义</td>
+    </tr>
+    <tr>
+        <td>写一个登录页面作为DEMO，再写一个登录后的示例页面作为跳转后页面</td>
+        <td>1. 登录页：page/login<br>2. 跳转后页面：page/userInfo</td>
+    </tr>
+    <tr>
+        <td>可适用于多页项目</td>
+        <td>1. config/entry.json 用于配置多页入口；<br>2. html-withimg-loader 来生成多页模板；<br>3. 最后在webpack.config.js里配置 entry 和 plugins</td>
+    </tr>
+    <tr>
+        <td>css 文件与 图片 文件脱离（即更改 css 文件路径不影响其对图片的引用）</td>
+        <td>通过 css-loader 的别名实现</td>
+    </tr>
+</table>
+
+<b>打包需求：</b>
+
+<table>
+    <tr>
+        <td colspan="2">需求的实现过程</td>
+    </tr>
+    <tr>
+        <td>需求</td>
+        <td>实现方法</td>
+    </tr>
+    <tr>
+        <td>启用 hash 命名，以应对缓存问题</td>
+        <td>配置 output 的 filename 属性，加 [chunkhash] 即可</td>
+    </tr>
+    <tr>
+        <td>css 自动添加兼容性前缀</td>
+        <td>使用 post-loader 的 autoprefixer</td>
+    </tr>
+    <tr>
+        <td>将图片统一放到同一个文件夹下，方便管理</td>
+        <td>配置 url-loader （实质是 file-loader ）的 outputPath</td>
+    </tr>
+    <tr>
+        <td>将共同引入的模块单独打包出来，用于缓存，减少每次重复加载的代码量</td>
+        <td>使用插件 CommonsChunkPlugin 来实现</td>
+    </tr>
+</table>
