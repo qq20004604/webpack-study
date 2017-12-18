@@ -40,7 +40,8 @@ npm run build
 1. 启用 hash 命名，以应对缓存问题；
 2. css 自动添加兼容性前缀；
 3. 将图片统一放到同一个文件夹下，方便管理；
-4. 将共同引入的模块单独打包出来，用于缓存，减少每次重复加载的代码量。
+4. 将共同引入的模块单独打包出来，用于缓存，减少每次重复加载的代码量；
+5. 代码进行丑化压缩；
 
 <h3>2、涉及到的知识</h3>
 
@@ -400,8 +401,30 @@ clean-webpack-plugin: （略）【实战５】打包一个具有常见功能的�
 
 务必记得先把 html 模板插入页面中，再写他的相关逻辑。
 
+<h4>3.8、代码的丑化压缩</h4>
 
-<h3>3、分析</h3>
+使用插件 ``UglifyjsWebpackPlugin`` ，文档参照 (UglifyjsWebpackPlugin)[https://doc.webpack-china.org/plugins/uglifyjs-webpack-plugin]
+
+压缩前：
+
+```
+0.fe5c2c427675e10b0d3a.js    // 2 KB
+foo.a5e497953a435f418876.js    // 199 KB
+login.9698d39e5b8f6c381649.js    // 15 KB
+userInfo.f5a705ffcb43780bb3d6.js    // 4 KB
+```
+
+丑化压缩后：
+
+```
+
+0.fe5c2c427675e10b0d3a.js    // 1 KB
+foo.a5e497953a435f418876.js    // 120 KB
+login.9698d39e5b8f6c381649.js    // 10 KB
+userInfo.f5a705ffcb43780bb3d6.js    // 2 KB
+```
+
+<h3>4、分析</h3>
 
 重新列出所有需求：
 
@@ -421,7 +444,8 @@ clean-webpack-plugin: （略）【实战５】打包一个具有常见功能的�
 1. 启用 hash 命名，以应对缓存问题；
 2. css 自动添加兼容性前缀；
 3. 将图片统一放到同一个文件夹下，方便管理；
-4. 将共同引入的模块单独打包出来，用于缓存，减少每次重复加载的代码量。
+4. 将共同引入的模块单独打包出来，用于缓存，减少每次重复加载的代码量；
+5. 代码进行丑化压缩；
 
 
 ---
@@ -497,5 +521,9 @@ clean-webpack-plugin: （略）【实战５】打包一个具有常见功能的�
     <tr>
         <td>将共同引入的模块单独打包出来，用于缓存，减少每次重复加载的代码量</td>
         <td>使用插件 CommonsChunkPlugin 来实现</td>
+    </tr>
+    <tr>
+        <td>代码进行丑化压缩</td>
+        <td>使用插件 UglifyjsWebpackPlugin 来实现</td>
     </tr>
 </table>

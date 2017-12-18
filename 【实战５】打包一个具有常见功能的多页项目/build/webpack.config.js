@@ -1,6 +1,7 @@
 ﻿// 引入插件
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const webpack = require('webpack')
 // 多入口管理文件
 const entryJSON = require('../config/entry.json');
@@ -121,6 +122,7 @@ module.exports = {
         new webpack.optimize.CommonsChunkPlugin({
             name: "foo", // 这个对应的是 entry 的 key
             minChunks: 2
-        })
+        }),
+        new UglifyJSPlugin()
     ].concat(plugins))
 }
