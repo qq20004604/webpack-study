@@ -1,6 +1,7 @@
 ﻿// 引入插件
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const webpack = require('webpack')
 // 多入口管理文件
 const entryJSON = require('../config/entry.json');
 // less的全局变量
@@ -12,7 +13,7 @@ let plugins = entryJSON.map(page => {
     return new HtmlWebpackPlugin({
         filename: path.resolve(__dirname, `../dist/${page.url}.html`),
         template: path.resolve(__dirname, `../src/page/${page.url}/index.html`),
-        chunks: [page.url], // 实现多入口的核心，决定自己加载哪个js文件，这里的 page.url 指的是 entry 对象的 key 所对应的入口打包出来的js文件
+        chunks: [page.url, 'foo'], // 实现多入口的核心，决定自己加载哪个js文件，这里的 page.url 指的是 entry 对象的 key 所对应的入口打包出来的js文件
         hash: true, // 为静态资源生成hash值
         minify: false,   // 压缩，如果启用这个的话，需要使用html-minifier，不然会直接报错
         xhtml: true,    // 自闭标签
@@ -20,7 +21,10 @@ let plugins = entryJSON.map(page => {
 })
 
 // 入口管理
-let entry = {}
+let entry = {
+    // 引入jQuery，这个是为了配合 webpack.optimize.CommonsChunkPlugin 这个插件使用。
+}
+
 entryJSON.map(page => {
     entry[page.url] = path.resolve(__dirname, `../src/page/${page.url}/index.js`)
 })
@@ -113,6 +117,10 @@ module.exports = {
         new CleanWebpackPlugin(path.resolve(__dirname, '../dist'), {
             root: path.resolve(__dirname, '../'),
             verbose: true
+        }),
+        new webpack.optimize.CommonsChunkPlugin({
+            name: "foo", // 这个对应的是 entry 的 key
+            minChunks: 2
         })
     ].concat(plugins))
 }

@@ -18,7 +18,6 @@
     "file-loader": "^1.1.5",
     "html-webpack-plugin": "^2.30.1",
     "html-withimg-loader": "^0.1.16",
-    "jQuery": "^1.7.4",
     "less": "^2.7.3",
     "less-loader": "^4.0.5",
     "postcss-loader": "^2.0.9",

@@ -265,6 +265,8 @@ module.exports = {
 
 <h4>3.4、安装jQuery</h4>
 
+<b>方案一：</b>
+
 由于npm上并没有最新的 jQuery，目前来说， ``1.7.4`` 是最新的版本。
 
 所以可以从下面这个CDN直接下载 jQuery 来使用，版本是 1.12.4
@@ -278,6 +280,63 @@ const $ = require('../../common/jquery.min')
 ```
 
 webpack会帮你做剩下的事情，你只需要愉快的使用 jQuery 就好了。
+
+<b>方案二：</b>
+
+以上方法简单易行，但又一个缺点，那就是会导致代码重复打包的问题。
+
+即 jQuery 会被打包进每一个引入他的入口 js 文件中，每个页面都需要重复下载一份将jQuery代码打包到其中的 js 文件（很可能两个 js 文件只有 20kb 是自己的代码，却有 90kb 是 jQuery 代码）。
+
+我们期望：
+
+1. 访问第一个页面时，预期加载 foo.js 和 jQuery.js；
+2. 访问第二个页面时，预期加载 bar.js 和 jQuery.js；
+3. 当访问第二个页面时，发现已经在第一个页面下载过 jQuery.js 了，因此将不需要再下载 jQuery 代码，只需要下载 bar.js 就可以了；
+
+为了实现这个目标，毫无疑问，我们需要将 jQuery.js 文件单独打包。
+
+有几种做法，但实测后都不好用，最后我采用了 webpack 自带的插件：``webpack.optimize.CommonsChunkPlugin``来实现。
+
+关于这个插件可以先参考官方文档：[CommonsChunkPlugin: 	
+提取 chunks 之间共享的通用模块](https://doc.webpack-china.org/plugins/commons-chunk-plugin/)。
+
+为了实现我们的目的，我们需要做两件事：
+
+1、使用这个插件，如下配置：
+
+```
+const webpack = require('webpack')
+
+new webpack.optimize.CommonsChunkPlugin({
+    name: "foo", // 这个对应的是 entry 的 key
+    minChunks: 2
+})
+```
+
+这个的效果是将至少有 2 个 chunk 引入的公共代码，打包到 foo 这个 chunk中
+
+2、我们需要引入这个打包后的 chunk ，方法是通过 ``html-webpack-plugin`` 这个插件引入。
+
+```
+// 无关配置已经省略
+new HtmlWebpackPlugin({
+    chunks: [page.url, 'foo'], // 这里的foo，就是通过CommonsChunkPlugin生成的chunk
+})
+```
+
+无需修改源代码，此时我们可以执行``npm run build``查看打包后的效果：
+
+```
+foo.d78e8f4193f50cc42a49.js    // 199 KB（这里包含jQuery以及公共代码）
+login.d2819f642c5927565e7b.js  // 15 KB
+userInfo.1610748fb3346bcd0c47.js // 4 KB
+```
+
+<b>注：</b>
+
+如果页面很多的话，那么很可能某些公共组建被大量chunk所共享，而某些chunk又被少量chunk所共享。
+
+因此可能需要特殊配置 ``minChunks`` 这个属性，具体请查看官方文档。
 
 <h4>3.5、每次打包前，清理dist文件夹</h4>
 
@@ -335,4 +394,26 @@ clean-webpack-plugin: （略）【实战５】打包一个具有常见功能的�
 务必记得先把 html 模板插入页面中，再写他的相关逻辑。
 
 
-<h3>3、代码</h3>
+<h3>3、分析</h3>
+
+重新列出所有需求：
+
+基本需求：
+
+1. 引入jQuery（或其他类似库，之所以用 ``jQuery`` 是每个前端开发者都理应会 jQuery）；
+2. 使用 ``less`` 作为 ``css`` 预处理器；
+3. 标准模块化开发；
+4. 有异步加载的模块；
+5. 使用 es6、es7 语法；
+6. 写一个登录页面作为DEMO，再写一个登录后的示例页面作为跳转后页面；
+7. 可适用于多页项目；
+8. css 文件与 图片 文件脱离（即更改 css 文件路径不影响其对图片的引用）
+
+打包要求：
+
+1. 启用 hash 命名，以应对缓存问题；
+2. css 自动添加兼容性前缀；
+3. 将图片统一放到同一个文件夹下，方便管理；
+
+基本需求：
+
