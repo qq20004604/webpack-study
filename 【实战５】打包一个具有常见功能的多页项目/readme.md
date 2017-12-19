@@ -6,7 +6,7 @@
 
 有疑义请[点击这里](https://github.com/qq20004604/webpack-study/issues)，发【Issues】。
 
-[实战项目示例目录](https://github.com/qq20004604/webpack-study/tree/master/%E3%80%90%E5%AE%9E%E6%88%98%EF%BC%95%E3%80%91%E6%89%93%E5%8C%85%E4%B8%80%E4%B8%AA%E6%A0%87%E5%87%86%E9%A1%B9%E7%9B%AE)
+[实战项目示例目录](https://github.com/qq20004604/webpack-study/tree/master/%E3%80%90%E5%AE%9E%E6%88%98%EF%BC%95%E3%80%91%E6%89%93%E5%8C%85%E4%B8%80%E4%B8%AA%E5%85%B7%E6%9C%89%E5%B8%B8%E8%A7%81%E5%8A%9F%E8%83%BD%E7%9A%84%E5%A4%9A%E9%A1%B5%E9%A1%B9%E7%9B%AE)
 
 <h3>0、使用说明</h3>
 
