@@ -1,0 +1,64 @@
+#container {
+  margin: 20px 0 0 20px;
+}
+
+.row {
+  position: relative;
+  width: 800px;
+  height: 40px;
+  line-height: 40px;
+  border: 2px solid #ccc;
+}
+
+.row .label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200px;
+  height: 38px;
+  line-height: 38px;
+  padding: 0 10px;
+}
+
+.row .value {
+  position: absolute;
+  top: 0;
+  left: 200px;
+  right: 0;
+  height: 38px;
+  line-height: 38px;
+  padding: 0 10px;
+}
+
+.row:nth-child(2n) {
+  border-bottom: none;
+}
+
+.row:nth-child(2n) .label {
+  background-color: #ccc;
+}
+
+.row:nth-child(2n) .value {
+  background-color: #fff;
+}
+
+.row:nth-child(2n+1) {
+  background-color: #fff;
+  border-bottom: none;
+}
+
+.row:nth-child(2n+1) .label {
+  background-color: #fff;
+}
+
+.row:nth-child(2n+1) .value {
+  background-color: #ccc;
+}
+
+.row:last-child {
+  border-bottom: 2px solid #ccc;
+}
+
+.row:last-child .label, .row:last-child .value {
+  height: 36px;
+}

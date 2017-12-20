@@ -1,0 +1,85 @@
+#background {
+  position: relative;
+  background: url('~@/login_background.svg');
+  background-size: cover;
+  height: 100vh;
+  width: 100vw;
+}
+
+#login {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 270px;
+  height: 280px;
+  .label {
+    position: absolute;
+    width: 100%;
+    height: 60px;
+    line-height: 60px;
+    .span {
+      position: absolute;
+      top: 0;
+      width: 42px;
+      height: 20px;
+      line-height: 20px;
+      background-repeat: no-repeat;
+      background-size: auto 100%;
+    }
+    .span.account {
+      background-image: url(/account.png);
+    }
+    .span.password {
+      background-image: url(/password.png);
+    }
+    input {
+      position: absolute;
+      top: 24px;
+      width: 100%;
+      height: 36px;
+      line-height: 34px;
+      font-size: 20px;
+      border: 1px solid #CED5D9;
+      border-radius: 7px;
+      padding: 0 20px;
+      color: @greyFont;
+    }
+  }
+  .title {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    height: 40px;
+    width: 100px;
+    transform: translateX(-50%);
+  }
+  .account {
+    top: 50px;
+  }
+  .password {
+    top: 130px;
+  }
+  #login-btn {
+    position: absolute;
+    top: 210px;
+    width: 100%;
+    height: 40px;
+    line-height: 37px;
+    font-size: 20px;
+    text-align: center;
+    border-radius: 7px;
+    background-color: @blue;
+    color: #fff;
+    cursor: pointer;
+  }
+  #error-msg {
+    position: absolute;
+    top: 260px;
+    height: 20px;
+    line-height: 20px;
+    width: 100%;
+    font-size: 20px;
+    color: red;
+  }
+}
