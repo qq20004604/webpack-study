@@ -6,7 +6,7 @@
 
 有疑义请[点击这里](https://github.com/qq20004604/webpack-study/issues)，发【Issues】。
 
-<h3>6、开发中 Server(DevServer)</h3>
+<h3>6、开发环境</h3>
 
 有三种，依次介绍。
 
@@ -95,6 +95,7 @@ devServer: {
 
 1. 但每次编译还是要额外花费时间，麻烦；
 2. 如果需要一定 UI 操作之后才能得到结果的内容，用这种方式测试会很麻烦；
+3. output 文件名不能用 ``[chunkhash]`` 只能用 ``[hash]``
 
 <h4>6.3、中间件容器 webpack-dev-middleware</h4>
 
