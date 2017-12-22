@@ -9,7 +9,7 @@ module.exports = {
     },
     // 出口文件
     output: {
-        path: __dirname + '/../dist',
+        path: __dirname + '/dist',
         // 文件名，将打包好的导出为bundle.js
         filename: '[name].[hash].js'
     },

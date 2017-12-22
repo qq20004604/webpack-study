@@ -1,13 +1,8 @@
-/**
- * Created by 王冬 on 2017/12/20.
- * QQ: 20004604
- * weChat: qq20004604
- */
-
 import createDOM from './DOM'
-import bar from './bar'
+import bar from "./bar.js";
+bar()
 
-console.log('foo.js is running...')
+console.log('%c%s', 'color:green;', 'foo.js is running...')
 
 function Foo() {
     let el = createDOM({
@@ -18,11 +13,11 @@ function Foo() {
 
     document.body.appendChild(el);
 }
+
 export default Foo
 
-// if (module.hot) {
-//     module.hot.accept('./bar.js', function () {
-//         console.log('%c%s', 'color:red;', 'bar is update')
-//         bar()
-//     })
-// }
+if (module.hot) {
+    module.hot.accept('./bar.js', function (args) {
+        console.log('%c%s', 'color:red;', `[${args}] is update`)
+    })
+}
