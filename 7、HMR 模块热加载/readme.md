@@ -71,16 +71,86 @@ HMR 的应用场景，最合适的是带 HMR 功能的loader。
 
 <h4>7.3、使用说明</h4>
 
-在使用前，需要明白 HMR 的几个特点：
+<h4>7.3.1、HMR 的冒泡</h4>
 
-1. HMR 是向上冒泡的：子模块被更改后，会去找他的父模块，查看有没有 HMR 的处理代码，如果没有，那么会继续向上冒泡；
-2. 捕获是父子关系：假如依赖是 A->B->C，C 更改，找 B，发现没有处理代码，于是找 A。此时，视为 B 被更改，因此 A 的处理代码，处理的是 B。如果 A 里面处理的是 C，那么是不响应的；
-3. 处理后，会重新执行整个模块的代码；
+先假设引用关系： A -> B -> C
 
+<b>【1】HMR 是向上冒泡的：</b>
+
+1. C 被更改后，会去找他的父模块 B，查看 B 中有没有关于 C 的 HMR 的处理代码：
+2. 如果没有，那么会继续向上冒泡到 A，查看 A 中有没有关于 B 的 HMR 的处理代码；
+3. 如果 A 没有，因为 A 是入口文件，所以会刷新整个页面；
+
+<b>【2】冒泡过程中只有父子关系：</b>
+
+C 更改，冒泡到 B（B 无 HMR 处理代码），然后冒泡到 A。
+
+此时，在 A 这里，视为 B 被更改（而不是 C），
+
+因此 A 里面处理 HMR 代码，捕获的模块，应该是 B，而不是 C，
+
+如果 A 的目标是 C，那么该段代码不会响应（虽然冒泡的起点是 C）；
+
+<b>【3】HMR 触发，会执行整个冒泡流程中涉及到的模块中的代码：</b>
+
+例如上面的 C 更改，B 捕获到了，重新执行 C；
+
+B 无捕获代码向上冒泡，A捕获到了，重新执行 B 和 C；
+
+假如引用关系是：A -> B -> C 和 D，即 B 里面同时引用 C 和 D 两个模块，并且 B 没有处理 HMR 的代码，A 有：
+
+1. 冒泡起点是 B：B 重新执行一遍自己的代码，C 和 D 不会执行；
+2. 冒泡起点是 C：B 和 C 重新执行一遍自己的代码， D 不会执行；
+3. 冒泡起点是 D：B 和 D 重新执行一遍自己的代码， C 不会执行；
+
+<b>【4】冒泡行为起点的子模块，其代码不会被重新执行：</b>
+
+先假设引用关系：A -> B -> C -> D，B 没有 处理 HMR 的代码，C 有没有无所谓，A 有。
+
+冒泡起点是 C，因此冒泡到 A。
+
+从上面我们可以得知，B 和 C 会被重新执行，那么 D 呢？
+
+答案是不会，因为 D 不在冒泡路线上。
+
+<b>总结：</b>
+
+总结以上四点，得出一个结论：
+
+1. 从修改的模块开始冒泡，直到被捕获为止；
+2. 冒泡路径上的代码（不包含捕获到的模块），都会被重新执行；
+3. 非冒泡路径上的代码，不管是子模块，或者是兄弟模块，都不会被重新执行（除非是整个页面被刷新）Z。
+
+
+<h4>7.3.2、HMR 的隐患</h4>
+
+以上特点这就可能带来一些后果（主要是 js 代码）：
+
+1. 假如我代码里，有绑定事件，那么当修改代码并重新执行一遍后，显然会再绑定一次，因此会导致重复绑定的问题（因此要考虑到解绑之前的事件）；
+2. 类似的，如果代码里添加了 DOM，那么当重新执行的时候，原本 DOM 节点还在，重新执行的时候又添加了一次；
+3. 如果有某些一次性操作，比如代码里移除了某个 DOM，那么很可能 HMR 不能解决你的问题，也许需要重新刷新后，表现才正常；
+
+<h4>7.3.3、HMR 的一个坑</h4>
+
+那就是引用时候的名字，和处理的 API，引用的文件名，需要相同；
+
+举例：
+
+```
+// 引入
+import foo from './foo.js';
+
+// 处理
+module.hot.accept('./foo.js', callback);
+```
+
+如果不一样，会导致第一次响应正常，后面就可能导致无法正常触发 HMR ，虽然提示模块更新，但不会重新执行模块的代码。
 
 <h4>7.4、示例</h4>
 
 为了说明 HMR 是怎么使用和生效，这里将给一个最简单的示例，包含 html、css、和 js 代码，来解释其的使用方法。
+
+可以直接 fork 本项目参看源码，以下是分析作用，以及如何生效的。
 
 需要使用的东西：
 
@@ -98,14 +168,133 @@ app.js        入口文件，在其中配置了 foo.js 和 bar.js 的 HMR 处理
 │  ├─1.jpg    图片1
 │  └─2.jpg    图片2
 ├─foo.js      模块foo，配置了 HMR 模块热替换的接口
-├─bar.js      模块bar，是foo的子模块
+│  └─bar.js   模块bar，是foo的子模块
 └─DOM.js      抽象出一个创造 DOM，并插入到 body 标签的函数
 ```
 
-三个js文件，效果很简单，分别创建一个DOM，并且内部各有一条 ``console.log(‘xxx is running')`` 代码，
+
+<b>1、先分析 js 部分</b>
+
+>app.js
 
 ```
-// app.js
+// 引入资源
+import './style.css';
+import foo from './foo.js';
+import createDOM from './DOM.js'
 
+// 创建一个DOM并插入<body>标签
+let el = createDOM({
+    id: 'app-box',
+    innerHTML: 'app.js<input>'
+})
+document.body.appendChild(el);
+
+// 本行代码表示app.js已经被执行了一遍
+console.log('%c%s', 'color:red;', 'app.js is running...')
+
+// 两个子模块创建DOM并插入<body>标签
+foo()
+
+// 这里是控制 HMR 的函数
+// 注：
+// 这里引用的 foo.js 模块，那么处理 foo.js HMR 效果的代码必须写在这里；
+// 特别提示：这段代码不能抽象封装到另外一个js文件中（即使那个js文件也被 app.js import进来）
+// 推测是根据webpack的依赖图，向上找父模块，然后在父模块的代码中，找有没有处理 HMR 的代码
+if (module.hot) {
+    module.hot.accept('./foo.js', function (url) {
+        // 回调函数只有url一个参数，类型是数组
+        // 执行时机是 foo.js 中的代码执行完毕后执行
+        console.log('%c%s', 'color:#FF00FF;', `[${url}] is update`)
+    })
+}
+```
+
+>foo.js
 
 ```
+// 引入资源
+import createDOM from './DOM'
+import bar from "./bar.js";
+// bar 中创建的DOM逻辑，在 foo 中执行
+bar()
+
+// 执行本段代码的时候，表示 foo.js 被重新执行了
+console.log('%c%s', 'color:green;', 'foo.js is running...')
+
+function Foo() {
+    let el = createDOM({
+        id: 'foo-box',
+        classList: 'foo',
+        innerHTML: 'foo.js<input>'
+    })
+
+    document.body.appendChild(el);
+}
+
+// 导出给 app.js 执行
+export default Foo
+
+// 这里写 bar.js 的 HMR 逻辑
+if (module.hot) {
+    module.hot.accept('./bar.js', function (args) {
+        console.log('%c%s', 'color:#FF00FF', `[${args}] is update`)
+    })
+}
+```
+
+>bar.js
+
+```
+// 引入资源
+import createDOM from './DOM'
+
+// 执行本段代码的时候，表示 bar.js 被重新执行了
+console.log('%c%s', 'color:blue;', 'bar.js is running...')
+
+function Bar() {
+    let el = createDOM({
+        id: 'bar-box',
+        classList: 'bar',
+        innerHTML: 'bar.js<input>'
+    })
+
+    document.body.appendChild(el);
+}
+
+// 导出给 foo.js 执行
+export default Bar
+```
+
+简单总结一下以上代码：
+
+1. app.js 作为入口文件，他引入了自己的子模块 foo.js，以及 css 资源文件，并且处理自己子模块的 HMR 行为；
+2. foo.js 作为 app.js 的子模块，他引入了自己的子模块 bar.js ，并且处理自己子模块的 HMR行为；
+3. bar.js 没做什么特殊的；
+4. 三个模块里，都有一行 ``console.log()`` 代码，当出现在浏览器的控制台里的时候，表示该模块代码被重新执行了一遍；
+5. 父模块处理子模块的 HMR 时，回调函数里有一行 ``console.log()`` 代码，表示该子模块已经重新加载完毕；
+6. 因此，理论上，我们修改 foo.js 或者 bar.js 文件后，首先会看到该模块的 ``console.log()`` 代码，其次会看到其父模块处理 HMR 的回调函数中的 ``console.log()`` 代码；
+
+<br>
+首次刷新页面后，控制台先输出三条 log，和几行 HMR代码，略略略。
+
+<b>修改 foo.js</b>
+
+当我们修改 foo.js 的 log 代码：``console.log('%c%s', 'color:green;', 'foo.js is running...I change it')``
+
+控制台提示：
+
+```
+foo.js is running...I change it
+[./foo.js] is update
+[HMR] Updated modules:
+[HMR]  - ./foo.js
+[HMR] App is up to date.
+```
+
+正如我们所料，foo.js 代码被重新执行了一遍，然后触发了 app.js 里面 ``module.hot.accept()`` 的回调函数（注意，有先后顺序）。
+
+并且，页面上多了一个 DOM 节点（来自 bar.js的，因为在 foo.js 里面执行了 ``bar()``），这正是我们前面所提出来的，HMR 机制的天生缺陷之一。
+
+另外请注意，所以 bar.js 是 foo.js 的子模块，但由于 bar.js 并没有被修改，所以 bar.js 里面的代码没有重新执行一遍（除了他暴露给 foo.js 的接口）。
+
