@@ -172,6 +172,7 @@ app.js        入口文件，在其中配置了 foo.js 和 bar.js 的 HMR 处理
 └─DOM.js      抽象出一个创造 DOM，并插入到 body 标签的函数
 ```
 
+---
 
 <b>1、先分析 js 部分</b>
 
@@ -282,7 +283,7 @@ export default Bar
 
 当我们修改 foo.js 的 log 代码：``console.log('%c%s', 'color:green;', 'foo.js is running...I change it')``
 
-控制台提示：
+控制台输出：
 
 ```
 foo.js is running...I change it
@@ -298,3 +299,153 @@ foo.js is running...I change it
 
 另外请注意，所以 bar.js 是 foo.js 的子模块，但由于 bar.js 并没有被修改，所以 bar.js 里面的代码没有重新执行一遍（除了他暴露给 foo.js 的接口）。
 
+<b>修改 bar.js</b>
+
+当我们修改 bar.js 的 log 代码：``console.log('%c%s', 'color:blue;', 'bar.js is running...and bar has been changed')``
+
+控制台输出：
+
+```
+bar.js is running...and bar has been changed
+[./bar.js] is update
+[HMR] Updated modules:
+[HMR]  - ./bar.js
+[HMR] App is up to date.
+```
+
+bar.js 是 foo.js 的子模块，而且 foo.js 里面有关于处理 bar.js 的模块 HMR 功能的代码。
+
+因此 bar.js 被修改后，冒泡到自己的父模块时就被捕获到，并没有继续向上冒泡。
+
+<b>让 bar.js 的修改冒泡到 app.js</b>
+
+假如让 bar.js 的修改冒泡到 app.js 会发生什么事情呢？先修改代码：
+
+>app.js 尝试让 app.js 同时捕获 foo.js 和 bar.js 的修改
+
+```
+// from
+module.hot.accept('./foo.js', function (url) {
+
+// to
+module.hot.accept(['./foo.js', './bar.js'], function (url) {
+```
+
+>foo.js 注释掉对 bar.js 的 HMR 功能的处理代码
+
+```
+// from 
+if (module.hot) {
+    module.hot.accept('./bar.js', function (args) {
+        console.log('%c%s', 'color:#FF00FF', `[${args}] is update`)
+    })
+}
+
+// to 
+// if (module.hot) {
+//     module.hot.accept('./bar.js', function (args) {
+//         console.log('%c%s', 'color:#FF00FF', `[${args}] is update`)
+//     })Z
+// }
+```
+
+> 恢复之前 foo.js 和 bar.js 的 ``console.log()`` 的修改
+
+```
+// foo.js
+// from
+console.log('%c%s', 'color:green;', 'foo.js is running...I change it')
+
+// to
+console.log('%c%s', 'color:green;', 'foo.js is running...')
+
+
+// bar.js
+// from
+console.log('%c%s', 'color:blue;', 'bar.js is running...and bar has been changed')
+
+// to
+console.log('%c%s', 'color:blue;', 'bar.js is running...')
+```
+
+修改完毕，此时刷新一下页面，重置状态。然后我们给 bar.js 添加一行代码 ``console.log('bar.js is be modified')``
+
+控制台输出：
+
+```
+bar.js is running...
+bar.js is be modified
+foo.js is running...
+[./foo.js] is update
+[HMR] Updated modules:
+[HMR]  - ./bar.js
+[HMR]  - ./foo.js
+[HMR] App is up to date.
+```
+
+这说明，webpack 成功捕捉到了 bar.js 的修改，并且更新了 bar.js 和 foo.js 。
+
+并且，虽然在 app.js 里去尝试捕获 bar.js ，然而，因为 bar.js 并不是 app.js 的子模块（而是子模块的子模块），因此是捕获不到的。
+
+<b>复数监视</b>
+
+在``module.hot.accept``这个函数中，参数一可以接受一个数组，表示监视的模块可以是复数。
+
+所以不需要写多个函数来监视多个模块，如果他们之间逻辑是复用的话，那么一个模块就行了。
+
+<b>总结：</b>
+
+js 文件被修改，会导致冒泡过程中，涉及到的 js 文件，都被重新执行一遍。
+
+
+---
+
+<b>2、再分析 css 部分</b>
+
+在使用 ``style-loader`` 后，我们不需要配置任何东西，就可以实现 HMR 效果。
+
+> style.css
+
+```
+#app-box {
+    color: red;
+}
+```
+
+默认打开页面，会发现页面上 ``app.js`` 那一行的字体颜色是红色。
+
+修改这个css样式为：
+
+```
+#app-box {
+    color: red;
+    font-size: 24px;
+}
+```
+
+在保存这个css文件后，会发现页面在没有刷新的情况下，样式已经改变了。
+
+由于我们开发一般都会采用 ``style-loader``，而且 css 由于是替代效果，也不是可执行代码，因此天生适用于 HMR 场景。
+
+
+<h4>7.5、总结</h4>
+
+css 文件没有什么好说的，只要使用 ``style-loader`` 即可。
+
+因为 HMR 的特性（会重新执行 js 文件），所以如果没有 loader 辅助的话，写在 HMR 下可用的 js 代码是很麻烦的。
+
+想象一下，你的js代码里有一个创建并插入 DOM 的操作，然后在你每次修改这个模块里的代码时，都会创建一个新的 DOM，并插入。
+
+例如本 DEMO 里，修改 foo.js 文件，会导致重新执行 foo 模块时，执行 bar.js 暴露出来的接口 bar，
+
+于是页面被重复插入一个 DOM，这显然不符合我们的预期。
+
+当然了，也有解决办法，刷新页面即可恢复正常。
+
+类似的还有 绑定事件（导致重复绑定），发起异步请求（导致多次发起异步请求）等。
+
+那么有没有解决办法呢？
+
+答案是使用相关的 loader，并且写符合相关格式的代码。
+
+例如 ``vue-loader`` 可以处理 ``.vue`` 结尾的文件。在你修改 ``.vue`` 文件的时候，就可以自动处理。假如你 ``.vue`` 文件不按要求写，而是自己乱写，那么显然就不能正常运行。

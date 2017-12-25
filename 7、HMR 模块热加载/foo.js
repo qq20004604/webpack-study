@@ -5,7 +5,7 @@ import bar from "./bar.js";
 bar()
 
 // 执行本段代码的时候，表示 foo.js 被重新执行了
-console.log('%c%s', 'color:green;', 'foo.js is running...I change it')
+console.log('%c%s', 'color:green;', 'foo.js is running...')
 
 function Foo() {
     let el = createDOM({
@@ -22,7 +22,7 @@ export default Foo
 
 // 这里写 bar.js 的 HMR 逻辑
 // if (module.hot) {
-// module.hot.accept('./bar.js', function (args) {
-//     console.log('%c%s', 'color:#FF00FF', `[${args}] is update`)
-// })
+//     module.hot.accept('./bar.js', function (args) {
+//         console.log('%c%s', 'color:#FF00FF', `[${args}] is update`)
+//     })
 // }

@@ -3,6 +3,7 @@ import createDOM from './DOM'
 
 // 执行本段代码的时候，表示 bar.js 被重新执行了
 console.log('%c%s', 'color:blue;', 'bar.js is running...')
+// console.log('bar.js is be modified')
 
 function Bar() {
     let el = createDOM({

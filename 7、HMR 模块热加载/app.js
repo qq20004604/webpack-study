@@ -28,7 +28,7 @@ foo()
 // 特别提示：这段代码不能抽象封装到另外一个js文件中（即使那个js文件也被 app.js import进来）
 // 推测是根据webpack的依赖图，向上找父模块，然后在父模块的代码中，找有没有处理 HMR 的代码
 if (module.hot) {
-    module.hot.accept('./foo.js', function (url) {
+    module.hot.accept(['./foo.js', './bar.js'], function (url) {
         // 回调函数只有url一个参数，类型是数组
         // 执行时机是 foo.js 中的代码执行完毕后执行
         console.log('%c%s', 'color:#FF00FF;', `[${url}] is update`)
