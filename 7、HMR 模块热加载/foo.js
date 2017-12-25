@@ -21,8 +21,8 @@ function Foo() {
 export default Foo
 
 // 这里写 bar.js 的 HMR 逻辑
-// if (module.hot) {
-//     module.hot.accept('./bar.js', function (args) {
-//         console.log('%c%s', 'color:#FF00FF', `[${args}] is update`)
-//     })
-// }
+if (module.hot) {
+    module.hot.accept('./bar.js', function (args) {
+        console.log('%c%s', 'color:#FF00FF', `[${args}] is update`)
+    })
+}
