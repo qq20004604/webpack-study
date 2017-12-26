@@ -13,6 +13,11 @@ module.exports = {
         // 文件名，将打包好的导出为bundle.js
         filename: '[name].js'
     },
+    // webpack-dev-server
+    devServer: {
+        contentBase: './dist',
+        hot: true
+    },
     module: {
         // loader放在rules这个数组里面
         rules: [
@@ -36,6 +41,9 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: './src/index.html'
         }),
+        // HMR 需要的两个插件
+        new webpack.NamedModulesPlugin(),
+        new webpack.HotModuleReplacementPlugin(),
         // new webpack.DefinePlugin({
         //     'process.env': {
         //         NODE_ENV: '"production"'
