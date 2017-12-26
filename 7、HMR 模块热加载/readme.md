@@ -6,6 +6,8 @@
 
 有疑义请[点击这里](https://github.com/qq20004604/webpack-study/issues)，发【Issues】。
 
+点击这里查看[DEMO](https://github.com/qq20004604/webpack-study/tree/master/7%E3%80%81HMR%20%E6%A8%A1%E5%9D%97%E7%83%AD%E5%8A%A0%E8%BD%BD)
+
 <h3>7、模块热加载 HMR</h3>
 
 <h3>7.0、使用说明</h3>
