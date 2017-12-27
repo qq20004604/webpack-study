@@ -37,11 +37,11 @@ npm run test
 3. 解析 css 内容当然还要 ``css-loader``，以及配套的 ``style-loader``。
 
 ```
-npm i --s vue
-npm i --s vue-loader
-npm i --s vue-template-compiler
-npm i --s css-loader
-npm i --s style-loader
+npm i --save vue
+npm i --save vue-loader
+npm i --save vue-template-compiler
+npm i --save css-loader
+npm i --save style-loader
 ```
 
 通过以上安装，至少可以开始使用了
@@ -99,11 +99,19 @@ npm i --s style-loader
 
 详细说明见本文【3.1】
 
-<b>【4】</b>
+<b>【5】自带 ``postcss``</b>
 
-<b>【4】</b>
+查看 ``vue-loader`` 的 package.json， 会发现在 ``dependencies`` 里有 ``postcss``。
 
-<b>【4】</b>
+注意不是 ``postcss-loader``，loader 是给 webpack 用的，而postcss 是类似 less、sass 等，更全面的 css 处理器（不止是预处理器）。
+
+但是假如我们需要 ``postcss-loader`` 的功能，那么是不需要额外安装 ``postcss-loader`` 的。
+
+详细使用说明参照下面【3.2】
+
+<b>【6】</b>
+
+<b>【7】</b>
 
 ---
 
@@ -211,13 +219,42 @@ npm i --s style-loader
 console.log(this.$style);    // {test: "_1MwiT3GNpEBkInFbvenNqf_1"}
 ```
 
-<h4>3.1、CSS Modules</h4>
+<h4>3.2、添加 postcss-loader</h4>
 
-<h4>3.1、CSS Modules</h4>
+之前讲过[postcss-loader，点击查看](https://github.com/qq20004604/webpack-study/tree/master/5%E3%80%81Loader/postcss_loader)。
 
-<h4>3.1、CSS Modules</h4>
+假如我们需要在 vue-loader 里，通过 ``postcss`` 添加兼容性 css 前缀，很简单。
 
-<h4>3.1、CSS Modules</h4>
+1、先安装 ``autoprefixer``，
+
+```
+npm install autoprefixer --save
+```
+
+2、兼容性插件的配置，假如我们在 postcss.config.js 里配置，如下写就行了（跟使用 ``postcss-loader`` 方法是一样的）
+
+```
+let autoprefixer = require('autoprefixer');
+
+module.exports = {
+    plugins: [
+        autoprefixer({
+            browsers: [
+                // 加这个后可以出现额外的兼容性前缀
+                "> 0.01%"
+            ]
+        })
+    ]
+}
+```
+
+这就足够了，无需其他操作。
+
+<h4>3.3、CSS Modules</h4>
+
+<h4>3.4、CSS Modules</h4>
+
+<h4>3.5、CSS Modules</h4>
 
 <h3>4、问题和解决</h3>
 

@@ -1,7 +1,8 @@
 <template>
     <div>
         <div class="large-font child">这是子模板的输入框</div>
-        <input type="text" @change="log" v-model="text">{{text}}
+        <input type="text" @change="log" v-model="text">
+        <span>{{text}}</span>
     </div>
 </template>
 <style scoped>
