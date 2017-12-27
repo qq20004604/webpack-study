@@ -1,11 +1,18 @@
 <template>
-    <div>
+    <div class="child-component">
         <div class="large-font child">这是子模板的输入框</div>
         <input type="text" @change="log" v-model="text">
-        <span>{{text}}</span>
+        <span class="text">{{text}}</span>
     </div>
 </template>
-<style scoped>
+<style scoped lang="less" type="text/less">
+    /* 使用 less 语法，只需要配置上面的标签属性，以及安装 less-loader 即可 */
+    .child-component {
+        .text {
+            font-size: 30px;
+            font-weight: bold;
+        }
+    }
 </style>
 <script>
     export default {

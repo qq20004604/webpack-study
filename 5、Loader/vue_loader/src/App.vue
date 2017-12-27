@@ -50,7 +50,7 @@
 </style>
 
 <script>
-    import child from './child.vue'
+    import child from './child'
 
     export default {
         data() {
@@ -75,6 +75,7 @@
                 }).then(() => {
                     this.msg === 'hello vue' ? this.msg = 'this is qq20004604\`s demo!' : this.msg = 'hello vue'
                 })
+
             }
         },
         components: {

@@ -71,47 +71,42 @@ npm i --save style-loader
 
 <h3>2、配置</h3>
 
-<h4>2.0、默认配置</h4>
+<h4>2.1、默认配置</h4>
 
 默认配置下，vue-loader只具备基础功能：
 
 <b>【1】``.vue`` 文件拆解：</b>
 
-将 ``.vue`` 文件拆解成可用的三部分，然后扔到打包后的 ``.js`` 文件；
+* 将 ``.vue`` 文件拆解成可用的三部分，然后扔到打包后的 ``.js`` 文件；
 
 <b>【2】HMR功能：</b>
 
-默认支持 HMR 功能（DEMO里已预置，执行 ``npm run dev`` 可以通过使用）；
+* 默认支持 HMR 功能（DEMO里已预置，执行 ``npm run dev`` 可以通过使用）；
+* 如果对规则感兴趣的，请参照官网说明：[热重载 vue-loader](https://vue-loader.vuejs.org/zh-cn/features/hot-reload.html)
 
 <b>【3】css局部作用域：</b>
 
-支持组件的 css 使用局部作用域，在 style 标签添加 ``scoped`` 即可。
-
-例如：``<style scoped></style>``，这样的话，该组件内的样式只会对该组件生效（原理是给对应的组件加指定属性名，然后 css 选择器里也加上属性选择器）；
-
-支持在组件使用 scoped 属性的情况下，让某些样式影响子元素。方法是使用 ``/deep/`` 或 ``>>>`` 关键字，该关键字前的选择器，会加局部作用域；该关键字后面的选择器，不会加局部作用域。例如``.app /deep/ .child`` 会被编译为：··.app[data-v-04c2046b] .child··
+* 支持组件的 css 使用局部作用域，在 style 标签添加 ``scoped`` 即可。
+* 例如：``<style scoped></style>``，这样的话，该组件内的样式只会对该组件生效（原理是给对应的组件加指定属性名，然后 css 选择器里也加上属性选择器）；
+* 支持在组件使用 scoped 属性的情况下，让某些样式影响子元素。方法是使用 ``/deep/`` 或 ``>>>`` 关键字，该关键字前的选择器，会加局部作用域；该关键字后面的选择器，不会加局部作用域。例如``.app /deep/ .child`` 会被编译为：··.app[data-v-04c2046b] .child··
 
 <b>【4】CSS Modules</b>
 
-简单来说，就是可以将 ``<style></style>`` 标签内的东西，加了 ``module`` 属性后，可以直接在 vue 组件后，获取重命名后的类名。
-
-可以用作模拟 css 作用域的解决方案。
-
-详细说明见本文【3.1】
+* 简单来说，就是可以将 ``<style></style>`` 标签内的东西，加了 ``module`` 属性后，可以直接在 vue 组件后，获取重命名后的类名。
+* 可以用作模拟 css 作用域的解决方案。
+* 详细说明见本文【3.1、CSS Modules】
 
 <b>【5】自带 ``postcss``</b>
 
-查看 ``vue-loader`` 的 package.json， 会发现在 ``dependencies`` 里有 ``postcss``。
+* 查看 ``vue-loader`` 的 package.json， 会发现在 ``dependencies`` 里有 ``postcss``。
+* 注意不是 ``postcss-loader``，loader 是给 webpack 用的，而postcss 是类似 less、sass 等，更全面的 css 处理器（不止是预处理器）。
+* 但是假如我们需要 ``postcss-loader`` 的功能，那么是不需要额外安装 ``postcss-loader`` 的。
+* 详细使用说明参照下面【2.2、使用 postcss 的功能Z】
 
-注意不是 ``postcss-loader``，loader 是给 webpack 用的，而postcss 是类似 less、sass 等，更全面的 css 处理器（不止是预处理器）。
+<b>【6】css 预处理器</b>
 
-但是假如我们需要 ``postcss-loader`` 的功能，那么是不需要额外安装 ``postcss-loader`` 的。
-
-详细使用说明参照下面【3.2】
-
-<b>【6】</b>
-
-<b>【7】</b>
+* 只需要安装对应的 css 预处理器的 loader，以及在 ``.vue`` 文件里标识一下，就能被 ``vue-loader`` 所使用，无需额外在 webpack.config.js 里配置。
+* Z使用方法见【2.3、使用css预处理器】
 
 ---
 
@@ -119,17 +114,79 @@ npm i --save style-loader
 
 <b>【1】es6代码转换成es5：</b>
 
-通过配置，可以将 ``<script>`` 里的 es6代码。
+* 通过配置，可以将 ``<script>`` 里的 es6代码。
+* 指例如 created 这个函数里，使用的 es6 代码。
+* 而 created 本身即可以用 ``created: function(){}`` ，也可以用 ``created()``，都能正常识别），自动通过 babel 编译为 es5 的代码；
 
-指例如 created 这个函数里，使用的 es6 代码。
+<b>【2】引用图片：</b>
 
-而 created 本身即可以用 ``created: function(){}`` ，也可以用 ``created()``，都能正常识别），自动通过 babel 编译为 es5 的代码；
+<h4>2.2、使用 postcss 的功能</h4>
 
-<h4>2.0、</h4>
+之前讲过[postcss-loader，点击查看](https://github.com/qq20004604/webpack-study/tree/master/5%E3%80%81Loader/postcss_loader)。
 
-<h4>2.0、</h4>
+假如我们需要在 vue-loader 里，通过 ``postcss`` 添加兼容性 css 前缀，很简单。
 
-<h4>2.0、</h4>
+1、先安装 ``autoprefixer``，
+
+```
+npm install autoprefixer --save
+```
+
+2、兼容性插件的配置，假如我们在 postcss.config.js 里配置，如下写就行了（跟使用 ``postcss-loader`` 方法是一样的）
+
+```
+let autoprefixer = require('autoprefixer');
+
+module.exports = {
+    plugins: [
+        autoprefixer({
+            browsers: [
+                // 加这个后可以出现额外的兼容性前缀
+                "> 0.01%"
+            ]Z
+        })
+    ]
+}
+```
+
+这就足够了，无需其他操作。
+
+<h4>2.3、使用css预处理器</h4>
+
+这里使用 less 作为示例，而 SASS 或者其他，是类似的。
+
+首先要安装 ``less-loader``：
+
+```
+npm i --save less-loader
+```
+
+然后在 ``.vue`` 文件，需要使用 less 语法的 ``<style>`` 标签里，添加一个属性 ``lang="less"`` 就行。
+
+但是，如果你使用的是 webstorm 作为 IDE，那么 webstorm 是无法正常以 less 语法来识别这个的，因此我们还需要额外添加一个属性 `` type="text/less"``。
+
+因此给出示例代码（局部作用域、less语法、支持webstorm识别）：
+
+```
+<style scoped lang="less" type="text/less">
+    .child-component {
+        .text {
+            font-size: 30px;
+            font-weight: bold;
+        }
+    }
+</style>
+```
+
+<h4>2.4、使用babel-loader</h4>
+
+使用 babel 很简单，同样，无需额外配置。
+
+首先参照我写的 [babel-loader](https://github.com/qq20004604/webpack-study/tree/master/5%E3%80%81Loader/babel_loader) 这一篇内容，安装 babel-loader 和相关的东西。
+
+然后在项目跟目录下添加 ``.babelrc`` 文件，里面的内容和 ``babel-loader`` 的配置是一样的。
+
+除此之外，无需其他额外配置。
 
 <h4>2.0、</h4>
 
@@ -219,40 +276,12 @@ npm i --save style-loader
 console.log(this.$style);    // {test: "_1MwiT3GNpEBkInFbvenNqf_1"}
 ```
 
-<h4>3.2、添加 postcss-loader</h4>
 
-之前讲过[postcss-loader，点击查看](https://github.com/qq20004604/webpack-study/tree/master/5%E3%80%81Loader/postcss_loader)。
 
-假如我们需要在 vue-loader 里，通过 ``postcss`` 添加兼容性 css 前缀，很简单。
+<h4>3.4、图片</h4>
 
-1、先安装 ``autoprefixer``，
+引用图片，我们还是需要使用 file-loader ，可能还需要使用 url-loader（根据需要不需要转 base64 字符串）
 
-```
-npm install autoprefixer --save
-```
-
-2、兼容性插件的配置，假如我们在 postcss.config.js 里配置，如下写就行了（跟使用 ``postcss-loader`` 方法是一样的）
-
-```
-let autoprefixer = require('autoprefixer');
-
-module.exports = {
-    plugins: [
-        autoprefixer({
-            browsers: [
-                // 加这个后可以出现额外的兼容性前缀
-                "> 0.01%"
-            ]
-        })
-    ]
-}
-```
-
-这就足够了，无需其他操作。
-
-<h4>3.3、CSS Modules</h4>
-
-<h4>3.4、CSS Modules</h4>
 
 <h4>3.5、CSS Modules</h4>
 
@@ -268,4 +297,46 @@ You are using the runtime-only build of Vue where the template compiler is not a
 
 原因可以参照这个文章[Vue 2.0 升（cai）级（keng）之旅](https://segmentfault.com/a/1190000006435886)。
 
-这里简单总结一下，就是
+这里简单总结一下，就是默认引入的 ``Vue``，并不是 ``vue.js``，而是 ``vue.common.js``，而后者是运行时环境使用的。
+
+解决方法很简单：
+
+【方法一】更改引入路径：
+
+引入的更改为：``import Vue from 'vue/dist/vue.js'``
+
+【方法二】添加别名：
+
+在 webpack.config.js 里添加别名：
+
+```
+resolve: {
+    alias: {
+        'Vue': 'vue/dist/vue.js'
+    }
+}
+```
+
+注意，如果添加别名的话，alias 属性的 key，需要和引入的 <b>大小写要保持一致</b>。
+
+即这里的是大写字母开头的 ``Vue``，那么引入的时候也应该是大写字母开头的：``import Vue from 'Vue'``
+
+<h4>4.2、后缀名省略</h4>
+
+一般情况下，如果要引入 ``child.vue``，那么正常情况下，会使用 ``import child from './child.vue'`` 来实现
+
+那么假如我想省略掉后缀名，写成 ``import child from './child'`` ，该怎么办？
+
+<b>解决办法：</b>
+
+修改 webpack.config.js 中的 resolve 属性，例如：
+
+```
+// 以上省略
+resolve: {
+    extensions: ['.js', '.vue'],
+//以下省略
+```
+
+就可以无后缀名引用 ``.vue`` 结尾的文件了，注意，如果有相同名字但不同后缀名的，有先后顺序。
+

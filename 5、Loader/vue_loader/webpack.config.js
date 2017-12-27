@@ -59,6 +59,7 @@ module.exports = {
         // new webpack.optimize.OccurrenceOrderPlugin()
     ],
     resolve: {
+        extensions: ['.js', '.vue'],
         alias: {
             'Vue': 'vue/dist/vue.js'
         }
