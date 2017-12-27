@@ -3,6 +3,8 @@
         <div class="large-font child">这是子模板的输入框</div>
         <input type="text" @change="log" v-model="text">
         <span class="text">{{text}}</span>
+        <br>
+        <img src="./webpack.png" alt="">
     </div>
 </template>
 <style scoped lang="less" type="text/less">

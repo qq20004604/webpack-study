@@ -96,17 +96,7 @@ npm i --save style-loader
 * 可以用作模拟 css 作用域的解决方案。
 * 详细说明见本文【3.1、CSS Modules】
 
-<b>【5】自带 ``postcss``</b>
 
-* 查看 ``vue-loader`` 的 package.json， 会发现在 ``dependencies`` 里有 ``postcss``。
-* 注意不是 ``postcss-loader``，loader 是给 webpack 用的，而postcss 是类似 less、sass 等，更全面的 css 处理器（不止是预处理器）。
-* 但是假如我们需要 ``postcss-loader`` 的功能，那么是不需要额外安装 ``postcss-loader`` 的。
-* 详细使用说明参照下面【2.2、使用 postcss 的功能Z】
-
-<b>【6】css 预处理器</b>
-
-* 只需要安装对应的 css 预处理器的 loader，以及在 ``.vue`` 文件里标识一下，就能被 ``vue-loader`` 所使用，无需额外在 webpack.config.js 里配置。
-* Z使用方法见【2.3、使用css预处理器】
 
 ---
 
@@ -117,8 +107,25 @@ npm i --save style-loader
 * 通过配置，可以将 ``<script>`` 里的 es6代码。
 * 指例如 created 这个函数里，使用的 es6 代码。
 * 而 created 本身即可以用 ``created: function(){}`` ，也可以用 ``created()``，都能正常识别），自动通过 babel 编译为 es5 的代码；
+* 参照【2.4、使用babel-loader】
 
-<b>【2】引用图片：</b>
+<b>【2】图片url</b>
+
+* 加载图片，路径是会被正常处理的，但是仅仅只有路径是不行的。
+* 就像 css-loader 也能处理图片的路径，但依然需要 file-loader 来处理图片一样。
+* 参照【2.5、图片】
+
+<b>【3】css 预处理器</b>
+
+* 只需要安装对应的 css 预处理器的 loader，以及在 ``.vue`` 文件里标识一下，就能被 ``vue-loader`` 所使用，无需额外在 webpack.config.js 里配置。
+* 使用方法见【2.3、使用css预处理器】
+
+<b>【4】自带 ``postcss``</b>
+
+* 查看 ``vue-loader`` 的 package.json， 会发现在 ``dependencies`` 里有 ``postcss``。
+* 注意不是 ``postcss-loader``，loader 是给 webpack 用的，而postcss 是类似 less、sass 等，更全面的 css 处理器（不止是预处理器）。
+* 但是假如我们需要 ``postcss-loader`` 的功能，那么是不需要额外安装 ``postcss-loader`` 的。
+* 详细使用说明参照下面【2.2、使用 postcss 的功能】
 
 <h4>2.2、使用 postcss 的功能</h4>
 
@@ -188,13 +195,46 @@ npm i --save less-loader
 
 除此之外，无需其他额外配置。
 
-<h4>2.0、</h4>
 
-<h4>2.0、</h4>
+<h4>2.5、图片</h4>
 
-<h4>2.0、</h4>
+引用图片，我们还是需要使用 file-loader ，可能还需要使用 url-loader（根据需要不需要转 base64 字符串）
 
-<h3>3、vue-loader 支持的功能</h3>
+就假设我们需要同时使用这两个吧，配置起来非常简单。
+
+先安装 ``file-loader`` 和 ``url-loader``，参照 [url-loader](https://github.com/qq20004604/webpack-study/tree/master/5%E3%80%81Loader/url_loader) 和 [file-loader](https://github.com/qq20004604/webpack-study/tree/master/5%E3%80%81Loader/file_loader)。
+
+然后配置一波图片匹配在 webpack.config.js，就行了。
+
+```
+{
+    test: /\.(png|jpg|jpeg|gif)$/,
+    use: [
+        {
+            loader: 'url-loader',
+            options: {
+                limit: 8192,
+                mimetype: 'image/png',
+                name: 'img/[hash].[ext]'
+            }
+        }
+    ]
+}
+```
+
+<h4>2.6、其他</h4>
+
+以以上几个为例，想必大家已经了解了，vue-loader 本身无需特殊配置，也不需要给 ``.vue`` 文件添加很多其他的 ``loader`` 的处理。
+
+我们只需要安装对应的 ``loader``，然后配置一下 loader 即可。
+
+也就是说，如果要添加某个 ``loader``，大部分只需要安装，不需要额外配置。
+
+假如我们需要额外处理某些 loader，不使用 vue-loader 本身的，也是可以的。
+
+参照官网这个说明 [loaders](https://vue-loader.vuejs.org/zh-cn/options.html#loaders)，很简单。
+
+<h3>3、vue-loader 独有功能</h3>
 
 <h4>3.1、CSS Modules</h4>
 
@@ -276,14 +316,6 @@ npm i --save less-loader
 console.log(this.$style);    // {test: "_1MwiT3GNpEBkInFbvenNqf_1"}
 ```
 
-
-
-<h4>3.4、图片</h4>
-
-引用图片，我们还是需要使用 file-loader ，可能还需要使用 url-loader（根据需要不需要转 base64 字符串）
-
-
-<h4>3.5、CSS Modules</h4>
 
 <h3>4、问题和解决</h3>
 
