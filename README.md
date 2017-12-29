@@ -53,8 +53,33 @@ npm run dev
 npm run build
 ```
 
+<h3>0.3、webpack的版本</h3>
 
-<h3>0.3、快捷链接，点击快速抵达对应项目目录</h3>
+当我们全局安装webpack之后，package.json 里也会有webpack，这两个webpack的版本，可能是不一样的。
+
+那么当我们打包的时候，如何确认当前使用的是哪一个webpack版本呢？
+
+<b>使用全局的webpack的版本</b>
+
+通过直接执行 ``webpack`` 命令，将使用全局的 webpack 版本
+
+```
+webpack
+```
+
+<b>使用当前项目的webpack版本</b>
+
+当我们通过 ``npm`` 命令来执行时，将使用当前项目的 webpack 版本。
+
+例如：
+
+```
+npm run build
+```
+
+就将使用 ``node_modules`` 里面的 webpack 的版本。
+
+<h3>0.4、快捷链接，点击快速抵达对应项目目录</h3>
 
 [1、最简单的webpack实例](https://github.com/qq20004604/webpack-study/tree/master/1%E3%80%81%E6%9C%80%E7%AE%80%E5%8D%95%E7%9A%84webpack%E5%AE%9E%E4%BE%8B)
 

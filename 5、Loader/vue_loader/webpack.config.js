@@ -32,19 +32,6 @@ module.exports = {
                 use: [
                     'vue-loader'
                 ]
-            },
-            {
-                test: /\.(png|jpg|jpeg|gif)$/,
-                use: [
-                    {
-                        loader: 'url-loader',
-                        options: {
-                            limit: 8192,
-                            mimetype: 'image/png',
-                            name: 'img/[hash].[ext]'
-                        }
-                    }
-                ]
             }
         ]
     },
