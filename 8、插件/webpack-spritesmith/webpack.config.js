@@ -53,10 +53,12 @@ module.exports = {
         // HMR 需要的两个插件
         new webpack.NamedModulesPlugin(),
         new webpack.HotModuleReplacementPlugin(),
+
+        // 插件外的配置可以无视，跟插件无关
         new SpritesmithPlugin({
             // 目标小图标
             src: {
-                // 图片所在文件夹（全部会被打包出来）
+                // 图片所在文件夹（无视子文件夹）
                 cwd: path.resolve(__dirname, './src/icons'),
                 // 匹配 png 文件，可以用glob语法，比如 '*.(png|jpg)' 这样；
                 // 但png和jpg拼一起，有时候图片无法正常显示
@@ -67,9 +69,19 @@ module.exports = {
                 // 将其输出到 src/assets 目录下
                 // 这个是打包前的目录，所以不要学某个教程将其输出到 dist 目录下
                 image: path.resolve(__dirname, './src/assets/sprite.png'),
-                css: path.resolve(__dirname, './src/assets/sprite.css')
+                // 可以是字符串、或者数组
+                css: [
+                    path.resolve(__dirname, './src/assets/sprite.css'),
+                    path.resolve(__dirname, './src/assets/sprite2.css')
+                ]
             },
             apiOptions: {
+                generateSpriteName: function () {
+                    // console.log(arguments)
+                    var fileName = arguments[0].match(/[^\\]+$/)[0].replace(/\.[a-zA-Z]+/, '')
+                    // console.log(fileName)
+                    return fileName
+                },
                 // 简单来说，这个就是雪碧图的 css 文件怎么找到 雪碧图的 png 文件
                 cssImageRef: './sprite.png'
             },
