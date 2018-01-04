@@ -3,6 +3,21 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
 const SpritesmithPlugin = require('webpack-spritesmith');
 const path = require('path')
+var templateFunction = function (data) {
+    var shared = '.ico { background-image: url(I) }'
+        .replace('I', data.sprites[0].image);
+
+    var perSprite = data.sprites.map(function (sprite) {
+        return '.icoccc-N { width: Wpx; height: Hpx; background-position: Xpx Ypx; }'
+            .replace('N', sprite.name)
+            .replace('W', sprite.width)
+            .replace('H', sprite.height)
+            .replace('X', sprite.offset_x)
+            .replace('Y', sprite.offset_y);
+    }).join('\n');
+
+    return shared + '\n' + perSprite;
+}
 
 module.exports = {
     // 入口文件，指向app.js
@@ -71,8 +86,8 @@ module.exports = {
                 image: path.resolve(__dirname, './src/assets/sprite.png'),
                 // 可以是字符串、或者数组
                 css: [
-                    path.resolve(__dirname, './src/assets/sprite.css'),
-                    path.resolve(__dirname, './src/assets/sprite2.css')
+                    // path.resolve(__dirname, './src/assets/sprite2.css')，
+                    path.resolve(__dirname, './src/assets/sprite.css')
                 ]
             },
             apiOptions: {
@@ -87,8 +102,15 @@ module.exports = {
             },
             spritesmithOptions: {
                 // 这个是雪碧图的排列顺序（从上到下）
-                algorithm: 'top-down'
-            }
+                algorithm: 'top-down',
+                // 雪碧图里，图片和图片的距离，单位是px
+                // padding: 100
+            },
+            // retina: {
+            //     type: 'retina',
+            //     normalName: path.resolve(__dirname, './src/assets/sprite.png'),
+            //     retinaName: path.resolve(__dirname, './src/assets/sprite.png')
+            // },
         })
     ],
     resolve: {
