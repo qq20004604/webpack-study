@@ -10,7 +10,7 @@
 
 <h3>9、外部扩展（Externals）</h3>
 
-<h3>9.0、使用说明</h3>
+<h4>9.0、DEMO使用说明</h4>
 
 安装：
 
@@ -30,7 +30,7 @@ npm run dev
 npm run build
 ```
 
-<h4>7.1、应用场景</h4>
+<h4>9.1、应用场景</h4>
 
 当我们加载一个外部库，比如 ``jQuery``，比如 ``echarts`` 等，为了节约流量，我们往往会使用 CDN 来加载这些东西。
 
@@ -53,6 +53,8 @@ document.getElementById("root").innerText = globalVariableName(1, 2, 3)
 ```
 
 这个不是不行，但容易造成一个问题就是，容易在一不小心的情况下，篡改了原有的变量。
+
+并且，这种方式是高耦合度的，不推荐使用。
 
 2、模块化解决方案：
 
@@ -92,7 +94,7 @@ document.getElementById("root").innerText = add(1, 2, 3)
 ```
 
 
-<h4>7.2、简单来说</h4>
+<h4>9.2、简单来说（使用说明）</h4>
 
 【需求】
 
