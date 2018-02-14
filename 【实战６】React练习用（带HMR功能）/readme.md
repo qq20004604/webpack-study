@@ -17,7 +17,7 @@ npm run dev
 
 ```
 npm install --save react react-dom
-npm i --save babel-preset-react babel-preset-es2015
+npm i --save babel-preset-react babel-preset-env
 ```
 
 说明：
