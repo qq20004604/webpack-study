@@ -6,6 +6,8 @@
 
 成文时，webpack版本是【3.8.1】
 
+交流QQ群：387017550
+
 <h3>0.1、安装webpack</h3>
 
 首先你需要安装Node.js，[点击打开Node.js下载页面](https://nodejs.org/zh-cn/download/)。安装完Node.js后，会自带npm包管理器。
