@@ -98,7 +98,7 @@ document.getElementById("root").innerText = add(1, 2, 3)
 
 【需求】
 
-假如我需要通过 CDN 加载一个我自定义的库，示例我用的是：``<script src="http://www.jianwangsan.cn/looksLikeCDN.js"></script>``。
+假如我需要通过 CDN 加载一个我自定义的库，示例我用的是：``<script src="http://http://185.186.147.210/looksLikeCDN.js"></script>``。
 
 这个库就做了一件事情，暴露了一个全局变量 ``window.globalVariableName``，这个变量是一个函数，他会将所有参数的和相加，并返回。（当然实际应用中，这个可能是一个对象，有 N 个属性，非常复杂，但原理是一样的）
 
@@ -111,7 +111,7 @@ document.getElementById("root").innerText = add(1, 2, 3)
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <script src="http://www.jianwangsan.cn/looksLikeCDN.js"></script>
+    <script src="http://http://185.186.147.210/looksLikeCDN.js"></script>
 </head>
 <body>
 <div id="root"></div>
